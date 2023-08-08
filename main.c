@@ -190,7 +190,7 @@ int main(){
             break;
         
         case 3:
-            exit(0)
+            exit(0);
         }
     }
     return 0;
