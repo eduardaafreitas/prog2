@@ -82,11 +82,10 @@ void destroi_fila(fila_t* fila){
     free(fila);
 }
 
-void cadastro(){
-    fila_t* breaknews = cria_fila();
-    fila_t* informes = cria_fila();
+void cadastro( fila_t* breaknews, fila_t* informes){
     int tipo_noticia;
     noticia_t* noticia_topo;
+    printf("\t Digite a opcao desejada: ");
     scanf("%d", &tipo_noticia);
     requisita(noticia_topo->titulo, noticia_topo->texto);
 
@@ -100,27 +99,44 @@ void cadastro(){
 
 void finaliza_edicao( fila_t* breaknews, fila_t* informes){
     fila_t* jornal = cria_fila();
-    verifica_jornal(fila_t* breaknews, fila_t* informes);
-    imprime_jornal();
-    destroi_fila();
-    destroi_fila();
+    verifica_jornal(breaknews, informes, jornal);
+    imprime_jornal(jornal);
+    destroi_fila(breaknews);
+    destroi_fila(informes);
+    destroi_fila(jornal);
 }
 
-void noticia_valida(fila_t* fila){
-    while (fila->comeco != NULL){
-        if (fila->comeco->idade > 3){
-            retira_comeco(fila);
+void retira_invalidas(fila_t* fila){
+    if (fila_vazia(fila) == 1){
+        return;
+    }
+    else{    
+        while (fila->comeco != NULL){
+            if (fila->comeco->idade > 3){
+                retira_comeco(fila);
+            }
         }
     }
 }
 
 
-int verifica_jornal(){
-    if (breaknews->comeco == NULL && informes->comeco == NULL){
+int verifica_jornal(fila_t* breaknews, fila_t* informes, fila_t* jornal){
+    if (fila_vazia(breaknews) == 1 && fila_vazia(informes) == 1){
         printf("\t Esta edição foi pulada por falta de notícias!\n");
         return 0;
     }
-    return 1;
+    retira_invalidas(breaknews); 
+    retira_invalidas(informes);
+
+    while (fila_vazia(breaknews) == 0 && fila_vazia(informes) == 0){
+        if (breaknews->comeco->idade < informes->comeco->idade){
+            insere_fim(jornal, breaknews->comeco);
+            retira_comeco(breaknews);
+        } else {
+            insere_fim(jornal, informes->comeco);
+            retira_comeco(informes);
+        }
+    }
 }
 
 int menu(){
@@ -159,17 +175,18 @@ int main(){
     printf("\t --- Bem-vindo(a) ao Jornal do DInf!--- \n");
     printf("\t -------------------------------------- \n");
 
+    fila_t* breaknews = cria_fila();
+    fila_t* informes = cria_fila();
     int opcao;
     opcao = menu();
-
     while(opcao != 0){
         switch (opcao){
         case 1:
-            cadastro();
+            cadastro(breaknews, informes);
             break;
         
         case 2:
-            finaliza_edicao();
+            finaliza_edicao(breaknews, informes );
             break;
         
         case 3:
