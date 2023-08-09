@@ -2,15 +2,15 @@
 
 /*--------------------------structs--------------------------*/
 
-typedef struct noticia {
+typedef struct noticia_t {
     char* titulo;
     char* texto;
     int idade;
-    noticia_t* prox;
-    noticia_t* anterior;
+    struct noticia_t* prox;
+    struct noticia_t* anterior;
 } noticia_t;
 
-typedef struct fila {
+typedef struct fila_t {
     noticia_t* comeco;
     noticia_t* fim;
     
@@ -38,10 +38,6 @@ fila_t* cria_fila() {
 }
 
 void insere_fim(fila_t* fila, noticia_t* nova_noticia) {
-	noticia_t* nova_noticia = malloc(sizeof(nova_noticia));
-
-    nova_noticia->titulo = malloc(sizeof(char) * 33);
-    nova_noticia->texto = malloc(sizeof(char) * 513);
 
 	if (fila_vazia(fila) == 1){
 		fila->comeco = nova_noticia;
@@ -84,9 +80,12 @@ void destroi_fila(fila_t* fila){
 
 void cadastro( fila_t* breaknews, fila_t* informes){
     int tipo_noticia;
-    noticia_t* noticia_topo;
-    printf("\t Digite a opcao desejada: ");
+    noticia_t* nova_noticia;
+    printf("\t Digite o tipo da noticia: ");
     scanf("%d", &tipo_noticia);
+    nova_noticia->titulo = malloc(sizeof(char) * 33);
+    nova_noticia->texto = malloc(sizeof(char) * 513);
+    nova_noticia->idade = 0;
     requisita(noticia_topo->titulo, noticia_topo->texto);
 
     if (tipo_noticia == 0){
@@ -161,9 +160,15 @@ void imprime_header(){
     printf("\t -------------------------------------- \n");
 }
 
-void imprime_jornal(){
+void imprime_jornal( fila_t* jornal){
     printf("\t -------------------------------------- \n");
     printf("\t ====================================== \n");
+    while (fila_vazia(jornal) == 0){
+        printf("\t %s", jornal->comeco->titulo);
+        printf("\t %s", jornal->comeco->texto);
+        retira_comeco(jornal);
+        printf("\t == \n");
+    }
 }
 
 /*-----------------------------------------------------------*/
