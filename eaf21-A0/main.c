@@ -4,8 +4,8 @@
 /*--------------------------structs--------------------------*/
 
 typedef struct noticia_t {
-    char* titulo;
-    char* texto;
+    char titulo[33];
+    char texto[513];
     int idade;
     struct noticia_t* prox;
     struct noticia_t* anterior;
@@ -33,7 +33,7 @@ int fila_vazia(fila_t* fila){
     return 0;
 }
 
-fila_t* cria_fila() {
+fila_t* cria_fila() {                                       //essa função funciona!!!!!
     fila_t* fila = malloc(sizeof(fila_t));
     if (fila == NULL) {
         printf("\n Erro ao alocar memória para a fila");
@@ -57,12 +57,12 @@ void insere_fim(fila_t* fila, noticia_t* nova_noticia) {
 		fila->fim = nova_noticia;
         printf("\t else insere else fim ok \n");
 	}
-    printf("\t insere fim foiiiii \n");
 }
 
 void retira_comeco(fila_t* fila){
 	noticia_t* aux = fila->comeco;
     printf("\t retira começo antes if \n");
+
 	if (aux->prox != NULL){
 		fila->comeco = aux->prox;
 		aux->prox->anterior = NULL;
@@ -73,7 +73,7 @@ void retira_comeco(fila_t* fila){
 		fila->fim = NULL;
         printf("\t else retira começo ok \n");
 	}
-    printf("\t retira começo antes free \n");
+    printf("%u", aux);
 	free(aux);
     printf("\t retira começo depois free \n");
 }
@@ -90,8 +90,6 @@ void cadastro( fila_t* breaknews, fila_t* informes){
     int tipo_noticia;
     noticia_t* nova_noticia = malloc(sizeof(noticia_t));
 
-    nova_noticia->titulo = malloc(sizeof(char) * 33);
-    nova_noticia->texto = malloc(sizeof(char) * 513);
     nova_noticia->idade = 0;
 
     requisita(nova_noticia->titulo, nova_noticia->texto);
@@ -123,18 +121,22 @@ void retira_invalidas(fila_t* fila){
 void verifica_jornal(fila_t* breaknews, fila_t* informes, fila_t* jornal){
     noticia_t* aux_breaknews = breaknews->comeco;
     noticia_t* aux_informes = informes->comeco;
+    int control = 0;
 
-    while ((aux_breaknews != NULL) && (aux_informes != NULL) ){
-        if (breaknews->comeco->idade < informes->comeco->idade){
-            insere_fim(jornal, breaknews->comeco);
-            retira_comeco(breaknews);
-        } else {
-            insere_fim(jornal, informes->comeco);
-            retira_comeco(informes);
-        }
-        aux_breaknews = aux_breaknews->prox;
-        aux_informes = aux_informes->prox;
+    while ((aux_breaknews != NULL) && (control < 2)){
+        insere_fim(jornal, breaknews->comeco);
+        printf(" passou no insere fim1");
+        breaknews->comeco = breaknews->comeco->prox;
+        printf("passou 2");
+        control++;
     }
+
+    while ((aux_informes != NULL) && (control < 2)){
+        insere_fim(jornal, informes->comeco);
+        informes->comeco = informes->comeco->prox;
+        control++;
+    }
+    printf("terminou verifica jornal");
 }
 
 void imprime_jornal( fila_t* jornal){
@@ -143,6 +145,18 @@ void imprime_jornal( fila_t* jornal){
     while (fila_vazia(jornal) == 0){
         printf("\t %s", jornal->comeco->titulo);
         printf("\t %s", jornal->comeco->texto);
+        retira_comeco(jornal);
+        printf("\t == \n");
+    }
+}
+
+void imprime_fila( fila_t* jornal){
+    printf("\t -------------------------------------- \n");
+    printf("\t ====================================== \n");
+    while (fila_vazia(jornal) == 0){
+        printf("\t %s", jornal->comeco->titulo);
+        printf("\t %s", jornal->comeco->texto);
+        printf("\t antes do retira comeco");
         retira_comeco(jornal);
         printf("\t == \n");
     }
@@ -199,8 +213,22 @@ int main(){
     fila_t* breaknews = cria_fila();
     fila_t* informes = cria_fila();
     int opcao;
-    opcao = menu_inicial();
-    while(opcao != 3){
+
+    noticia_t* nova_noticia = malloc(sizeof(noticia_t));
+
+    requisita(nova_noticia->titulo, nova_noticia->texto);
+
+    insere_fim(breaknews, nova_noticia);
+    imprime_fila(breaknews);
+    //retira_comeco(breaknews);
+
+
+
+
+
+
+    //opcao = menu_inicial();
+/*    while(opcao != 3){
         switch (opcao){
         case 1:
             cadastro(breaknews, informes);
@@ -214,6 +242,6 @@ int main(){
             exit(0);
         }
         opcao = menu_inicial();
-    }
+    }*/
     return 0;
 }
