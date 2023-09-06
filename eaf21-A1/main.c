@@ -31,7 +31,7 @@ int conta_atributos(FILE* arff, char* nome_arq){
   int flag = 0;
   arff = fopen(nome_arq, "r");
 
-  if(!arff){
+  if(!arff){/home/eduarda/semestre-3/prog2/eaf21-A1
   	perror ("Erro ao abrir arquivo");
     exit (1) ;
   }
@@ -69,7 +69,7 @@ int conta_atributos(FILE* arff, char* nome_arq){
   conta_atributos(arff, nome_arq);
     //não consegui finalizar a tempo
 }*/
-
+//alteração
 
 
 int main(int argc, char **argv){
