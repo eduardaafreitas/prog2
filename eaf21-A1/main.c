@@ -64,12 +64,39 @@ int conta_atributos(FILE* arff, char* nome_arq){
 }
 
 
-/*atributo* processa_atributos(FILE *arff, char* nome_arq){
+atributo* processa_atributos(FILE *arff, char* nome_arq){
+  int tamanho = conta_atributos(arff, nome_arq);
+  atributo *infos = malloc(tamanho * sizeof(atributo));
+  char linha[1025];
+  char *token;
+  char *aux;
 
-  conta_atributos(arff, nome_arq);
-    //não consegui finalizar a tempo
-}*/
-//alteração
+  arff = fopen(nome_arq, "r");
+  if(!arff){
+    perror ("Erro ao abrir arquivo");
+    exit (1) ;
+  }
+
+  for(int i = 0; i < tamanho; i++){
+    fgets(linha, sizeof(linha), arff);
+    token = strtok(linha, " ");
+    infos[i].rotulo = strdup(token);
+    token = strtok(NULL, " ");
+    infos[i].tipo = strdup(token);
+    if (strstr(infos[i].tipo, "{") != NULL){
+      aux = strstr(infos[i].tipo, "{");
+      infos[i].categorias = strdup(aux);
+    }
+    else {
+      infos[i].categorias = NULL;
+    }
+  }
+
+  fclose(arff);
+  return infos;
+   
+}
+
 
 
 int main(int argc, char **argv){
