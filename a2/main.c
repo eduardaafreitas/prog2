@@ -7,6 +7,7 @@
 
 #define HELP "Forma de uso: ./arff -i <arq_in> [-p -v -a -b -c -d]\n"
 
+
 int main(int argc, char **argv){
   int opt;
   char exibicao = 0;

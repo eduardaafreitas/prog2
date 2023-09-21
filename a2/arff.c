@@ -4,6 +4,8 @@
 
 #include "arff.h"
 
+char *nome_arq = 0;
+
 void exibe_atributos(atributo *infos, int quantidade){  //modificar
   //Fun��o do A1 (com modifica��es para o atributo de categorias) 
   if (infos == 0){

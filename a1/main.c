@@ -9,6 +9,8 @@ typedef struct {
   char *categorias;
 } atributo;
 
+char *nome_arq = 0;
+
 void exibe_atributos(atributo *infos, int tamanho){
     if (infos == 0){
         printf("O arquivo ARFF fornecido eh invalido\n");
@@ -59,29 +61,57 @@ int conta_atributos(FILE* arff, char* nome_arq){
     exit (1);
   }
 
+  printf("O arquivo ARFF fornecido possui %d atributos\n", contador); //tirar depois
   fclose (arff);
-  exit (0) ;
+  return contador;
 }
 
 
-/*atributo* processa_atributos(FILE *arff, char* nome_arq){
+atributo* processa_atributos(FILE *arff, char* nome_arq){
+  int tamanho = conta_atributos(arff, nome_arq);
+  atributo *infos = malloc(tamanho * sizeof(atributo));
+  char linha[1025];
+  char *tok;
+  char *aux;
 
-  conta_atributos(arff, nome_arq);
-    //não consegui finalizar a tempo
-}*/
+  arff = fopen(nome_arq, "r");
+  if(!arff){
+    perror ("Erro ao abrir arquivo");
+    exit (1) ;
+  }
+
+  for(int i = 0; i < tamanho; i++){
+    fgets(linha, sizeof(linha), arff);
+    tok = strtok(linha, " "); //ignoramos a string "@attribute"
+    tok = strtok(NULL, " "); //pegamos o rotulo
+    infos[i].rotulo = strdup(tok);
+    tok = strtok(NULL, " "); //pegamos o tipo
+    infos[i].tipo = strdup(tok);
+    if (strstr(infos[i].tipo, "{") != NULL){
+      aux = strstr(infos[i].tipo, "{");
+      infos[i].categorias = strdup(aux);
+    }
+    else {
+      infos[i].categorias = NULL;
+    }
+  }
+
+  fclose(arff);
+  return infos;
+   
+}
 
 
 
 int main(int argc, char **argv){
   int opt;
   char exibicao = 0;
-  char *entrada = 0;
   FILE *arq;
 
   while ((opt = getopt(argc, argv, "pi:")) != -1) {
     switch (opt) {
     case 'i':
-      entrada = strdup(optarg);
+      nome_arq = strdup(optarg);
       break;
     case 'p':
       exibicao = 1;
@@ -91,18 +121,19 @@ int main(int argc, char **argv){
       exit(1);
     }
   }
-
-  if ( ! entrada ) {
+  
+  if ( ! nome_arq ) {
     fprintf(stderr, "Forma de uso: ./arff -i <arq_in> [-p]\n");
     exit(2);
   }
-
-  if(entrada){
-    conta_atributos(arq, entrada);
+  
+  if(nome_arq){
+    conta_atributos(arq, nome_arq);
   }
 
   if (exibicao){
-    //to do
+    atributo *infos = processa_atributos(arq, nome_arq);
+    exibe_atributos(infos, conta_atributos(arq, nome_arq));
   }
 
   return 0 ;
