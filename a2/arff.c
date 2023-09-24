@@ -65,6 +65,14 @@ int conta_atributos(FILE *arff){ //ok
 
 void processa_categorias(atributo *elemento, char *categorias){
   //Recbe uma string com as categorias e atualiza o elemento com um vetor de strings (modificar a struct)
+  //char [i][j]
+  /*if (strstr(infos[i].tipo, "{") != NULL){
+      aux = strstr(infos[i].tipo, "{");
+      infos[i].categorias = strdup(aux);
+    }
+    else {
+      infos[i].categorias = NULL;
+    }*/
 }
 
 atributo* processa_atributos(FILE *arff, int quantidade){
