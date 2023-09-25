@@ -4,7 +4,7 @@
 typedef struct {
   char *rotulo;
   char *tipo;
-  char *categorias;
+  char **categorias;
 } atributo;
 
 char *nome_arq;

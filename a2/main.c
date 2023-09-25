@@ -10,13 +10,13 @@
 
 int main(int argc, char **argv){
   int opt;
-  char exibicao = 0;
-  char validacao = 0;
-  char ataques = 0;
-  char entidades = 0;
-  char tamanho = 0;
-  char firewall = 0;
-  char *entrada = 0;
+  int exibicao = 0;
+  int validacao = 0;
+  int ataques = 0;
+  int entidades = 0;
+  int tamanho = 0;
+  int firewall = 0;
+  int *entrada = 0;
 
   while ((opt = getopt(argc, argv, "pvabcdi:")) != -1) {
     switch (opt) {
@@ -85,5 +85,6 @@ int main(int argc, char **argv){
   if (firewall){
     //Chamar a função de geração de arquivo de firewall.
   }
+
   return 0 ;
 }

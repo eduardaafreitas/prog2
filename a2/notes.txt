@@ -1,8 +1,0 @@
-devemos armazenar um vetor de strings, 
-
-com cada categoria
-
-
-separada (por exemplo, na primeira posição "a", na segunda "b" e na terceira "c"). 
-
-Essa separação deve ser feita por meio da função "processa_categorias"

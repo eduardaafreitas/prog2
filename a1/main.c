@@ -66,7 +66,6 @@ int conta_atributos(FILE* arff, char* nome_arq){
   return contador;
 }
 
-
 atributo* processa_atributos(FILE *arff, char* nome_arq){
   int tamanho = conta_atributos(arff, nome_arq);
   atributo *infos = malloc(tamanho * sizeof(atributo));
