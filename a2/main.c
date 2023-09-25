@@ -9,14 +9,14 @@
 
 
 int main(int argc, char **argv){
-  int opt;
-  int exibicao = 0;
-  int validacao = 0;
-  int ataques = 0;
-  int entidades = 0;
-  int tamanho = 0;
-  int firewall = 0;
-  int *entrada = 0;
+  char opt;
+  char exibicao = 0;
+  char validacao = 0;
+  char ataques = 0;
+  char entidades = 0;
+  char tamanho = 0;
+  char firewall = 0;
+  char *entrada = 0;
 
   while ((opt = getopt(argc, argv, "pvabcdi:")) != -1) {
     switch (opt) {
@@ -49,6 +49,7 @@ int main(int argc, char **argv){
   }
 
   if (!entrada){
+    printf("linha 53\n");
     fprintf(stderr, HELP);
     exit(2);
   }
@@ -64,8 +65,9 @@ int main(int argc, char **argv){
     fprintf(stderr, "Existem erros no arquivo fornecido!\n");
     exit(4);
   }
-  atributo *dados_atributos = processa_atributos(arquivo, qntd_atributos);
 
+  atributo *dados_atributos = processa_atributos(arquivo, qntd_atributos);
+  printf("processou atributos\n");
   if (exibicao){
     exibe_atributos(dados_atributos, qntd_atributos);
   }

@@ -1,6 +1,11 @@
 #ifndef __ARFF__
 #define __ARFF__
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
 typedef struct {
   char *rotulo;
   char *tipo;

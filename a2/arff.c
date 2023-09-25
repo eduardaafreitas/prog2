@@ -9,8 +9,8 @@ char *nome_arq;
 void exibe_atributos(atributo *infos, int tamanho){  //modificar
   //Fun��o do A1 (com modifica��es para o atributo de categorias) 
   if (infos == 0){
-      printf("O arquivo ARFF fornecido eh invalido\n");
-      exit(0);
+    printf("O arquivo ARFF fornecido eh invalido\n");
+    exit(0);
   }
 
   printf("==== ATRIBUTOS DO ARQUIVO ====\n");
@@ -72,56 +72,70 @@ int conta_atributos(FILE *arff){ //ok
 
 void processa_categorias(atributo *elemento, char *categorias){
   //Recbe uma string com as categorias e atualiza o elemento com um vetor de strings (modificar a struct)
-  //int tamanho = conta_atributos(arff);
-  
+
   char linha[1025];
-  char *tok;
-  char *aux;
-  char **matriz_auxiliar;
-
-  /*arff = fopen(nome_arq, "r");
-  if(!arff){
-    perror ("Erro ao abrir arquivo");
-    exit (1) ;
-  }*/
-
+  char **matriz_auxiliar = NULL;
   char *token;
   int qtd_categoria = 0;
-  token = strtok(linha, " ");
-  while( token != '}' ) { // Conta quantas categorias existem
+
+  strcpy(linha, categorias); // Copia a string de categorias para uma auxiliar
+  token = strtok(linha, ",");
+
+  while( token != NULL ) { // Conta quantas categorias existem
     qtd_categoria++;
-    token = strtok(NULL, " ");
+    token = strtok(NULL, ",");
   }
+
+  printf("Quantidade de categorias: %d\n", qtd_categoria); //tirar depois
+
   matriz_auxiliar = (char**)malloc(qtd_categoria * sizeof(char*)); // Aloca a matriz de categorias
   if(!matriz_auxiliar){
     perror("Erro ao alocar memoria");
     exit(1);
   }
-  for(int j = 0; j < qtd_categoria; j++){
-    matriz_auxiliar[j] = (char*)malloc(1025 * sizeof(char)); // Aloca cada linha da matriz - "nome" da categoria
+  printf("Alocou matriz\n");
+
+  char *token_aux; 
+
+  token_aux = strtok(categorias, ","); // Separa as categorias
+
+  for(int j = 0; ((j < qtd_categoria) || (token_aux != NULL )); j++){
+    matriz_auxiliar[j] = (char*)malloc(1025 * sizeof(char));
     if(!matriz_auxiliar[j]){
       perror("Erro ao alocar memoria");
       exit(1);
     }
-    strcpy(matriz_auxiliar[j], token); // Copia o nome da categoria para a matriz
-    token = strtok(NULL, " "); // Pega o proximo nome de categoria
+    strcpy(matriz_auxiliar[j], token_aux);
+    token_aux = strtok(NULL, ","); // Separa as categorias
+    printf(" matriz aux %s \n", matriz_auxiliar[j]);
   }
+  //return matriz_auxiliar;
 }
 
 
 atributo* processa_atributos(FILE *arff, int quantidade){
   //Fun��o do A1 (com modifica��es para o atributo de categorias)
-  //int tamanho = conta_atributos(arff, nome_arq);
-  atributo *infos = malloc(quantidade * sizeof(atributo));
+  printf("entrou na processa antes malloc\n");
+  printf("quantidade: %d\n", quantidade);
+
+  atributo *infos = (struct atributo *)malloc(quantidade * sizeof(atributo));
+  infos->categorias = NULL;
+  infos->categorias = (char **)malloc(50*sizeof(char*));
+
+  for(int i = 0; i < 50; i++){
+    infos->categorias[i] = (char *)malloc(1025*sizeof(char));
+  }
+
+
   char linha[1025];
   char *tok;
-  char *aux;
 
-  arff = fopen(arff, "r");
   if(!arff){
     perror ("Erro ao abrir arquivo");
     exit (1) ;
   }
+
+  fseek(arff, 0, SEEK_SET); //eh preciso resetar o ponteiro do arquivo para o inicio do arquivo
 
   for(int i = 0; i < quantidade; i++){
     fgets(linha, sizeof(linha), arff);
@@ -131,14 +145,14 @@ atributo* processa_atributos(FILE *arff, int quantidade){
     tok = strtok(NULL, " "); //pegamos o tipo
     infos[i].tipo = strdup(tok);
     if (strstr(infos[i].tipo, "{") != NULL){
-      processa_categorias(&infos[i], infos[i].tipo);
+      processa_categorias(infos[i].tipo, tok);
+      printf("tok cat: %s \n", tok);
     }
     else {
       infos[i].categorias = NULL;
     }
   }
 
-  fclose(arff);
   return infos;
 
 }
