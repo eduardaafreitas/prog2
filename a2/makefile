@@ -1,4 +1,4 @@
-parametrosCompilacao=-Wall #-Wshadow
+parametrosCompilacao=-Wall -g #-Wshadow
 nomePrograma=arff
 
 all: $(nomePrograma)

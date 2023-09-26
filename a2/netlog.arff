@@ -1,5 +1,5 @@
-@attribute SRC_ADD numeric
-@attribute DES_ADD numeric
+@attribute SRC_ADD string
+@attribute DES_ADD string
 @attribute PKT_ID numeric
 @attribute FROM_NODE numeric
 @attribute TO_NODE numeric

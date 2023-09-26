@@ -67,7 +67,7 @@ int main(int argc, char **argv){
   }
 
   atributo *dados_atributos = processa_atributos(arquivo, qntd_atributos);
-  printf("processou atributos\n");
+  printf("processou atributos maaaaaain\n");
   if (exibicao){
     exibe_atributos(dados_atributos, qntd_atributos);
   }
@@ -75,6 +75,8 @@ int main(int argc, char **argv){
     rewind(arquivo);
     valida_arff(arquivo, dados_atributos, qntd_atributos);
   }
+  free(dados_atributos);
+
   if (ataques){
     //Chamar a função de relatórios de ataque;
   }
