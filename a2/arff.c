@@ -72,12 +72,12 @@ int conta_atributos(FILE *arff){ //ok
 
 void processa_categorias(atributo *elemento, char *categorias){
   //Recbe uma string com as categorias e atualiza o elemento com um vetor de strings (modificar a struct)
-
   char *token;
+  int i = 0;
 
   token = strtok(categorias, ",");
 
-  for(int i = 0; token != NULL ; i++ ){
+  for(; token != NULL ; i++){
     elemento->categorias = realloc(elemento->categorias, (i+1) * sizeof(char*));
 
     if(!elemento->categorias){
@@ -97,6 +97,7 @@ void processa_categorias(atributo *elemento, char *categorias){
     token = strtok(NULL, ",");
   }
 
+  elemento->categorias[i] = NULL; // garantir que o final é nulo.
 }
 
 /*static int conta_categorias(FILE *arff, int quantidade){
