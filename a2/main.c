@@ -67,7 +67,7 @@ int main(int argc, char **argv){
   }
 
   atributo *dados_atributos = processa_atributos(arquivo, qntd_atributos);
-  printf("processou atributos maaaaaain\n");
+
   if (exibicao){
     exibe_atributos(dados_atributos, qntd_atributos);
   }

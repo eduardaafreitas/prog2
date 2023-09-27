@@ -1,15 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #include "arff.h"
-
-char *nome_arq;
 
 void exibe_atributos(atributo *infos, int tamanho){  //modificar
   //Fun��o do A1 (com modifica��es para o atributo de categorias) 
   if (infos == 0){
-    printf("O arquivo ARFF fornecido eh invalido\n");
+    printf("O arquivo ARFF fornecido eh invalido print\n");
     exit(0);
   }
 
@@ -35,7 +34,7 @@ int conta_atributos(FILE *arff){ //ok
   //Fun��o do A1
   int contador = 0;
   int flag = 0;
-  //arff = fopen(nome_arq, "r");
+  int flag_data = 0;
 
   if(!arff){
   	perror ("Erro ao abrir arquivo");
@@ -51,12 +50,18 @@ int conta_atributos(FILE *arff){ //ok
     }
     else {
       flag = 1;
+    } 
+    if (strstr(linha, "@data") != NULL) {
+      flag_data = 1;
     }
     strncpy(linha_aux, linha, sizeof(linha_aux));
   }
 
-  if (strstr(linha_aux, "@data") == NULL) {
-    perror("O arquivo ARFF fornecido eh invalido");
+  if (flag_data == 0) {
+    perror("O arquivo ARFF fornecido eh invalido por nao fornecer a linha @data");
+    exit (1);
+  } else if (contador == 0) {
+    perror("O arquivo ARFF fornecido eh invalido por nao possuir");
     exit (1);
   }
 
@@ -81,14 +86,14 @@ void processa_categorias(atributo *elemento, char *categorias){
     elemento->categorias = realloc(elemento->categorias, (i+1) * sizeof(char*));
 
     if(!elemento->categorias){
-    perror("Erro ao alocar memoria realloc");
+    perror("Erro ao alocar memoria - realloc processa_categorias");
     exit(1);
   }
 
     elemento->categorias[i] = (char*)malloc(strlen(token) * sizeof(char));
     
     if(!elemento->categorias[i]){
-      perror("Erro ao alocar memoria malloc");
+      perror("Erro ao alocar memoria - malloc processa_categorias");
       exit(1);
     }
 
@@ -96,50 +101,20 @@ void processa_categorias(atributo *elemento, char *categorias){
     
     token = strtok(NULL, ",");
   }
-
   elemento->categorias[i] = NULL; // garantir que o final é nulo.
 }
 
-/*static int conta_categorias(FILE *arff, int quantidade){
 
-  char linha[1025];
-  char *tok;
-  char *token;
-  int qtd_categoria = 0;
-  int maior_categoria = 0;
-  char *tipos;
-
-  for(int i = 0; i < quantidade; i++){
-    fgets(linha, sizeof(linha), arff);
-    tok = strtok(linha, " "); //ignoramos a string "@attribute"
-    tok = strtok(NULL, " "); //pegamos o rotulo
-    //infos[i].rotulo = strdup(tok);
-    tok = strtok(NULL, " "); //pegamos o tipo
-    tipos = strdup(tok);
-    if (strstr(tipos, "{") != NULL){
-      strcpy(linha, tipos); // Copia a string de categorias para uma auxiliar
-      token = strtok(linha, ",");
-      while( token != NULL ) { // Conta quantas categorias existem para delimitar o tamanhho do malloc do vetor de strings
-        qtd_categoria++;
-        if (qtd_categoria > maior_categoria){
-          maior_categoria = qtd_categoria;
-          token = strtok(NULL, ",");
-        }
-      }
-    }
-  }
-  return maior_categoria;
-}*/
 
 atributo* processa_atributos(FILE *arff, int quantidade){
   //Fun��o do A1 (com modifica��es para o atributo de categorias)
   printf("quantidade: %d\n", quantidade);
  
   if(!arff){
-    perror ("Erro ao abrir arquivo");
+    perror ("Erro ao abrir arquivo - processa_atributos");
     exit (1) ;
   }
-
+  
   fseek(arff, 0, SEEK_SET); //eh preciso resetar o ponteiro do arquivo para o inicio do arquivo
 
   char linha[1025];
@@ -159,7 +134,7 @@ atributo* processa_atributos(FILE *arff, int quantidade){
     tok = strtok(NULL, " "); //pegamos o tipo
     infos[i].tipo  = (char *)realloc(infos[i].tipo, strlen(tok) * sizeof(char));
     strcpy(infos[i].tipo, tok);
-
+    
     if (strstr(infos[i].tipo, "{") != NULL){
       processa_categorias(&infos[i], tok);
     }
@@ -171,6 +146,93 @@ atributo* processa_atributos(FILE *arff, int quantidade){
 }
 
 void valida_arff(FILE *arff, atributo *atributos, int quantidade){
-  //Recebe um arquivo arff com ponteiro de leitura antes do "@data"; passa por todas as linhas de dados e valida cada elementos de cada coluna em
+  //Recebe um arquivo arff com ponteiro de leitura antes do "@data"; 
+  //passa por todas as linhas de dados e valida cada elementos de cada coluna em
   //rela��o ao vetor de atributos tamb�m fornecido como argumento.
+
+  if(!arff){ //verifica se o arquivo foi aberto
+    perror ("Erro ao abrir arquivo - valida_arff");
+    exit (1) ;
+  }
+  char linha[2049];
+  //flags:
+  int numerico = 0;         
+  int string = 0;
+  int categorico = 0;
+
+  //variaveis auxiliares:
+  char *tok;
+  char *aux; 
+  char *endptr;
+
+  int contador = 0;
+  //caso o arquivo nao esteja com o ptr de leitura no @data esse while fara isso
+  while (fgets(linha, sizeof(linha), arff) != NULL) {
+    if (strstr(linha, "@data") != NULL) {
+      break; // Encontramos a linha "@data", vamos parar de ler
+    }
+  }
+  fseek(arff, ftell(arff), SEEK_SET);
+  printf("linha: %s\n", linha);
+
+
+  printf("entrou no valida\n");
+  
+  while(!feof(arff)){
+    printf("entrou no while valida\n");
+    fgets(linha, sizeof(linha), arff);
+    if(strcmp(linha, "\n") == 0){
+      continue;
+    }
+    if(strcmp(linha, "@data") == 0){
+      continue;
+    }
+
+    tok = strtok(linha, ",");
+
+    if (tok == NULL){
+      printf("Erro na linha (tok eh NULL - valida arff) %d\n", contador);
+      exit(1);
+    }
+    aux = tok;
+
+    for (int i = 0; i < quantidade; i++){
+      if( strcmp(atributos[i].tipo, "numeric") != NULL){ 
+        double num = strtod(aux, &endptr);
+        if (*endptr == '\0' && num >= INT_MIN && num <= INT_MAX) {
+          numerico = 0;
+        } else {
+          numerico = 1;
+        }
+
+        if (endptr == aux){ //verifica se a conversao deu certo
+          //printf("Erro\n");
+          exit(1);
+        }
+      } else if (strstr(atributos->tipo[i], "{") != NULL){
+        for(int j = 0; atributos[i].categorias[j] != NULL; j++){
+          if (strcmp(aux, atributos[i].categorias[j]) == 0){
+            categorico = 0;
+            break;
+          } else if (atributos[i].categorias[j+1] == NULL){
+            categorico = 0;
+            exit(1);
+          } else if (strcmp(aux, atributos[i].categorias[j]) != 0){
+            categorico = 1;
+            continue;
+          } 
+        }
+
+      } else if (strcmp(atributos[i].tipo, "string") != NULL){
+        string = 1;
+      }
+
+    }
+    contador++;
+    
+
+  }
+  
+
 }
+
