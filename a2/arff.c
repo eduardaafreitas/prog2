@@ -164,8 +164,10 @@ void valida_arff(FILE *arff, atributo *atributos, int quantidade){
   char *tok;
   char *aux; 
   char *endptr;
-
+  
+  //para localizar as linhas(caso necessario):
   int contador = 0;
+
   //caso o arquivo nao esteja com o ptr de leitura no @data esse while fara isso
   while (fgets(linha, sizeof(linha), arff) != NULL) {
     if (strstr(linha, "@data") != NULL) {
@@ -173,11 +175,7 @@ void valida_arff(FILE *arff, atributo *atributos, int quantidade){
     }
   }
   fseek(arff, ftell(arff), SEEK_SET);
-  printf("linha: %s\n", linha);
-
-
-  printf("entrou no valida\n");
-  
+ 
   while(!feof(arff)){
     printf("entrou no while valida\n");
     fgets(linha, sizeof(linha), arff);
@@ -187,15 +185,12 @@ void valida_arff(FILE *arff, atributo *atributos, int quantidade){
     if(strcmp(linha, "@data") == 0){
       continue;
     }
-
     tok = strtok(linha, ",");
-
     if (tok == NULL){
       printf("Erro na linha (tok eh NULL - valida arff) %d\n", contador);
       exit(1);
     }
     aux = tok;
-
     for (int i = 0; i < quantidade; i++){
       if( strcmp(atributos[i].tipo, "numeric") != NULL){ 
         double num = strtod(aux, &endptr);
@@ -222,17 +217,11 @@ void valida_arff(FILE *arff, atributo *atributos, int quantidade){
             continue;
           } 
         }
-
       } else if (strcmp(atributos[i].tipo, "string") != NULL){
         string = 1;
       }
-
     }
     contador++;
-    
-
   }
-  
-
 }
 
