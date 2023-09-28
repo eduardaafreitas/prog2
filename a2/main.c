@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "log.h"
 #include "arff.h"
 
 #define HELP "Forma de uso: ./arff -i <arq_in> [-p -v -a -b -c -d]\n"
@@ -78,7 +79,7 @@ int main(int argc, char **argv){
   free(dados_atributos);
 
   if (ataques){
-    //Chamar a função de relatórios de ataque;
+    filtro_ataque(arquivo, dados_atributos, qntd_atributos);
   }
   if (entidades){
     //Chamar a função de relatórios de entidade;

@@ -5,6 +5,10 @@
 
 #include "arff.h"
 
+int numerico;         
+int string;
+int categorico;
+
 void exibe_atributos(atributo *infos, int tamanho){  //modificar
   //Fun��o do A1 (com modifica��es para o atributo de categorias) 
   if (infos == 0){
@@ -61,12 +65,12 @@ int conta_atributos(FILE *arff){ //ok
     perror("O arquivo ARFF fornecido eh invalido por nao fornecer a linha @data");
     exit (1);
   } else if (contador == 0) {
-    perror("O arquivo ARFF fornecido eh invalido por nao possuir");
+    perror("O arquivo ARFF fornecido eh invalido por nao possuir atributos");
     exit (1);
   }
 
   if (flag == 0) {
-    perror("O arquivo ARFF fornecido eh invalido por nao possuir");
+    perror("O arquivo ARFF fornecido eh invalido");
     exit (1);
   }
 
@@ -80,8 +84,10 @@ void processa_categorias(atributo *elemento, char *categorias){
   char *token;
   int i = 0;
 
+  // ignora {
+  categorias++;
   token = strtok(categorias, ",");
-
+  elemento->categorias = NULL;
   for(; token != NULL ; i++){
     elemento->categorias = realloc(elemento->categorias, (i+1) * sizeof(char*));
 
@@ -90,17 +96,22 @@ void processa_categorias(atributo *elemento, char *categorias){
     exit(1);
   }
 
-    elemento->categorias[i] = (char*)malloc(strlen(token) * sizeof(char));
+    elemento->categorias[i] = (char*)malloc((strlen(token)+1) * sizeof(char));
     
     if(!elemento->categorias[i]){
       perror("Erro ao alocar memoria - malloc processa_categorias");
       exit(1);
     }
 
-    strncpy(elemento->categorias[i], token, strlen(token));
+    strncpy(elemento->categorias[i], token, strlen(token)+1);
     
     token = strtok(NULL, ",");
   }
+
+  // ignora }
+  elemento->categorias[i-1][strlen(elemento->categorias[i-1])-1] = '\0';
+  
+  elemento->categorias = realloc(elemento->categorias, (i+1) * sizeof(char*));
   elemento->categorias[i] = NULL; // garantir que o final é nulo.
 }
 
@@ -128,11 +139,14 @@ atributo* processa_atributos(FILE *arff, int quantidade){
     tok = strtok(linha, " "); //ignoramos a string "@attribute"
 
     tok = strtok(NULL, " "); //pegamos o rotulo
-    infos[i].rotulo = (char *)realloc(infos[i].rotulo, strlen(tok) * sizeof(char));
+    infos[i].rotulo = NULL;
+    infos[i].rotulo = (char *)realloc(infos[i].rotulo, (strlen(tok)+1) * sizeof(char));
     strcpy(infos[i].rotulo, tok);
 
     tok = strtok(NULL, " "); //pegamos o tipo
-    infos[i].tipo  = (char *)realloc(infos[i].tipo, strlen(tok) * sizeof(char));
+    tok[strlen(tok)-1] = '\0';
+    infos[i].tipo = NULL;
+    infos[i].tipo  = (char *)realloc(infos[i].tipo, (strlen(tok)+1) * sizeof(char));
     strcpy(infos[i].tipo, tok);
     
     if (strstr(infos[i].tipo, "{") != NULL){
@@ -156,15 +170,11 @@ void valida_arff(FILE *arff, atributo *atributos, int quantidade){
   }
   char linha[2049];
   //flags:
-  int numerico = 0;         
-  int string = 0;
-  int categorico = 0;
 
   //variaveis auxiliares:
   char *tok;
-  char *aux; 
   char *endptr;
-  
+
   //para localizar as linhas(caso necessario):
   int contador = 0;
 
@@ -176,9 +186,11 @@ void valida_arff(FILE *arff, atributo *atributos, int quantidade){
   }
   fseek(arff, ftell(arff), SEEK_SET);
  
+  int valido = 1;
   while(!feof(arff)){
-    printf("entrou no while valida\n");
-    fgets(linha, sizeof(linha), arff);
+    if (!fgets(linha, sizeof(linha), arff)) {
+      break;
+    }
     if(strcmp(linha, "\n") == 0){
       continue;
     }
@@ -190,38 +202,33 @@ void valida_arff(FILE *arff, atributo *atributos, int quantidade){
       printf("Erro na linha (tok eh NULL - valida arff) %d\n", contador);
       exit(1);
     }
-    aux = tok;
     for (int i = 0; i < quantidade; i++){
-      if( strcmp(atributos[i].tipo, "numeric") != NULL){ 
-        double num = strtod(aux, &endptr);
-        if (*endptr == '\0' && num >= INT_MIN && num <= INT_MAX) {
-          numerico = 0;
-        } else {
+      if (i == quantidade-1) {
+        // remove \n
+        tok[strlen(tok)-1] = '\0';
+      }
+      if( strcmp(atributos[i].tipo, "numeric") == 0){
+        strtod(tok, &endptr);
+        if (*endptr == '\0') {
           numerico = 1;
+        } else {
+          valido = 0;
         }
-
-        if (endptr == aux){ //verifica se a conversao deu certo
-          //printf("Erro\n");
-          exit(1);
-        }
-      } else if (strstr(atributos->tipo[i], "{") != NULL){
+      } else if (strstr(atributos[i].tipo, "{") != NULL){
+        categorico = 0;
         for(int j = 0; atributos[i].categorias[j] != NULL; j++){
-          if (strcmp(aux, atributos[i].categorias[j]) == 0){
-            categorico = 0;
-            break;
-          } else if (atributos[i].categorias[j+1] == NULL){
-            categorico = 0;
-            exit(1);
-          } else if (strcmp(aux, atributos[i].categorias[j]) != 0){
+          if (strcmp(tok, atributos[i].categorias[j]) == 0){
             categorico = 1;
-            continue;
-          } 
+            break;
+          }
         }
-      } else if (strcmp(atributos[i].tipo, "string") != NULL){
+        if (!categorico) { valido = 0; }
+      } else if (strcmp(atributos[i].tipo, "string") == 0){
         string = 1;
       }
+      tok = strtok(NULL, ",");
     }
     contador++;
   }
+  fprintf(stderr, "valido: %d\n", valido);
 }
-

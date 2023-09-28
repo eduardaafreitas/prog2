@@ -1,0 +1,2 @@
+UDP-Flood: 2
+Smurf: 2
