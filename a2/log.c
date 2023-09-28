@@ -44,24 +44,20 @@ void filtro_ataque(FILE *arff, atributo *atributos, int quantidade){ //funcao fe
     }
     char linha[2049];
 
-
     int tamanho_categorias = strlen(atributos[quantidade-1].categorias);
-
-    printf("tamanho categorias: %d\n", tamanho_categorias);
 
     int vetor_contador[tamanho_categorias];
 
-    for (int i = 0; i < tamanho_categorias ; i++){
+    for (int i = 0; i < tamanho_categorias - 1 ; i++){
         vetor_contador[i] = 0;
+        printf("v[%d] = %d\n", i, vetor_contador[i]);
     }
-    printf("inicializou vetor contador\n");
     //flags:
     char *token;
     //caso o arquivo nao esteja com o ptr de leitura no @data essa funcao fara isso
     reposiciona_ponteiro(arff, linha);
 
     int ataque = encontra_rotulo(arff, atributos, quantidade, "PKT_CLASS");
-    printf("ataque: %d\n", ataque);
     while(!feof(arff)){
         if (!fgets(linha, sizeof(linha), arff)) {
         break;
@@ -79,41 +75,30 @@ void filtro_ataque(FILE *arff, atributo *atributos, int quantidade){ //funcao fe
             printf("Erro na linha (token eh NULL)\n");
             exit(1);
         }
-
-        for (int i = 0; i < ataque ; i++){
-            if (i == ataque-1) {    // remove \n
-                token[strlen(token)-1] = '\0';
-            }
-            printf("token antes for j: %s\n", token);
-            printf("antes do for\n");
-            //if (strstr(atributos[i].tipo, "{") != NULL){
-                for(int j = 0; j < tamanho_categorias ; j++){
-                    printf("entrando no for\n");
-                    printf("token: %s\n", token);
-                    printf("categoria: %s\n", atributos[27].categorias[0]);
-                    if (strcmp( token, atributos[ataque].categorias[j]) == 0){
-                        if(strcmp(token, "Normal") != 0){
-                            vetor_contador[i]++;
+        for(int i = 0;i <= ataque;i++){
+            if (atributos[ataque].categorias != NULL) {
+                for (int j = 0; atributos[ataque].categorias[j] != NULL; j++) {
+                    if(strstr(token, atributos[ataque].categorias[j]) != NULL){
+                        if(strstr(token, "Normal") == 0){
+                            vetor_contador[j]++;
                         }
                     }
                 }
-            //}                
+            }
             token = strtok(NULL, ",");
-            printf("setou token\n");
         }
-
+        
     }
-
-    for (int i = 0; i < tamanho_categorias ; i++){
+    for (int i = 0; i < tamanho_categorias - 1 ; i++){
         if (vetor_contador[i] != 0){
-            //cria_relatorio_ataque(atributos[ataque].categorias[i], vetor_contador[i]);
-            printf("tipo ataque: %s\n", atributos[ataque].categorias[i]);
+            cria_relatorio_ataque(atributos[ataque].categorias[i], vetor_contador[i]);
         }
     }
 }
 
 
-void cria_relatorio_tamanho(char *nome_ataque, char* tamanho){
+
+/*void cria_relatorio_tamanho(char nome_ataque, char tamanho){
     FILE *TAMANHO = fopen("R_TAMANHO.txt", "a");
     if(!TAMANHO){
         perror ("Erro ao abrir arquivo - cria_relatorio");
@@ -121,7 +106,7 @@ void cria_relatorio_tamanho(char *nome_ataque, char* tamanho){
     }
     fprintf(TAMANHO, "%s: %s\n", nome_ataque, tamanho);
     fclose(TAMANHO);
-}
+}*/
 
 
 /*void filtro_tamanho(FILE *arff, atributo *atributos, int quantidade){ //inicio da funcao que calcula tamanho
