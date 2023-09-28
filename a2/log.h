@@ -10,9 +10,10 @@
 
 extern int ataque;
 void reposiciona_ponteiro(FILE *arff, char *linha);
+int encontra_rotulo(FILE *arff, atributo *atributos, int quantidade, char *rotulo_procurado);
 void cria_relatorio_ataque(char *nome_ataque, int numero_ocorrencias);
 void filtro_ataque(FILE *arff, atributo *atributos, int quantidade);
-void cria_relatorio_tamanho(char *nome_ataque, int tamanho);
-void filtro_tamanho(FILE *arff, atributo *atributos, int quantidade);
+void cria_relatorio_tamanho(char *nome_ataque, char *tamanho);
+//void filtro_tamanho(FILE *arff, atributo *atributos, int quantidade);
 
 #endif

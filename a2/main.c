@@ -84,8 +84,8 @@ int main(int argc, char **argv){
     printf("funcao inativa. \n");
   }
   if (tamanho){
-    printf("funcao com comportamento inesperado. \n");
-    filtro_tamanho(arquivo, dados_atributos, qntd_atributos);
+    //printf("funcao com comportamento inesperado. \n");
+    //filtro_tamanho(arquivo, dados_atributos, qntd_atributos);
   }
   if (firewall){ //nao implementada
     //Chamar a função de geração de arquivo de firewall.
