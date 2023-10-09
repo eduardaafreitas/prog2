@@ -85,7 +85,7 @@ int main(int argc, char **argv){
   }
   if (tamanho){
     //printf("funcao com comportamento inesperado. \n");
-    //filtro_tamanho(arquivo, dados_atributos, qntd_atributos);
+    filtro_tamanho(arquivo, dados_atributos, qntd_atributos);
   }
   if (firewall){ //nao implementada
     //Chamar a função de geração de arquivo de firewall.

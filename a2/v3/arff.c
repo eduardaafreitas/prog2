@@ -202,7 +202,7 @@ void valida_arff(FILE *arff, atributo *atributos, int quantidade){
     if (!fgets(linha, sizeof(linha), arff)) {
       break;
     }
-    if(strcmp(linha, "\n") == 0){
+    if(strcmp(linha, "\n") == 0){ //verificar se a linha esta vazia
       continue;
     }
     if(strcmp(linha, "@data") == 0){
