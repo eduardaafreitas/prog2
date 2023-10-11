@@ -54,43 +54,18 @@ void update_shots(space *board, shot_sentinel *list){
 //  Caso contrário, ele deve "andar" uma casa (sqm) à frente
 
 	shot *aux = (shot*) list->first;
-	shot *aux2 = NULL;
+	shot *prev = NULL;
 
 	while(aux != NULL){
 		if(aux->position_y == board->max_y){
-			aux = remove_shot(aux, aux2, list);
-		}
-		//board->map[i+1][j].entity == NULL
-		/*else if(board->map[aux->position_x + 1][aux->position_y].entity != NULL){
-			aux = remove_shot(aux, aux2, list);
-		}*/
-		else{
-			//board->map[aux->position_y][aux->position_x].entity = NULL;
+			aux = remove_shot(aux, prev, list);
+			continue;
+		} else {
 			aux->position_y++;
-			//board->map[aux->position_y][aux->position_x].entity = NULL;
 		}
-		aux2 = aux;
+		prev = aux;
 		aux = aux->next;
 	}
-
-	/*shot *p = (shot*) list->first;
-	shot *q = NULL;
-	printf("entrou update\n");
-	while (p != NULL) {
-		if (p->position_y == 0) {
-			p = remove_shot(p, q, list);
-		} else if (board->map[p->position_y - 1][p->position_x].entity != NULL) {
-			p = remove_shot(p, q, list);
-		} else {
-			board->map[p->position_y][p->position_x].entity = NULL;
-			p->position_y--;
-			board->map[p->position_y][p->position_x].entity = p;
-			q = p;
-			p = p->next;
-		}
-		printf("aaa\n");
-	}*/
-
 }
 
 shot *straight_shoot(space *board, shot_sentinel *list, enemy *shooter)
@@ -99,7 +74,8 @@ shot *straight_shoot(space *board, shot_sentinel *list, enemy *shooter)
 	if (new_shot == NULL) return NULL;
 
 	new_shot->position_x = shooter->position_x;
-	new_shot->position_y = shooter->position_y;
+	new_shot->position_y = shooter->position_y+1;
+	new_shot->next = NULL;
 
 	if (list->first == NULL) {
 		list->first = new_shot;
@@ -116,6 +92,7 @@ shot *straight_shoot(space *board, shot_sentinel *list, enemy *shooter)
 int add_enemy(space *board, int position_y, int position_x){
 //IMPLEMENTAR!
 //Adiciona um inimigo no tabuleiro. Essa tarefa inclui a alocação do mesmo
+	if (position_x < 1 || position_x > board->max_x) return 1;
 	enemy *new_enemy = (enemy*) malloc (sizeof(enemy));
 
 	new_enemy->position_x = position_x;

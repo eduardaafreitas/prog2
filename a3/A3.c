@@ -30,37 +30,26 @@ void update_report(FILE *report, space *board, shot_sentinel *list, int r){
 	fprintf(report, "\n====================================\n\n");
 }
 
-int pode_inserir(shot_sentinel *list, int i, int j){
-	shot *aux = (shot*) list->first;
-
-	while(aux != NULL){
-		if((aux->position_x != i) && (aux->position_y != j)){
-			return 0;
-		}
-		aux = aux->next;
-	}
-	return 1;
-}
-
 void execute_event(space *board, shot_sentinel *list){
 //IMPLEMENTAR!
 //A cada evento:
 //  Os tiros que não acertaram o alvo, ou não sairam do tabuleiro devem ser atualizados (movidos para frente no tabuleiro)
 //  Os inimigos que não tem outros inimigos em sua frente devem atirar
-	int insere = 0;
+	update_shots(board, list);
 	for (int i = 1; i <= board->max_y; i++) {
 		for (int j = 1; j <= board->max_x; j++) {
-			if(board->map[i][j].entity != NULL) {
-				if((board->map[i+1][j].entity == NULL)) {
-					insere = pode_inserir(list, i, j);
-					//printf("insere: %d\n", insere);
-					if(insere)
-						straight_shoot(board, list, (enemy*) board->map[i][j].entity);
+			if(board->map[i][j].entity != NULL && board->map[i+1][j].entity == NULL) {
+				int insere = 1;
+				shot *aux = (shot*) list->first;
+				while(aux != NULL){
+					if (aux->position_x == j) { insere = 0; break; }
+					aux = aux->next;
 				}
+				if(insere)
+					straight_shoot(board, list, (enemy*) board->map[i][j].entity);
 			}
 		}
 	}
-	update_shots(board, list);
 }
 
 
@@ -110,6 +99,16 @@ int main(int argc, char** argv){
 	FILE *report = fopen(o, "w+");
 	space *board = create_board(y, x, e);
 	shot_sentinel* shot_list = create_shotlist();
+
+	if (board == NULL || shot_list == NULL) {
+		fprintf(stderr, "ERRO: não foi possível alocar memória para o tabuleiro ou para a lista de tiros!\n");
+		return 1;
+	}
+
+	if (report == NULL) {
+		fprintf(stderr, "ERRO: não foi possível criar o arquivo de relatório!\n");
+		return 1;
+	}
 
 	for (int t = 0; t < r; t++){
 		execute_event(board, shot_list);
