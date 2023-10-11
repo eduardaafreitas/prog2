@@ -35,7 +35,28 @@ void execute_event(space *board, shot_sentinel *list){
 //A cada evento:
 //  Os tiros que não acertaram o alvo, ou não sairam do tabuleiro devem ser atualizados (movidos para frente no tabuleiro)
 //  Os inimigos que não tem outros inimigos em sua frente devem atirar
+	update_shots(board, list);
+
+	/*for (int i = 1; i <= board->max_y; i++) {
+		for (int j = 1; j <= board->max_x; j++) {
+			//if (board->map[i][j].entity != NULL) {
+				if (board->map[i][j].type == ENEMY) {
+				
+					//if (board->map[i + 1][j].type != ENEMY) {
+						printf("enemy %d %d\n", i, j);
+						update_shots(board, list);
+						straight_shoot(board, list, (enemy*) board->map[i][j].entity);
+						update_shots(board, list);
+					//}
+				}
+			//}
+		}
+	}*/
+	//printf("%d\n", board->map[4][3].type);
+	//straight_shoot(board, list, (enemy*) board->map[7][1].entity);
+
 }
+
 
 int main(int argc, char** argv){
 	int opt;

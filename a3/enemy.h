@@ -24,7 +24,7 @@ typedef struct enemy{
 shot_sentinel* create_shotlist(void);
 void clean_shots(shot_sentinel *list);
 shot* remove_shot(shot* current, shot* previous, shot_sentinel *list);
-shot_sentinel* straight_shoot(space *board, shot_sentinel *list, enemy *shooter);
+shot* straight_shoot(space *board, shot_sentinel *list, enemy *shooter);
 void update_shots(space *board, shot_sentinel *list);
 
 int add_enemy(space *board, int position_y, int position_x);
