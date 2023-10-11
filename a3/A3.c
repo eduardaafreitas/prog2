@@ -30,18 +30,32 @@ void update_report(FILE *report, space *board, shot_sentinel *list, int r){
 	fprintf(report, "\n====================================\n\n");
 }
 
+int pode_inserir(shot_sentinel *list, int i, int j){
+	shot *aux = (shot*) list->first;
+
+	while(aux != NULL){
+		if((aux->position_x != i) && (aux->position_y != j)){
+			return 0;
+		}
+		aux = aux->next;
+	}
+	return 1;
+}
+
 void execute_event(space *board, shot_sentinel *list){
 //IMPLEMENTAR!
 //A cada evento:
 //  Os tiros que não acertaram o alvo, ou não sairam do tabuleiro devem ser atualizados (movidos para frente no tabuleiro)
 //  Os inimigos que não tem outros inimigos em sua frente devem atirar
-
-
+	int insere = 0;
 	for (int i = 1; i <= board->max_y; i++) {
 		for (int j = 1; j <= board->max_x; j++) {
 			if(board->map[i][j].entity != NULL) {
-				if(board->map[i+1][j].entity == NULL) {
-					straight_shoot(board, list, (enemy*) board->map[i][j].entity);
+				if((board->map[i+1][j].entity == NULL)) {
+					insere = pode_inserir(list, i, j);
+					//printf("insere: %d\n", insere);
+					if(insere)
+						straight_shoot(board, list, (enemy*) board->map[i][j].entity);
 				}
 			}
 		}

@@ -109,21 +109,6 @@ shot *straight_shoot(space *board, shot_sentinel *list, enemy *shooter)
 		list->last = new_shot;
 	}
 
-	shot *aux = (shot*) list->first;
-	int insere = 0;
-
-	while(aux != NULL){
-		printf("tiro anterior x:%d y:%d\n", aux->position_x, aux->position_y);
-		printf("tiro novo x:%d y:%d\n", new_shot->position_x, new_shot->position_y);
-		if((aux->position_x != new_shot->position_x) && (aux->position_y != new_shot->position_y)){
-			aux = aux->next;
-		}
-		else{
-			return NULL;
-		}
-		aux = aux->next;
-	}
-
 	return new_shot;
 }
 
