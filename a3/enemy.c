@@ -1,5 +1,5 @@
 #include <stdlib.h>
-
+#include <stdio.h>
 #include "enemy.h"
 
 shot_sentinel* create_shotlist(void){
@@ -53,9 +53,29 @@ void update_shots(space *board, shot_sentinel *list){
 //  Se o tiro acertar um alvo, ou sair do tabuleiro, ele deve ser removido da lista
 //  Caso contrário, ele deve "andar" uma casa (sqm) à frente
 
-	shot *p = (shot*) list->first;
-	shot *q = NULL;
+	shot *aux = (shot*) list->first;
+	shot *aux2 = NULL;
 
+	while(aux != NULL){
+		if(aux->position_y == board->max_y){
+			aux = remove_shot(aux, aux2, list);
+		}
+		//board->map[i+1][j].entity == NULL
+		/*else if(board->map[aux->position_x + 1][aux->position_y].entity != NULL){
+			aux = remove_shot(aux, aux2, list);
+		}*/
+		else{
+			//board->map[aux->position_y][aux->position_x].entity = NULL;
+			aux->position_y++;
+			//board->map[aux->position_y][aux->position_x].entity = NULL;
+		}
+		aux2 = aux;
+		aux = aux->next;
+	}
+
+	/*shot *p = (shot*) list->first;
+	shot *q = NULL;
+	printf("entrou update\n");
 	while (p != NULL) {
 		if (p->position_y == 0) {
 			p = remove_shot(p, q, list);
@@ -68,7 +88,8 @@ void update_shots(space *board, shot_sentinel *list){
 			q = p;
 			p = p->next;
 		}
-	}
+		printf("aaa\n");
+	}*/
 
 }
 
@@ -87,6 +108,22 @@ shot *straight_shoot(space *board, shot_sentinel *list, enemy *shooter)
 		list->last->next = new_shot;
 		list->last = new_shot;
 	}
+
+	shot *aux = (shot*) list->first;
+	int insere = 0;
+
+	while(aux != NULL){
+		printf("tiro anterior x:%d y:%d\n", aux->position_x, aux->position_y);
+		printf("tiro novo x:%d y:%d\n", new_shot->position_x, new_shot->position_y);
+		if((aux->position_x != new_shot->position_x) && (aux->position_y != new_shot->position_y)){
+			aux = aux->next;
+		}
+		else{
+			return NULL;
+		}
+		aux = aux->next;
+	}
+
 	return new_shot;
 }
 
