@@ -20,25 +20,32 @@ int main( int argc, char *argv[]){
         exit(4);
     }
     
-    int qtd_colunas = conta_colunas(arquivo);
+    unsigned long column = count_columns(arquivo);
     fseek(arquivo, 0, SEEK_SET);
-    int qtd_linhas = conta_linhas(arquivo);
+
+    unsigned long row = count_rows(arquivo);
     fseek(arquivo, 0, SEEK_SET);
-    //char*** dados = processa_arquivo(arquivo, qtd_linhas, qtd_colunas);
-    arq_csv *keeper_csv = processa_arquivo(arquivo, qtd_linhas, qtd_colunas);
+
+    csv *keeper = alloc_csv();
+    base *database = alloc_database();
+
+    printf("passou allocs\n");
+
+    armazenar(arquivo, keeper, database, row, column);
+//--------------------------------------------------------
     printf("==== LEITOR DE ARQUIVOS CSV ====\n");
     options();
 
-    //selecionando opcao desejada
 
-    scanf("%d", &opt);
+    scanf("%d", &opt); //selecionando opcao desejada
 
     while (opt != 3) {
         if (opt == 1){
-            sumario(keeper_csv, qtd_linhas, qtd_colunas);
+            sumario(keeper, row, column);
         }
         else if (opt == 2){
-            mostrar(keeper_csv, qtd_linhas, qtd_colunas);
+            printf("em desenvolvimento!\n");
+            //mostrar(keeper, rows, columns);
         }
         else{
             fprintf(stderr, "Digite uma opcao valida!\n");
@@ -50,7 +57,7 @@ int main( int argc, char *argv[]){
         scanf("%d", &opt);
     }
 
-    //libera(keeper_csv, qtd_linhas, qtd_colunas);
+    free_csv(keeper);
     printf("Fim do programa!\n");
     return 0 ;
 }

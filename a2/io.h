@@ -6,9 +6,9 @@
 #include <string.h>
 #include <unistd.h>
 
-typedef struct arq_csv arq_csv;
+typedef struct csv csv;
 
-struct arq_csv {
+struct csv {
     FILE *arquivo;
     unsigned long row;
     unsigned long column;
@@ -17,21 +17,36 @@ struct arq_csv {
     short *sizes;
 };
 
+typedef struct base base;
+
+struct base {
+    unsigned long row;
+    unsigned long column;
+    char **data;
+};
+
+
 void options();
 
-int conta_colunas(FILE *arquivo);
+unsigned long count_columns(FILE *arquivo);
 
-int conta_linhas(FILE *arquivo);
+unsigned long count_rows(FILE *arquivo);
 
-arq_csv* processa_arquivo(FILE *arquivo, int qtd_linhas, int qtd_colunas);
+csv* alloc_csv();
 
-int interpreta_dados(char * tok);
+base *alloc_database();
 
-void sumario(arq_csv *keeper_csv, int qtd_linhas, int qtd_colunas);
+void armazenar(FILE *arquivo, csv *keeper, base *database, unsigned long row, unsigned long column);
 
-void mostrar(arq_csv *keeper_csv, int qtd_linhas, int qtd_colunas);
 
-void libera(arq_csv *keeper_csv, int qtd_linhas, int qtd_colunas);
+
+//int interpreta_dados(char * tok);
+
+void sumario(csv *keeper_csv, int qtd_linhas, int qtd_colunas);
+
+//void mostrar(csv *keeper_csv, int qtd_linhas, int qtd_colunas);
+
+void free_csv(csv *keeper_csv);
 
 
 #endif

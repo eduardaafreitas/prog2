@@ -14,16 +14,16 @@ void options(){
     printf("Digite a opcao desejada: ");
 }
 
-int conta_colunas(FILE *arquivo){
+unsigned long count_columns(FILE *arquivo){
     char buffer_temp[1025];
     char *linha;
-    int i = 0;
+    unsigned long i = 0;
     char *tok;
 
     linha = fgets(buffer_temp, 1024, arquivo);
     
     if (linha != buffer_temp){
-        fprintf(stderr, "Arquivo com erro. (f contcolumn)\n");
+        fprintf(stderr, "Arquivo com erro. err: countcolumn\n");
         exit(4);
     }
     
@@ -38,10 +38,10 @@ int conta_colunas(FILE *arquivo){
     return i;
 }
 
-int conta_linhas(FILE *arquivo){
+unsigned long count_rows(FILE *arquivo){
     char buffer_temp[1025];
     char *linha;
-    int contador = 0;
+    unsigned long contador = 0;
 
     while(1){
         
@@ -52,7 +52,7 @@ int conta_linhas(FILE *arquivo){
         }
 
         if (linha != buffer_temp){
-            fprintf(stderr, "Arquivo com erro. (f contline) \n");
+            fprintf(stderr, "Arquivo com erro. err: countline \n");
             exit(4);
         }
 
@@ -61,102 +61,132 @@ int conta_linhas(FILE *arquivo){
     return contador;
 }
 
-arq_csv *processa_arquivo(FILE *arquivo, int qtd_linhas, int qtd_colunas){
-    //char buffer_temp[1025];
+csv *alloc_csv(){
 
-    arq_csv *keep_csv = (arq_csv*) malloc(sizeof(arq_csv));
-    
-    //int i = 0;
+    csv *keeper = (csv*) malloc(sizeof(csv));
 
-    //char ***dados = (char***) malloc(qtd_linhas * sizeof(char**)); //linha
-
-    /*for (i = 0; i < qtd_linhas; i++){
-        //dados[i] = (char**) malloc(qtd_colunas * sizeof(char*)); //coluna
-    }*/
-    printf("entrou\n");
-    if (!keep_csv){
-        fprintf(stderr, "Erro ao alocar memoria. \n");
+    if (!keeper){
+        fprintf(stderr, "Erro ao alocar memoria. err: alloc_csv\n");
         exit(5);
     }
 
-    /*for (i = 0; i < qtd_linhas; i++){   
+    //inicializa campos da struct
+    keeper->arquivo = NULL;
+    keeper->row = 0;
+    keeper->column = 0;
+    keeper->type = NULL;
+    keeper->pos = 0;
+    keeper->sizes = NULL;
+
+    return keeper;
+}
+
+base *alloc_database(){
+
+    base *database = (base*) malloc(sizeof(base));
+
+    if (!database){
+        fprintf(stderr, "Erro ao alocar memoria. err: alloc_database\n");
+        exit(5);
+    }
+
+    database->column = 0;
+    database->row = 0;
+    database->data = NULL;
+
+    return database;
+
+}
+
+void armazenar(FILE *arquivo, csv *keeper, base *database, unsigned long row, unsigned long column){
+
+    char buffer_temp[1025];
+
+    //atribui numero de linhas e colunas às structs
+    keeper->row = row;
+    keeper->column = column;
+
+    database->row = row;
+    database->column = column;
+
+
+    unsigned long i, j;
+
+    for (i = 1; i < keeper->row; i++){
         char* linha = fgets(buffer_temp, 1024, arquivo);
 
         if (linha == NULL){
             printf("Fim do arquivo. \n");
             break;
         }
+
         char *tok = strtok(buffer_temp, ",\n");
 
-        for (int j = 0; j < qtd_colunas; j++) {
-            //dados[i][j] = malloc(sizeof(char) * strlen(tok) + 1); //celula
-            //strcpy(dados[i][j], tok);
-            //tok = strtok(NULL, ",\n");
+        for (j = 0; j < keeper->column; j++) {
+            database->data[i][j] = malloc(sizeof(char) * strlen(tok) + 1); //celula
+            strcpy(database->data[i][j], tok);
+            tok = strtok(NULL, ",\n");
         }
-    }*/
+    }
+    
+    printf("numero linhas e colunas: %lu   %lu\n", database->row, database->column);
 
-    return keep_csv;
 }
 
-int interpreta_dados(char * tok){
+/*int interpreta_dados(char * tok){
     if ((tok[0] >= '0' && tok[0] <= '9') || (tok[0] == '-') || (tok[0] == '+')){
         return 1;
     }
     else{
         return 2;
     }
-}
+}*/
 
 
-void sumario(arq_csv *keeper_csv, int qtd_linhas, int qtd_colunas){
+void sumario(csv *keeper, int rows, int columns){
 
-    printf("%d variaveis encontradas\n", qtd_colunas);
-    for (int i = 0; i < qtd_colunas; i++){
-        /*if (interpreta_dados(keeper_csv.type) == 1){
+    //printf("%d variaveis encontradas\n", columns);
+    for (int i = 0; i < columns; i++){
+        /*if (interpreta_dados(keeper.type) == 1){
             printf("%s  [N] \n", dados[0][i]);
         }
         else{
             printf("%s  [S] \n", dados[0][i]);
         }*/
-        printf("sumariooooo\n");
+        //printf("sumario!!!!\n");
     }
+    printf("sumario!!!!\n");
 
 }
 
-void mostrar(arq_csv *keeper_csv, int qtd_linhas, int qtd_colunas){
+/*void mostrar(csv *keeper, int rows, int columns){
     for (int i = 0; i < 5; i++){
         if (i != 0)
             printf("%20d ", i-1);
         else
             printf("%20s ", "");
-        for (int j = 0; j < qtd_colunas; j++){
+        for (int j = 0; j < columns; j++){
             //printf("%20s ", dados[i][j]);  
         }
         printf("\n");
     }
 
-    for (int i = 0; i < (qtd_colunas+1); i++){
+    for (int i = 0; i < (columns+1); i++){
         printf("%20s ", "...");
     }
 
     printf("\n");
 
-    for (int i = (qtd_linhas - 5); i < qtd_linhas; i++){
+    for (int i = (rows - 5); i < rows; i++){
         printf("%20d ", i-1);
-        for (int j = 0; j < qtd_colunas; j++){
+        for (int j = 0; j < columns; j++){
             //printf("%20s ", dados[i][j]);
         }
         printf("\n");
     }
-    printf(" %d rows x %d columns \n\n", qtd_linhas, qtd_colunas);
-}
-
-/*void libera(arq_csv *keeper_csv, int qtd_linhas, int qtd_colunas){
-    for (int i = 0; i < qtd_linhas; i++){
-        for (int j = 0; j < qtd_colunas; j++){
-            free(dados[i][j]);
-        }
-        free(dados[i]);
-    }
-    free(dados);
+    printf(" %d rows x %d columns \n\n", rows, columns);
 }*/
+
+void free_csv(csv *keeper){
+    free(keeper);
+}
