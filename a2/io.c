@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include "io.h"
 
+
 void options(){
 
     printf("1) Sumario do Arquivo\n");
@@ -60,23 +61,25 @@ int conta_linhas(FILE *arquivo){
     return contador;
 }
 
-char*** processa_arquivo(FILE *arquivo, int qtd_linhas, int qtd_colunas){
-    char buffer_temp[1025];
+arq_csv *processa_arquivo(FILE *arquivo, int qtd_linhas, int qtd_colunas){
+    //char buffer_temp[1025];
 
-    int i = 0;
-
-    char ***dados = (char***) malloc(qtd_linhas * sizeof(char**)); //linha
-
-    for (i = 0; i < qtd_linhas; i++){
-        dados[i] = (char**) malloc(qtd_colunas * sizeof(char*)); //coluna
-    }
+    arq_csv *keep_csv = (arq_csv*) malloc(sizeof(arq_csv));
     
-    if (dados == NULL){
+    //int i = 0;
+
+    //char ***dados = (char***) malloc(qtd_linhas * sizeof(char**)); //linha
+
+    /*for (i = 0; i < qtd_linhas; i++){
+        //dados[i] = (char**) malloc(qtd_colunas * sizeof(char*)); //coluna
+    }*/
+    printf("entrou\n");
+    if (!keep_csv){
         fprintf(stderr, "Erro ao alocar memoria. \n");
         exit(5);
     }
 
-    for (i = 0; i < qtd_linhas; i++){   
+    /*for (i = 0; i < qtd_linhas; i++){   
         char* linha = fgets(buffer_temp, 1024, arquivo);
 
         if (linha == NULL){
@@ -86,13 +89,13 @@ char*** processa_arquivo(FILE *arquivo, int qtd_linhas, int qtd_colunas){
         char *tok = strtok(buffer_temp, ",\n");
 
         for (int j = 0; j < qtd_colunas; j++) {
-            dados[i][j] = malloc(sizeof(char) * strlen(tok) + 1); //celula
-            strcpy(dados[i][j], tok);
-            tok = strtok(NULL, ",\n");
+            //dados[i][j] = malloc(sizeof(char) * strlen(tok) + 1); //celula
+            //strcpy(dados[i][j], tok);
+            //tok = strtok(NULL, ",\n");
         }
-    }
+    }*/
 
-    return dados;
+    return keep_csv;
 }
 
 int interpreta_dados(char * tok){
@@ -105,28 +108,29 @@ int interpreta_dados(char * tok){
 }
 
 
-void sumario(char ***dados, int qtd_linhas, int qtd_colunas){
+void sumario(arq_csv *keeper_csv, int qtd_linhas, int qtd_colunas){
 
     printf("%d variaveis encontradas\n", qtd_colunas);
     for (int i = 0; i < qtd_colunas; i++){
-        if (interpreta_dados(dados[1][i]) == 1){
+        /*if (interpreta_dados(keeper_csv.type) == 1){
             printf("%s  [N] \n", dados[0][i]);
         }
         else{
             printf("%s  [S] \n", dados[0][i]);
-        }
+        }*/
+        printf("sumariooooo\n");
     }
 
 }
 
-void mostrar(char ***dados, int qtd_linhas, int qtd_colunas){
+void mostrar(arq_csv *keeper_csv, int qtd_linhas, int qtd_colunas){
     for (int i = 0; i < 5; i++){
         if (i != 0)
             printf("%20d ", i-1);
         else
             printf("%20s ", "");
         for (int j = 0; j < qtd_colunas; j++){
-            printf("%20s ", dados[i][j]);  
+            //printf("%20s ", dados[i][j]);  
         }
         printf("\n");
     }
@@ -140,14 +144,14 @@ void mostrar(char ***dados, int qtd_linhas, int qtd_colunas){
     for (int i = (qtd_linhas - 5); i < qtd_linhas; i++){
         printf("%20d ", i-1);
         for (int j = 0; j < qtd_colunas; j++){
-            printf("%20s ", dados[i][j]);
+            //printf("%20s ", dados[i][j]);
         }
         printf("\n");
     }
     printf(" %d rows x %d columns \n\n", qtd_linhas, qtd_colunas);
 }
 
-void libera(char ***dados, int qtd_linhas, int qtd_colunas){
+/*void libera(arq_csv *keeper_csv, int qtd_linhas, int qtd_colunas){
     for (int i = 0; i < qtd_linhas; i++){
         for (int j = 0; j < qtd_colunas; j++){
             free(dados[i][j]);
@@ -155,4 +159,4 @@ void libera(char ***dados, int qtd_linhas, int qtd_colunas){
         free(dados[i]);
     }
     free(dados);
-}
+}*/

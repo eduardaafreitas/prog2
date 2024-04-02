@@ -24,8 +24,8 @@ int main( int argc, char *argv[]){
     fseek(arquivo, 0, SEEK_SET);
     int qtd_linhas = conta_linhas(arquivo);
     fseek(arquivo, 0, SEEK_SET);
-    char*** dados = processa_arquivo(arquivo, qtd_linhas, qtd_colunas);
-    
+    //char*** dados = processa_arquivo(arquivo, qtd_linhas, qtd_colunas);
+    arq_csv *keeper_csv = processa_arquivo(arquivo, qtd_linhas, qtd_colunas);
     printf("==== LEITOR DE ARQUIVOS CSV ====\n");
     options();
 
@@ -35,10 +35,10 @@ int main( int argc, char *argv[]){
 
     while (opt != 3) {
         if (opt == 1){
-            sumario(dados, qtd_linhas, qtd_colunas);
+            sumario(keeper_csv, qtd_linhas, qtd_colunas);
         }
         else if (opt == 2){
-            mostrar(dados, qtd_linhas, qtd_colunas);
+            mostrar(keeper_csv, qtd_linhas, qtd_colunas);
         }
         else{
             fprintf(stderr, "Digite uma opcao valida!\n");
@@ -50,7 +50,7 @@ int main( int argc, char *argv[]){
         scanf("%d", &opt);
     }
 
-    libera(dados, qtd_linhas, qtd_colunas);
+    //libera(keeper_csv, qtd_linhas, qtd_colunas);
     printf("Fim do programa!\n");
     return 0 ;
 }
