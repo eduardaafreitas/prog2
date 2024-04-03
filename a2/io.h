@@ -25,8 +25,10 @@ struct base {
     char ***data;
 };
 
-
 void options();
+
+void handle_input(int argc, char *argv[]);
+void open_check(FILE *arquivo);
 
 unsigned long count_columns(FILE *arquivo);
 
@@ -36,7 +38,7 @@ csv* alloc_csv();
 
 base *alloc_database();
 
-void armazenar(FILE *arquivo, csv *keeper, base *database, unsigned long row, unsigned long column);
+void layin_csv(FILE *arquivo, csv *keeper, base *database, unsigned long row, unsigned long column);
 
 //int interpreta_dados(char * tok);
 
@@ -45,6 +47,7 @@ void sumario(csv *keeper_csv, int qtd_linhas, int qtd_colunas);
 //void mostrar(csv *keeper_csv, int qtd_linhas, int qtd_colunas);
 
 void free_csv(csv *keeper_csv);
+void free_database(base *database);
 
 
 #endif

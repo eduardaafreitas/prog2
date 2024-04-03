@@ -7,23 +7,37 @@
 
 void options(){
 
-    printf("1) Sumario do Arquivo\n");
+    printf("1) Sumario do arquivo\n");
     printf("2) Mostrar\n");
     printf("3) Fim\n\n");
 
     printf("Digite a opcao desejada: ");
 }
 
-unsigned long count_columns(FILE *arquivo){
+void handle_input(int argc, char *argv[]){
+    if (argc < 1){
+        fprintf(stderr, "Forma de uso: ./csvreader <arq_in> \n");
+        exit(3);
+    }
+}
+
+void open_check(FILE *archive){
+    if (!archive){
+        fprintf(stderr, "Erro ao abrir o archive!\n");
+        exit(4);
+    }    
+}
+
+unsigned long count_columns(FILE *archive){
     char buffer_temp[1025];
     char *linha;
     unsigned long i = 0;
     char *tok;
 
-    linha = fgets(buffer_temp, 1024, arquivo);
+    linha = fgets(buffer_temp, 1024, archive);
     
     if (linha != buffer_temp){
-        fprintf(stderr, "Arquivo com erro. err: countcolumn\n");
+        fprintf(stderr, "archive com erro. err: countcolumn\n");
         exit(4);
     }
     
@@ -38,21 +52,21 @@ unsigned long count_columns(FILE *arquivo){
     return i;
 }
 
-unsigned long count_rows(FILE *arquivo){
+unsigned long count_rows(FILE *archive){
     char buffer_temp[1025];
     char *linha;
     unsigned long contador = 0;
 
     while(1){
         
-        linha = fgets(buffer_temp, 1024, arquivo);
+        linha = fgets(buffer_temp, 1024, archive);
 
         if (linha == NULL){
             break;
         }
 
         if (linha != buffer_temp){
-            fprintf(stderr, "Arquivo com erro. err: countline \n");
+            fprintf(stderr, "archive com erro. err: countline \n");
             exit(4);
         }
 
@@ -71,7 +85,7 @@ csv *alloc_csv(){
     }
 
     //inicializa campos da struct
-    keeper->arquivo = NULL;
+    keeper->archive = NULL;
     keeper->row = 0;
     keeper->column = 0;
     keeper->type = NULL;
@@ -98,7 +112,7 @@ base *alloc_database(){
 
 }
 
-void armazenar(FILE *arquivo, csv *keeper, base *database, unsigned long row, unsigned long column){
+void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, unsigned long column){
 
     char buffer_temp[1025];
 
@@ -118,10 +132,10 @@ void armazenar(FILE *arquivo, csv *keeper, base *database, unsigned long row, un
     }
 
     for (i = 1; i < keeper->row; i++){
-        char* linha = fgets(buffer_temp, 1024, arquivo);
+        char* linha = fgets(buffer_temp, 1025, archive);
 
         if (linha == NULL){
-            printf("Fim do arquivo. \n");
+            printf("Fim do archive. \n");
             break;
         }
 
@@ -134,8 +148,6 @@ void armazenar(FILE *arquivo, csv *keeper, base *database, unsigned long row, un
         }
     }
     
-    printf("numero linhas e colunas: %lu   %lu\n", database->row, database->column);
-
 }
 
 /*int interpreta_dados(char * tok){
@@ -194,4 +206,8 @@ void sumario(csv *keeper, int rows, int columns){
 
 void free_csv(csv *keeper){
     free(keeper);
+}
+
+void free_database(base *database){
+    free(database);
 }
