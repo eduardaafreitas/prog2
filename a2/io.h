@@ -22,7 +22,7 @@ typedef struct base base;
 struct base {
     unsigned long row;
     unsigned long column;
-    char **data;
+    char ***data;
 };
 
 
@@ -37,8 +37,6 @@ csv* alloc_csv();
 base *alloc_database();
 
 void armazenar(FILE *arquivo, csv *keeper, base *database, unsigned long row, unsigned long column);
-
-
 
 //int interpreta_dados(char * tok);
 

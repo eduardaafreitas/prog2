@@ -109,8 +109,13 @@ void armazenar(FILE *arquivo, csv *keeper, base *database, unsigned long row, un
     database->row = row;
     database->column = column;
 
-
     unsigned long i, j;
+
+    database->data = (char***) malloc(row * sizeof(char**)); //linha
+
+    for (i = 0; i < row; i++){
+        database->data[i] = (char**) malloc(column * sizeof(char*)); //coluna
+    }
 
     for (i = 1; i < keeper->row; i++){
         char* linha = fgets(buffer_temp, 1024, arquivo);
