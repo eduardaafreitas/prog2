@@ -168,6 +168,7 @@ int type_verify(char * tok){
 }
 
 //a fazer: verificar ,, antes de interpretar dados
+//(add row e fazer um for pra verificar a primeira linha que não possui ,,)
 void sumario(csv *keeper, base *database, int column){
 
     keeper->type = (char*) malloc(column * sizeof(char));
@@ -189,33 +190,34 @@ void sumario(csv *keeper, base *database, int column){
     printf("%d variaveis encontradas\n", column);
 }
 
-/*void mostrar(csv *keeper, int rows, int columns){
+void mostrar(csv *keeper, base *database, int row, int column){
+
     for (int i = 0; i < 5; i++){
         if (i != 0)
             printf("%20d ", i-1);
         else
             printf("%20s ", "");
-        for (int j = 0; j < columns; j++){
-            //printf("%20s ", dados[i][j]);  
+        for (int j = 0; j < column; j++){
+            printf("%20s ", database->data[i][j]);  
         }
         printf("\n");
     }
 
-    for (int i = 0; i < (columns+1); i++){
+    for (int i = 0; i < (column+1); i++){
         printf("%20s ", "...");
     }
 
     printf("\n");
 
-    for (int i = (rows - 5); i < rows; i++){
+    for (int i = (row - 5); i < row; i++){
         printf("%20d ", i-1);
-        for (int j = 0; j < columns; j++){
-            //printf("%20s ", dados[i][j]);
+        for (int j = 0; j < column; j++){
+            printf("%20s ", database->data[i][j]);
         }
         printf("\n");
     }
-    printf(" %d rows x %d columns \n\n", rows, columns);
-}*/
+    printf(" [%d row x %d column] \n\n", row, column);
+}
 
 
 

@@ -32,7 +32,7 @@ int main( int argc, char *argv[]){
 
     //armazena o arquivo csv na struct base
     layin_csv(archive, keeper, database, row, column);
-        
+
 //--------------------------------------------------------
 
     //printf("==== LEITOR DE ARQUIVOS CSV ====\n");
@@ -46,7 +46,7 @@ int main( int argc, char *argv[]){
         }
         else if (opt == 2){
             printf("em desenvolvimento!\n");
-            //mostrar(keeper, rows, columns);
+            mostrar(keeper, database, row, column);
         }
         else{
             fprintf(stderr, "Digite uma opcao valida!\n");

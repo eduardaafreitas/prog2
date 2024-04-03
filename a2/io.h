@@ -41,9 +41,9 @@ void count_stringsize(FILE *archive, csv *keeper, base *database, unsigned long 
 
 int type_verify(char * tok);
 
-void sumario(csv *keeper, base *database, int columns);
+void sumario(csv *keeper, base *database, int column);
 
-//void mostrar(csv *keeper_csv, int qtd_linhas, int qtd_colunas);
+void mostrar(csv *keeper, base *database, int row, int column);
 
 void free_csv(csv *keeper_csv);
 void free_database(base *database);
