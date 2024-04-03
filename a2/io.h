@@ -9,7 +9,7 @@
 typedef struct csv csv;
 
 struct csv {
-    FILE *arquivo;
+    FILE *archive;
     unsigned long row;
     unsigned long column;
     char *type;
@@ -27,22 +27,21 @@ struct base {
 
 void options();
 
-void handle_input(int argc, char *argv[]);
-void open_check(FILE *arquivo);
+unsigned long count_columns(FILE *archive);
 
-unsigned long count_columns(FILE *arquivo);
-
-unsigned long count_rows(FILE *arquivo);
+unsigned long count_rows(FILE *archive);
 
 csv* alloc_csv();
 
 base *alloc_database();
 
-void layin_csv(FILE *arquivo, csv *keeper, base *database, unsigned long row, unsigned long column);
+void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, unsigned long column);
 
-//int interpreta_dados(char * tok);
+void count_stringsize(FILE *archive, csv *keeper, base *database, unsigned long row, unsigned long column);
 
-void sumario(csv *keeper_csv, int qtd_linhas, int qtd_colunas);
+int type_verify(char * tok);
+
+void sumario(csv *keeper, base *database, int columns);
 
 //void mostrar(csv *keeper_csv, int qtd_linhas, int qtd_colunas);
 

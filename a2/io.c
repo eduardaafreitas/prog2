@@ -14,20 +14,6 @@ void options(){
     printf("Digite a opcao desejada: ");
 }
 
-void handle_input(int argc, char *argv[]){
-    if (argc < 1){
-        fprintf(stderr, "Forma de uso: ./csvreader <arq_in> \n");
-        exit(3);
-    }
-}
-
-void open_check(FILE *archive){
-    if (!archive){
-        fprintf(stderr, "Erro ao abrir o archive!\n");
-        exit(4);
-    }    
-}
-
 unsigned long count_columns(FILE *archive){
     char buffer_temp[1025];
     char *linha;
@@ -38,7 +24,7 @@ unsigned long count_columns(FILE *archive){
     
     if (linha != buffer_temp){
         fprintf(stderr, "archive com erro. err: countcolumn\n");
-        exit(4);
+        exit(3);
     }
     
     tok = strtok(buffer_temp, ",");
@@ -101,7 +87,7 @@ base *alloc_database(){
 
     if (!database){
         fprintf(stderr, "Erro ao alocar memoria. err: alloc_database\n");
-        exit(5);
+        exit(6);
     }
 
     database->column = 0;
@@ -131,7 +117,7 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
         database->data[i] = (char**) malloc(column * sizeof(char*)); //coluna
     }
 
-    for (i = 1; i < keeper->row; i++){
+    for (i = 0; i < keeper->row; i++){
         char* linha = fgets(buffer_temp, 1025, archive);
 
         if (linha == NULL){
@@ -150,30 +136,57 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
     
 }
 
-/*int interpreta_dados(char * tok){
+void count_stringsize(FILE *archive, csv *keeper, base *database, unsigned long row, unsigned long column){
+
+    unsigned long i, j;
+
+    keeper->sizes = (short*) malloc(column * sizeof(short));
+    if (!keeper->sizes) {
+        fprintf(stderr, "Erro ao alocar memoria. err: alloc_sizes\n");
+        exit(7);
+    }
+    for (i = 0; i < keeper->column; i++){
+        keeper->sizes[i] = 0;
+    }
+    
+    for (i = 1; i < keeper->row; i++){
+        for (j = 0; j < keeper->column; j++){
+            if (strlen(database->data[i][j]) > keeper->sizes[i]){
+                keeper->sizes[i] = strlen(database->data[i][j]);
+            }
+        }
+    }
+}
+
+int type_verify(char * tok){
     if ((tok[0] >= '0' && tok[0] <= '9') || (tok[0] == '-') || (tok[0] == '+')){
         return 1;
     }
     else{
         return 2;
     }
-}*/
+}
 
+//a fazer: verificar ,, antes de interpretar dados
+void sumario(csv *keeper, base *database, int column){
 
-void sumario(csv *keeper, int rows, int columns){
+    keeper->type = (char*) malloc(column * sizeof(char));
 
-    //printf("%d variaveis encontradas\n", columns);
-    for (int i = 0; i < columns; i++){
-        /*if (interpreta_dados(keeper.type) == 1){
-            printf("%s  [N] \n", dados[0][i]);
+    if(!keeper->type){
+        fprintf(stderr, "Erro ao alocar memoria. err: alloc_type\n");
+        exit(8);
+    }
+    for (int i = 0; i < column; i++){
+        if (type_verify(database->data[1][i]) == 1){
+            keeper->type[i] = 'N';
+            printf("%s  [%c] \n", database->data[0][i], keeper->type[i]);
         }
         else{
-            printf("%s  [S] \n", dados[0][i]);
-        }*/
-        //printf("sumario!!!!\n");
+            keeper->type[i] = 'S';
+            printf("%s  [%c] \n", database->data[0][i], keeper->type[i]);
+        }
     }
-    printf("sumario!!!!\n");
-
+    printf("%d variaveis encontradas\n", column);
 }
 
 /*void mostrar(csv *keeper, int rows, int columns){
@@ -203,6 +216,9 @@ void sumario(csv *keeper, int rows, int columns){
     }
     printf(" %d rows x %d columns \n\n", rows, columns);
 }*/
+
+
+
 
 void free_csv(csv *keeper){
     free(keeper);

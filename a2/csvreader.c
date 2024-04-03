@@ -8,10 +8,16 @@
 int main( int argc, char *argv[]){
     int opt = 0;  
 
-    handle_input(argc, &argv[1]);
+    if (argc < 1){
+        fprintf(stderr, "Forma de uso: ./csvreader <arq_in> \n");
+        exit(1);
+    }
     
     FILE *archive = fopen(argv[1], "r");
-    open_check(archive);
+    if (!archive){
+        fprintf(stderr, "Erro ao abrir o archive!\n");
+        exit(2);
+    }   
     
     unsigned long column, row;
     column = count_columns(archive);
@@ -24,18 +30,19 @@ int main( int argc, char *argv[]){
     csv *keeper = alloc_csv();
     base *database = alloc_database();
 
+    //armazena o arquivo csv na struct base
     layin_csv(archive, keeper, database, row, column);
-
-
+        
 //--------------------------------------------------------
-    printf("==== LEITOR DE ARQUIVOS CSV ====\n");
-    options();
+
+    //printf("==== LEITOR DE ARQUIVOS CSV ====\n");
+    //options();
 
     scanf("%d", &opt); //selecionando opcao desejada
 
     while (opt != 3) {
         if (opt == 1){
-            sumario(keeper, row, column);
+            sumario(keeper, database, column);
         }
         else if (opt == 2){
             printf("em desenvolvimento!\n");
@@ -46,7 +53,7 @@ int main( int argc, char *argv[]){
         }
         printf("Pressione Enter para continuar\n\n");
         getchar();
-        options();
+        //options();
         opt = 0;
         scanf("%d", &opt);
     }
