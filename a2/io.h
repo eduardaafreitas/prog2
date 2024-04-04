@@ -37,7 +37,7 @@ base *alloc_database();
 
 void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, unsigned long column);
 
-void count_stringsize(FILE *archive, csv *keeper, base *database, unsigned long row, unsigned long column);
+void count_stringsize(csv *keeper, base *database, unsigned long row, unsigned long column);
 
 int type_verify(char * tok);
 

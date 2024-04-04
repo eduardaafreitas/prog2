@@ -136,7 +136,7 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
     
 }
 
-void count_stringsize(FILE *archive, csv *keeper, base *database, unsigned long row, unsigned long column){
+void count_stringsize(csv *keeper, base *database, unsigned long row, unsigned long column){
 
     unsigned long i, j;
 
@@ -191,6 +191,8 @@ void sumario(csv *keeper, base *database, int column){
 }
 
 void mostrar(csv *keeper, base *database, int row, int column){
+
+    count_stringsize(keeper, database, row, column);
 
     for (int i = 0; i < 5; i++){
         if (i != 0)
