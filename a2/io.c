@@ -156,6 +156,9 @@ void count_stringsize(csv *keeper, base *database, unsigned long row, unsigned l
             }
         }
     }
+    for (int k = 0; k < keeper->column; k++){
+        printf("column %d", keeper->sizes[k]);
+    }
 }
 
 int type_verify(char * token){
@@ -190,19 +193,15 @@ void sumario(csv *keeper, base *database, unsigned long column){
     printf("%lu variaveis encontradas\n", column);
 }
 
+char* put_spaces(short size, size_t diff, char *origin_string){
 
-char* put_spaces(size_t num_spaces){
+    char *spaces = (char *)malloc((size + 1) * sizeof(char));
+    memset(spaces, ' ', diff);
+    strcat(spaces, origin_string);
 
-    char *spaces = (char *)malloc((num_spaces + 1) * sizeof(char));
-
-    if (spaces != NULL) {
-        memset(spaces, ' ', num_spaces);
-        spaces[num_spaces] = '\0';
-    }
     return spaces;
 
 }
-
 
 void fill_string(csv *keeper, base *database, unsigned long row, unsigned long column){
 
@@ -212,41 +211,16 @@ void fill_string(csv *keeper, base *database, unsigned long row, unsigned long c
         for (int j = 0; j < column; j++){ //percorre colunas
             if( strlen (database->data[i][j]) < keeper->sizes[j]){
                 size_t diff = keeper->sizes[j] - strlen(database->data[i][j]);
-                char *spaces = put_spaces(diff);
-                if (spaces != NULL) {
-                    // Realocar memória para a string atual na coluna
-                    char *temp_ptr = (char *)realloc(database->data[i][j], (strlen(database->data[i][j]) + diff + 1) * sizeof(char));
-                    if (temp_ptr != NULL) {
-                        // Copiar o conteúdo da string realocada para database->data[i][j]
-                        strcat(temp_ptr, spaces); // Adiciona os espaços
-                        strcat(temp_ptr, database->data[i][j]); // Adiciona o conteúdo original
-                        
-                        database->data[i][j] = temp_ptr;
-                        free(spaces);
-
-                    } else {
-                        if (!database->data){
-                            fprintf(stderr, "Erro ao alocar memoria. err: realloc_fillstring\n");
-                            exit(9);
-                        }
-                        free(spaces);
-                    }
-                    
-                } else {
-                    if (!spaces){
-                        fprintf(stderr, "Erro ao alocar memoria. err: alloc_spaces\n");
-                        exit(10);
-                    }
-                }    
+                char *spaces = put_spaces(keeper->sizes[j], diff, database->data[i][j]);
             }
         }
     }
 }
 
-
 void mostrar(csv *keeper, base *database, unsigned long row, unsigned long column){
    
     fill_string(keeper, database, row, column);
+
     for(int i = 0; i < column; i++){
         printf("coluna %d\n", keeper->sizes[i]);
     }
