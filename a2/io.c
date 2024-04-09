@@ -151,15 +151,15 @@ void count_stringsize(csv *keeper, base *database, unsigned long row, unsigned l
     
     for (i = 1; i < keeper->row; i++){
         for (j = 0; j < keeper->column; j++){
-            if (strlen(database->data[i][j]) > keeper->sizes[i]){
-                keeper->sizes[i] = strlen(database->data[i][j]);
+            if (strlen(database->data[i][j]) > keeper->sizes[j]){
+                keeper->sizes[j] = strlen(database->data[i][j]);
             }
         }
     }
 }
 
-int type_verify(char * tok){
-    if ((tok[0] >= '0' && tok[0] <= '9') || (tok[0] == '-') || (tok[0] == '+')){
+int type_verify(char * token){
+    if ((token[0] >= '0' && token[0] <= '9') || (token[0] == '-') || (token[0] == '+')){
         return 1;
     }
     else{
@@ -169,7 +169,7 @@ int type_verify(char * tok){
 
 //a fazer: verificar ,, antes de interpretar dados
 //(add row e fazer um for pra verificar a primeira linha que não possui ,,)
-void sumario(csv *keeper, base *database, int column){
+void sumario(csv *keeper, base *database, unsigned long column){
 
     keeper->type = (char*) malloc(column * sizeof(char));
 
@@ -187,38 +187,94 @@ void sumario(csv *keeper, base *database, int column){
             printf("%s  [%c] \n", database->data[0][i], keeper->type[i]);
         }
     }
-    printf("%d variaveis encontradas\n", column);
+    printf("%lu variaveis encontradas\n", column);
 }
 
-void mostrar(csv *keeper, base *database, int row, int column){
+
+char* put_spaces(size_t num_spaces){
+
+    char *spaces = (char *)malloc((num_spaces + 1) * sizeof(char));
+
+    if (spaces != NULL) {
+        memset(spaces, ' ', num_spaces);
+        spaces[num_spaces] = '\0';
+    }
+    return spaces;
+
+}
+
+
+void fill_string(csv *keeper, base *database, unsigned long row, unsigned long column){
 
     count_stringsize(keeper, database, row, column);
 
+    for (int i = 0; i < row; i++){ //percorre linhas
+        for (int j = 0; j < column; j++){ //percorre colunas
+            if( strlen (database->data[i][j]) < keeper->sizes[j]){
+                size_t diff = keeper->sizes[j] - strlen(database->data[i][j]);
+                char *spaces = put_spaces(diff);
+                if (spaces != NULL) {
+                    // Realocar memória para a string atual na coluna
+                    char *temp_ptr = (char *)realloc(database->data[i][j], (strlen(database->data[i][j]) + diff + 1) * sizeof(char));
+                    if (temp_ptr != NULL) {
+                        // Copiar o conteúdo da string realocada para database->data[i][j]
+                        strcat(temp_ptr, spaces); // Adiciona os espaços
+                        strcat(temp_ptr, database->data[i][j]); // Adiciona o conteúdo original
+                        
+                        database->data[i][j] = temp_ptr;
+                        free(spaces);
+
+                    } else {
+                        if (!database->data){
+                            fprintf(stderr, "Erro ao alocar memoria. err: realloc_fillstring\n");
+                            exit(9);
+                        }
+                        free(spaces);
+                    }
+                    
+                } else {
+                    if (!spaces){
+                        fprintf(stderr, "Erro ao alocar memoria. err: alloc_spaces\n");
+                        exit(10);
+                    }
+                }    
+            }
+        }
+    }
+}
+
+
+void mostrar(csv *keeper, base *database, unsigned long row, unsigned long column){
+   
+    fill_string(keeper, database, row, column);
+    for(int i = 0; i < column; i++){
+        printf("coluna %d\n", keeper->sizes[i]);
+    }
     for (int i = 0; i < 5; i++){
         if (i != 0)
-            printf("%20d ", i-1);
+            printf("%10d ", i-1);
         else
-            printf("%20s ", "");
+            printf("%10s ", "");
         for (int j = 0; j < column; j++){
-            printf("%20s ", database->data[i][j]);  
+            printf("%10s ", database->data[i][j]);  
         }
         printf("\n");
     }
 
     for (int i = 0; i < (column+1); i++){
-        printf("%20s ", "...");
+        printf("%10s ", "...");
     }
 
     printf("\n");
 
     for (int i = (row - 5); i < row; i++){
-        printf("%20d ", i-1);
+        printf("%10d ", i-1);
         for (int j = 0; j < column; j++){
-            printf("%20s ", database->data[i][j]);
+            printf("%10s ", database->data[i][j]);
         }
         printf("\n");
     }
-    printf(" [%d row x %d column] \n\n", row, column);
+    printf(" [%lu row x %lu column] \n\n", row, column);
 }
 
 
