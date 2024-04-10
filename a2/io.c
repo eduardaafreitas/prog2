@@ -136,31 +136,6 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
     
 }
 
-void count_stringsize(csv *keeper, base *database, unsigned long row, unsigned long column){
-
-    unsigned long i, j;
-
-    keeper->sizes = (short*) malloc(column * sizeof(short));
-    if (!keeper->sizes) {
-        fprintf(stderr, "Erro ao alocar memoria. err: alloc_sizes\n");
-        exit(7);
-    }
-    for (i = 0; i < keeper->column; i++){
-        keeper->sizes[i] = 0;
-    }
-    
-    for (i = 1; i < keeper->row; i++){
-        for (j = 0; j < keeper->column; j++){
-            if (strlen(database->data[i][j]) > keeper->sizes[j]){
-                keeper->sizes[j] = strlen(database->data[i][j]);
-            }
-        }
-    }
-    for (int k = 0; k < keeper->column; k++){
-        printf("column %d", keeper->sizes[k]);
-    }
-}
-
 int type_verify(char * token){
     if ((token[0] >= '0' && token[0] <= '9') || (token[0] == '-') || (token[0] == '+')){
         return 1;
@@ -193,27 +168,58 @@ void sumario(csv *keeper, base *database, unsigned long column){
     printf("%lu variaveis encontradas\n", column);
 }
 
+void count_stringsize(csv *keeper, base *database, unsigned long row, unsigned long column){
+
+    unsigned long i, j;
+
+    keeper->sizes = (short*) malloc(column * sizeof(short));
+    if (!keeper->sizes) {
+        fprintf(stderr, "Erro ao alocar memoria. err: alloc_sizes\n");
+        exit(7);
+    }
+    for (i = 0; i < keeper->column; i++){
+        keeper->sizes[i] = 0;
+    }
+    
+    for (i = 0; i < keeper->row; i++){
+        for (j = 0; j < keeper->column; j++){
+            if (strlen(database->data[i][j]) > keeper->sizes[j]){
+                keeper->sizes[j] = strlen(database->data[i][j]);
+            }
+        }
+    }
+    // for (int k = 0; k < keeper->column; k++){
+    //     printf("column %d", keeper->sizes[k]);
+    // }
+}
+
 char* put_spaces(short size, size_t diff, char *origin_string){
 
     char *spaces = (char *)malloc((size + 1) * sizeof(char));
     memset(spaces, ' ', diff);
     strcat(spaces, origin_string);
-
+    
     return spaces;
 
 }
+
 
 void fill_string(csv *keeper, base *database, unsigned long row, unsigned long column){
 
     count_stringsize(keeper, database, row, column);
 
     for (int i = 0; i < row; i++){ //percorre linhas
-        for (int j = 0; j < column; j++){ //percorre colunas
+        for (int j = 0; j < column; j++){ //percorre colunas        
             if( strlen (database->data[i][j]) < keeper->sizes[j]){
+
                 size_t diff = keeper->sizes[j] - strlen(database->data[i][j]);
+
                 char *spaces = put_spaces(keeper->sizes[j], diff, database->data[i][j]);
+                printf("data: %lu   spaces: %lu   \n", strlen(database->data[i][j]), strlen(spaces));
+
             }
         }
+        printf("\n");
     }
 }
 
@@ -222,13 +228,13 @@ void mostrar(csv *keeper, base *database, unsigned long row, unsigned long colum
     fill_string(keeper, database, row, column);
 
     for(int i = 0; i < column; i++){
-        printf("coluna %d\n", keeper->sizes[i]);
+        printf("coluna %d: %d\n", i, keeper->sizes[i]);
     }
     for (int i = 0; i < 5; i++){
         if (i != 0)
             printf("%10d ", i-1);
         else
-            printf("%10s ", "");
+            printf("%s ", "");
         for (int j = 0; j < column; j++){
             printf("%10s ", database->data[i][j]);  
         }
@@ -236,7 +242,7 @@ void mostrar(csv *keeper, base *database, unsigned long row, unsigned long colum
     }
 
     for (int i = 0; i < (column+1); i++){
-        printf("%10s ", "...");
+        printf("%s ", "...");
     }
 
     printf("\n");
@@ -250,9 +256,6 @@ void mostrar(csv *keeper, base *database, unsigned long row, unsigned long colum
     }
     printf(" [%lu row x %lu column] \n\n", row, column);
 }
-
-
-
 
 void free_csv(csv *keeper){
     free(keeper);
