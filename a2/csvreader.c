@@ -30,9 +30,12 @@ int main( int argc, char *argv[]){
     csv *keeper = alloc_csv();
     base *database = alloc_database();
 
+       
     //armazena o arquivo csv na struct base
     layin_csv(archive, keeper, database, row, column);
-
+    // fseek(archive, 0, SEEK_SET);
+    // count_stringsize(archive, keeper, row, column);
+    
 //--------------------------------------------------------
 
     //printf("==== LEITOR DE ARQUIVOS CSV ====\n");
