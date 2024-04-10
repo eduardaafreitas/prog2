@@ -211,12 +211,8 @@ void fill_string(csv *keeper, base *database, unsigned long row, unsigned long c
     for (int i = 0; i < row; i++){ //percorre linhas
         for (int j = 0; j < column; j++){ //percorre colunas        
             if( strlen (database->data[i][j]) < keeper->sizes[j]){
-
                 size_t diff = keeper->sizes[j] - strlen(database->data[i][j]);
-
                 char *spaces = put_spaces(keeper->sizes[j], diff, database->data[i][j]);
-                printf("data: %lu   spaces: %lu   \n", strlen(database->data[i][j]), strlen(spaces));
-
             }
         }
         printf("\n");
