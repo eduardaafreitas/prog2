@@ -23,7 +23,7 @@ unsigned long count_columns(FILE *archive){
     linha = fgets(buffer_temp, 1024, archive);
     
     if (linha != buffer_temp){
-        fprintf(stderr, "archive com erro. err: countcolumn\n");
+        fprintf(stderr, "arquivo com erro. err: countcolumn\n");
         exit(3);
     }
     
@@ -122,6 +122,7 @@ void count_stringsize(FILE *archive,csv *keeper, unsigned long row, unsigned lon
         }
 
         char *tok = strtok(buffer_temp, ",\n");
+        
 
         for (j = 0; j < column; j++) {
             if (strlen(tok) > keeper->sizes[j]){
@@ -135,7 +136,7 @@ void count_stringsize(FILE *archive,csv *keeper, unsigned long row, unsigned lon
 void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, unsigned long column){
 
     char buffer_temp[1025];
-    size_t max;
+
     //atribui numero de linhas e colunas às structs
     keeper->row = row;
     keeper->column = column;
@@ -154,6 +155,7 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
         database->data[i] = (char**) malloc(column * sizeof(char*)); //coluna
     }
 
+
     // for(j = 0; j < column; j++){
     //     printf("keeper->sizes[j]: %lu\n", keeper->sizes[j]);
     // }
@@ -168,11 +170,12 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
 
         char *tok = strtok(buffer_temp, ",\n");
         for (j = 0; j < keeper->column; j++) {
-            //printf("j: %lu keeper->sizes[j]: %lu \n", j, keeper->sizes[j]);
             database->data[i][j] = malloc(sizeof(char) * keeper->sizes[j] + 1); //celula
-              
+            if (!database->data[i][j]){
+                fprintf(stderr, "Erro ao alocar memoria. err: alloc_data[i][j]\n");
+                exit(8);
+            }
             strcpy(database->data[i][j], tok);
-            printf("database->data: %lu  dado: %s \n", strlen(database->data[i][j]), database->data[i][j]);
             tok = strtok(NULL, ",\n");
 
         }
@@ -196,7 +199,7 @@ void sumario(csv *keeper, base *database, unsigned long column){
 
     if(!keeper->type){
         fprintf(stderr, "Erro ao alocar memoria. err: alloc_type\n");
-        exit(8);
+        exit(9);
     }
     for (int i = 0; i < column; i++){
         if (type_verify(database->data[1][i]) == 1){
@@ -217,21 +220,19 @@ char* put_spaces(size_t size, size_t diff, char *origin_string){
     char *spaces = (char *)malloc((size + 1) * sizeof(char));
     memset(spaces, ' ', diff);
     strcat(spaces, origin_string);
-    
+    spaces[size] = '\0';
     return spaces;
 
 }
 
-
 void fill_string(csv *keeper, base *database, unsigned long row, unsigned long column){
 
-    //count_stringsize(keeper, database, row, column);
-
     for (int i = 0; i < row; i++){ //percorre linhas
-        for (int j = 0; j < column; j++){ //percorre colunas      
+        for (int j = 0; j < column; j++){ //percorre colunas   
             if( strlen (database->data[i][j]) < keeper->sizes[j]){
                 size_t diff = keeper->sizes[j] - strlen(database->data[i][j]);
                 char *spaces = put_spaces(keeper->sizes[j], diff, database->data[i][j]);
+                strcpy(database->data[i][j], spaces);  
             }
         }
     }
@@ -246,23 +247,23 @@ void mostrar(csv *keeper, base *database, unsigned long row, unsigned long colum
     // }
     for (int i = 0; i < 5; i++){
         if (i != 0)
-            printf("%10d ", i-1);
+            printf("%10d", i-1);
         else
-            printf("%s ", "");
+            printf("%10s", " ");
         for (int j = 0; j < column; j++){
             printf("%10s ", database->data[i][j]);  
         }
         printf("\n");
     }
 
-    for (int i = 0; i < (column+1); i++){
-        printf("%s ", "...");
-    }
+    // for (int i = 0; i < (column+1); i++){
+    //     printf("%s ", "...");
+    // }
 
-    printf("\n");
+    printf("\n\n");
 
     for (int i = (row - 5); i < row; i++){
-        printf("%10d ", i-1);
+        printf("%10d", i);
         for (int j = 0; j < column; j++){
             printf("%10s ", database->data[i][j]);
         }

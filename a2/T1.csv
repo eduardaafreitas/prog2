@@ -1,0 +1,52 @@
+Nome,Sexo,Idade,Profissao,Salario,EC
+Ana,F,65,Diretor (CTO),11521.43,Solteiro
+Larissa,M,31,Gerente de Vendas,19339.01,Divorciado
+Diego,F,52,Diretor (CTO),3498.03,Divorciado
+Fatima,M,64,Cientista de Dados,18607.88,Solteiro
+Bruno,F,30,Farmacêutico,7603.32,Casado
+Anderson,F,40.0,Gerente de Vendas,12617.95,Solteiro
+Gabriela,M,20.0,Médico,7805.97,Viúvo
+Joao,F,56.0,Farmacêutico,3195.16,Solteiro
+Felipe,M,57.0,Analista de Sistemas,17327.68,Solteiro
+Patricia,F,58.0,Cientista de Dados,18381.22,Divorciado
+Eliane,F,32.0,Gerente de Vendas,14644.15,Solteiro
+Luiz,M,40.0,Diretor Executivo (CEO),12709.72,Casado
+Luciana,F,61.0,Engenheiro,16032.99,Viúvo
+Eliane,F,26.0,Diretor (CTO),10843.98,Divorciado
+Diego,M,39.0,Arquiteto,11153.94,Casado
+Gabriela,M,21.0,Farmacêutico,22269.36,Casado
+Paula,M,50.0,Veterinário,12037.23,Divorciado
+Rafael,F,55.0,Cientista de Dados,9422.8,Casado
+Vanessa,F,22.0,Advogado,3760.25,Solteiro
+Antonio,M,48.0,Diretor (CTO),17865.19,Solteiro
+Bruna,M,21.0,Arquiteto,18746.41,Casado
+Marcelo,F,27.0,Arquiteto,22875.17,Casado
+Patricia,M,49.0,Arquiteto,13796.22,Divorciado
+Patricia,F,42.0,Farmacêutico,5745.47,Solteiro
+Fernando,M,43.0,Diretor Executivo (CEO),9392.99,Solteiro
+Aline,F,33.0,Analista de Sistemas,20252.55,Viúvo
+Beatriz,F,52.0,Médico,5515.53,Solteiro
+Jose,F,21.0,Médico,21136.26,Divorciado
+Gabriel,F,55.0,Consultor,16568.16,Divorciado
+Eliane,M,43.0,Veterinário,17437.82,Viúvo
+Leonardo,F,53.0,Gerente,10542.98,Divorciado
+Amanda,M,65.0,Arquiteto,8046.89,Casado
+Ricardo,F,61.0,Advogado,7211.75,Casado
+José,F,18.0,Programador,21026.18,Divorciado
+Camila,F,43.0,Arquiteto,19526.77,Solteiro
+Eduardo,F,64.0,Farmacêutico,14339.19,Solteiro
+Guilherme,F,19.0,Gerente de TI,7250.08,Solteiro
+Gabriel,M,26.0,Piloto,21916.86,Solteiro
+Luciana,F,53.0,Advogado,11331.61,Solteiro
+Leonardo,M,40.0,Gerente de TI,20545.92,Casado
+Luiz,M,33.0,Veterinário,21817.45,Casado
+Maria,F,21.0,Dentista,12285.86,Divorciado
+Gustavo,M,25.0,Engenheiro,15272.15,Solteiro
+Camila,M,42.0,Diretor Executivo (CEO),4049.35,Casado
+Ana,F,59.0,Diretor (CTO),13440.98,Solteiro
+Felipe,F,25.0,Gerente,20005.96,Viúvo
+José,F,60.0,Piloto,9776.59,Viúvo
+Anderson,M,,Engenheiro de Petróleo,11932.98,Solteiro
+Leandro,F,50.0,Veterinário,9383.65,Casado
+Fatima,F,50.0,Diretor Executivo (CEO),13152.03,Viúvo
+
