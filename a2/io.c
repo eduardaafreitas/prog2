@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdbool.h>
 #include "io.h"
 
 void options(){
@@ -349,8 +350,68 @@ void mostrar(csv *keeper, base *database, unsigned long row, unsigned long colum
     printf(" [%lu row x %lu column] \n\n", row, column);
 }
 
-void filtrar(csv *keeper, base *database, unsigned long row, unsigned long column){
+
+
+
+//PASSAR DATABASE_COPY NOS PARAMETROS
+void filtrar(csv *keeper, base *database_copy, unsigned long row, unsigned long column){
     
+    // char filter[1025];
+    // printf("Digite o valor a ser filtrado: ");
+    // scanf("%s", filter);
+
+    
+    
+    char filter_opt[3];
+
+    scanf("%s", filter_opt); //selecionando opcao desejada
+    bool correto = false;
+
+    while (correto == false) {
+        printf("Escolha um filtro ( == > >= < <= != ):  ");
+        if ((filter_opt[0] == '=') && (filter_opt[1] == '=')){
+            correto = true;
+            printf("== em desenvolvimento!\n");
+        }
+        else if ((filter_opt[0] == '>')){
+            correto = true;
+            printf("> em desenvolvimento!\n");
+        }
+        else if ((filter_opt[0] == '>') && (filter_opt[1] == '=')){
+            correto = true;
+            printf(">= em desenvolvimento!\n");
+        }
+        else if (filter_opt[0] == "<"){
+            correto = true;
+            printf("< em desenvolvimento!\n");
+        }
+        else if ((filter_opt[0] == '<') && (filter_opt[1] == '=')){
+            correto = true;
+            printf("<= em desenvolvimento!\n");
+        }
+        else if ((filter_opt[0] == '!') && (filter_opt[1] == '=')){
+            correto = true;
+            printf("!= em desenvolvimento!\n");
+        }
+        else{
+            fprintf(stderr, "Digite uma opcao valida!\n");
+            correto = false;
+        }
+        getchar();
+        scanf("%s", filter_opt);
+    }
+    //find_column
+        //retorna o indice da coluna que quer filtrar
+    //verificar o tipo da coluna correspondente em keeper->type
+        //se for N, chama a funcao filtrar_numerico
+            //filtrar_numerico
+                //recebe o indice da coluna e o valor a ser filtrado
+                //retorna um vetor de inteiros com os indices das linhas que satisfazem a condicao
+        //se for S, chama a funcao filtrar_string
+            //filtrar_string
+                //recebe o indice da coluna e o valor a ser filtrado
+                //retorna um vetor de inteiros com os indices das linhas que satisfazem a condicao
+    //chama a funcao mostrar com o vetor de indices
 }
 
 

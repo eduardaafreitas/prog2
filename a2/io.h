@@ -45,6 +45,8 @@ void sumario(csv *keeper, base *database, unsigned long column);
 
 void mostrar(csv *keeper, base *database, unsigned long row, unsigned long column);
 
+void filtrar(csv *keeper, base *database_copy, unsigned long row, unsigned long column);
+
 void free_csv(csv *keeper_csv);
 void free_database(base *database);
 
