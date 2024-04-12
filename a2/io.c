@@ -34,7 +34,7 @@ unsigned long count_columns(FILE *archive){
         i++;
     }
     
-    return i;
+    return i+1;
 }
 
 unsigned long count_rows(FILE *archive){
@@ -125,7 +125,7 @@ void count_stringsize(FILE *archive,csv *keeper, unsigned long row, unsigned lon
 
         char *line_ptr = buffer_temp;
 
-        for (j = 0; j < keeper->column; j++) {
+        for (j = 1; j < keeper->column; j++) {
             char *comma_ptr = strchr(line_ptr, ',');
             if (comma_ptr != NULL) {
             
@@ -172,6 +172,10 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
 
     unsigned long i, j;
 
+    char str[row];
+    snprintf(str, row, "%lu", row);
+    keeper->sizes[0] = strlen(str);
+
     database->data = (char***) malloc(row * sizeof(char**)); //linha
     if (!database->data){
         fprintf(stderr, "Erro ao alocar memoria. err: alloc_data\n");
@@ -197,43 +201,49 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
         if (linha == NULL){
             printf("Fim do arquivo. \n");
             break;
-        }     
+        }
 
         char *line_ptr = buffer_temp;
 
         for (j = 0; j < keeper->column; j++) {
-            // Encontra a próxima vírgula ou o final da linha
-            char *comma_ptr = strchr(line_ptr, ',');
-            if (comma_ptr != NULL) {
-                // Se encontrou uma vírgula, copia o token até a vírgula
-                size_t token_length = comma_ptr - line_ptr;
-                if (token_length == 0) {
-                    // Se o token for vazio, atribui NULL
-                    // database->data[i][j] = malloc((keeper->sizes[j]+1) * sizeof(char));
-                     database->data[i][j] = NULL;
-                    // printf("encontrou vazio\n");
-                } else {
-                    // Caso contrário, aloca memória e copia o token
-                    database->data[i][j] = malloc((keeper->sizes[j]+1) * sizeof(char));
-                    strncpy(database->data[i][j], line_ptr, token_length);
-                    database->data[i][j][token_length] = '\0'; // Adiciona o caractere nulo
-                }
-                // Atualiza o ponteiro para apontar para o próximo caractere após a vírgula
-                line_ptr = comma_ptr + 1;
+            if (j == 0) {
+                // Preenche a posição database[i][0] com o valor de j
+                database->data[i][0] = malloc((keeper->sizes[0] + 1) * sizeof(char));
+                snprintf(database->data[i][0], keeper->sizes[j] + 1, "%lu", i);
             } else {
-                // Se não encontrou uma vírgula, estamos no final da linha
-                // Verifica se há um token restante
-                if (*line_ptr == '\n' || *line_ptr == '\0') {
-                    // Se for uma quebra de linha ou o final da linha, atribui NULL
-                    database->data[i][j] = NULL;
+                // Encontra a próxima vírgula ou o final da linha
+                char *comma_ptr = strchr(line_ptr, ',');
+                if (comma_ptr != NULL) {
+                    // Se encontrou uma vírgula, copia o token até a vírgula
+                    size_t token_length = comma_ptr - line_ptr;
+                    if (token_length == 0) {
+                        // Se o token for vazio, atribui NULL
+                        // database->data[i][j] = malloc((keeper->sizes[j]+1) * sizeof(char));
+                        database->data[i][j] = NULL;
+                        // printf("encontrou vazio\n");
+                    } else {
+                        // Caso contrário, aloca memória e copia o token
+                        database->data[i][j] = malloc((keeper->sizes[j]+1) * sizeof(char));
+                        strncpy(database->data[i][j], line_ptr, token_length);
+                        database->data[i][j][token_length] = '\0'; // Adiciona o caractere nulo
+                    }
+                    // Atualiza o ponteiro para apontar para o próximo caractere após a vírgula
+                    line_ptr = comma_ptr + 1;
                 } else {
-                    // Se não for, copia o token até o final da linha
-                    //size_t token_length = strlen(line_ptr);
-                    database->data[i][j] = malloc((keeper->sizes[j]+1) * sizeof(char));
-                    strcpy(database->data[i][j], line_ptr);
+                    // Se não encontrou uma vírgula, estamos no final da linha
+                    // Verifica se há um token restante
+                    if (*line_ptr == '\n' || *line_ptr == '\0') {
+                        // Se for uma quebra de linha ou o final da linha, atribui NULL
+                        database->data[i][j] = NULL;
+                    } else {
+                        // Se não for, copia o token até o final da linha
+                        //size_t token_length = strlen(line_ptr);
+                        database->data[i][j] = malloc((keeper->sizes[j]+1) * sizeof(char));
+                        strcpy(database->data[i][j], line_ptr);
+                    }
+                    // Não há mais tokens na linha, saia do loop
+                    break;
                 }
-                // Não há mais tokens na linha, saia do loop
-                break;
             }
         }
     }
@@ -250,27 +260,31 @@ int type_verify(char * token){
     }
 }
 
-void sumario(csv *keeper, base *database, unsigned long column){
-    printf("sumario\n");
+void type(csv *keeper, base *database, unsigned long column){
+    printf("type\n");
     keeper->type = (char*) malloc(column * sizeof(char));
-
     if(!keeper->type){
         fprintf(stderr, "Erro ao alocar memoria. err: alloc_type\n");
         exit(9);
     }
-    for (int i = 0; i < column; i++){
-        if (type_verify(database->data[1][i]) == 1){
-            keeper->type[i] = 'N';
-            printf("%s  [%c] \n", database->data[0][i], keeper->type[i]);
+    for (int j = 1;j < column; j++){
+        if (type_verify(database->data[1][j]) == 1){
+            keeper->type[j] = 'N';
         }
         else{
-            keeper->type[i] = 'S';
-            printf("%s  [%c] \n", database->data[0][i], keeper->type[i]);
+            keeper->type[j] = 'S';
         }
+    }
+}
+
+void sumario(csv *keeper, base *database, unsigned long column){
+    printf("sumario\n");
+    type(keeper, database, column);
+    for (int j = 1;j < column; j++){
+        printf("%s  [%c] \n", database->data[0][j], keeper->type[j]);
     }
     printf("%lu variaveis encontradas\n", column);
 }
-
 
 char* put_spaces(size_t size, size_t diff, char *origin_string){
     //printf("put_spaces\n");
@@ -313,10 +327,6 @@ void mostrar(csv *keeper, base *database, unsigned long row, unsigned long colum
     //     printf("coluna %d: %d\n", i, keeper->sizes[i]);
     // }
     for (int i = 0; i < 5; i++){
-        if (i != 0)
-            printf("%10d", i-1);
-        else
-            printf("%10s", " ");
         for (int j = 0; j < column; j++){
             printf("%10s ", database->data[i][j]);  
         }
@@ -330,7 +340,6 @@ void mostrar(csv *keeper, base *database, unsigned long row, unsigned long colum
     printf("\n\n");
 
     for (int i = (row - 5); i < row; i++){
-        printf("%10d", i);
         for (int j = 0; j < column; j++){
             if(database->data[i][j] != NULL)
                 printf("%10s ", database->data[i][j]);
@@ -339,6 +348,11 @@ void mostrar(csv *keeper, base *database, unsigned long row, unsigned long colum
     }
     printf(" [%lu row x %lu column] \n\n", row, column);
 }
+
+void filtrar(csv *keeper, base *database, unsigned long row, unsigned long column){
+    
+}
+
 
 void free_csv(csv *keeper){
 

@@ -29,11 +29,11 @@ int main( int argc, char *argv[]){
     //aloca memorias para as structs:
     csv *keeper = alloc_csv();
     base *database = alloc_database();
-
+    base *database_copy = alloc_database();
        
     //armazena o arquivo csv na struct base
     layin_csv(archive, keeper, database, row, column);
-    // fseek(archive, 0, SEEK_SET);
+    fseek(archive, 0, SEEK_SET);
     // count_stringsize(archive, keeper, row, column);
     
 //--------------------------------------------------------
@@ -43,13 +43,31 @@ int main( int argc, char *argv[]){
 
     scanf("%d", &opt); //selecionando opcao desejada
 
-    while (opt != 3) {
+    while (opt != 9) {
         if (opt == 1){
             sumario(keeper, database, column);
         }
         else if (opt == 2){
             printf("em desenvolvimento!\n");
             mostrar(keeper, database, row, column);
+        }
+        else if (opt == 3){
+            printf("filtro em desenvolvimento!\n");
+        }
+        else if (opt == 4){
+            printf("descricao em desenvolvimento!\n");
+        }
+        else if (opt == 5){
+            printf("ordenacao em desenvolvimento!\n");
+        }
+        else if (opt == 6){
+            printf("selecao em desenvolvimento!\n");
+        }
+        else if (opt == 7){
+            printf("dados faltantes em desenvolvimento!\n");
+        }
+        else if (opt == 8){
+            printf("salvamento de dados em desenvolvimento!\n");
         }
         else{
             fprintf(stderr, "Digite uma opcao valida!\n");
