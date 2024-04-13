@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "io.h"
+#include "lib.h"
 
 
 int main( int argc, char *argv[]){
@@ -38,8 +39,8 @@ int main( int argc, char *argv[]){
     
 //--------------------------------------------------------
 
-    //printf("==== LEITOR DE ARQUIVOS CSV ====\n");
-    //options();
+    printf("==== LEITOR DE ARQUIVOS CSV ====\n");
+    options();
 
     scanf("%d", &opt); //selecionando opcao desejada
 
@@ -76,7 +77,7 @@ int main( int argc, char *argv[]){
         }
         printf("Pressione Enter para continuar\n\n");
         getchar();
-        //options();
+        options();
         opt = 0;
         scanf("%d", &opt);
     }
