@@ -17,7 +17,7 @@ void options(){
 }
 
 int type_verify(char * token){
-    printf("type_verify\n");
+    //printf("type_verify\n");
     if ((token[0] >= '0' && token[0] <= '9') || (token[0] == '-') || (token[0] == '+')){
         return 1;
     }
@@ -26,14 +26,20 @@ int type_verify(char * token){
     }
 }
 
-void type(csv *keeper, base *database, unsigned long column){
-    printf("type\n");
-    keeper->type = (char*) malloc(column * sizeof(char));
+void type(csv *keeper, base *database){
+    //printf("type\n");
+    
+    keeper->type = (char*) malloc(keeper->column * sizeof(char));
+    printf("tam type %ld\n", sizeof(keeper->type));
+
     if(!keeper->type){
         fprintf(stderr, "Erro ao alocar memoria. err: alloc_type\n");
         exit(9);
     }
-    for (int j = 1;j < column; j++){
+    // for (int i = 0; i < keeper->column; i++){
+    //     keeper->type[i] = NULL;
+    // }
+    for (int j = 1;j < keeper->column; j++){
         if (type_verify(database->data[1][j]) == 1){
             keeper->type[j] = 'N';
         }
@@ -56,11 +62,11 @@ char* put_spaces(size_t size, size_t diff, char *origin_string){
 
 }
 
-void fill_string(csv *keeper, base *database, unsigned long row, unsigned long column){
+void fill_string(csv *keeper, base *database){
     printf("fill_string\n");
-    for (int i = 0; i < row; i++){ //percorre linhas
+    for (int i = 0; i < keeper->row; i++){ //percorre linhas
     //printf("for linha\n");
-        for (int j = 0; j < column; j++){ //percorre colunas  
+        for (int j = 0; j < keeper->column; j++){ //percorre colunas  
         //printf("for coluna\n");
             // printf("[i][j]: %d %d\n", i, j);
             //printf("database->data[%d][%d]: %s\n", i, j, database->data[i][j]); 

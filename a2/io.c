@@ -6,15 +6,6 @@
 #include "io.h"
 #include "lib.h"
 
-void options(){
-
-    printf("1) Sumario do arquivo\n");
-    printf("2) Mostrar\n");
-    printf("3) Filtrar\n");
-    printf("9) Fim\n\n");
-
-    printf("Digite a opcao desejada: ");
-}
 
 unsigned long count_columns(FILE *archive){
     printf("count_columns\n");
@@ -175,6 +166,7 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
 
     unsigned long i, j;
 
+    //converte o numero do indice para string
     char str[row];
     snprintf(str, row, "%lu", row);
     keeper->sizes[0] = strlen(str);
@@ -200,6 +192,10 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
 
     for (i = 0; i < keeper->row; i++){
         char* linha = fgets(buffer_temp, 1025, archive);
+
+        //substitui o \n por espaço
+        char* aux = strchr(buffer_temp, '\n');
+        *aux = ' ';
 
         if (linha == NULL){
             printf("Fim do arquivo. \n");
@@ -235,9 +231,9 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
                 } else {
                     // Se não encontrou uma vírgula, estamos no final da linha
                     // Verifica se há um token restante
-                    if (*line_ptr == '\n' || *line_ptr == '\0') {
-                        // Se for uma quebra de linha ou o final da linha, atribui NULL
-                        database->data[i][j] = NULL;
+                    if (*line_ptr == '\n') {
+                        // Se for uma quebra de linha ou o final da linha, gere um token vazio
+                        getc(archive);
                     } else {
                         // Se não for, copia o token até o final da linha
                         //size_t token_length = strlen(line_ptr);
@@ -252,48 +248,46 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
     }
 }
 
-void sumario(csv *keeper, base *database, unsigned long column){
-    printf("sumario\n");
-    type(keeper, database, column);
-    for (int j = 1;j < column; j++){
+void sumario(csv *keeper, base *database){
+    //printf("sumario\n");
+    type(keeper, database, keeper->column);
+    for (int j = 1;j < keeper->column; j++){
         printf("%s  [%c] \n", database->data[0][j], keeper->type[j]);
     }
-    printf("%lu variaveis encontradas\n", column);
+
+    printf("%lu variaveis encontradas\n", keeper->column-1);
 }
 
-void mostrar(csv *keeper, base *database, unsigned long row, unsigned long column){
+void mostrar(csv *keeper, base *database){
     printf("mostrar\n");
-    fill_string(keeper, database, row, column);
+    fill_string(keeper, database);
 
-    // for(int i = 0; i < column; i++){
-    //     printf("coluna %d: %d\n", i, keeper->sizes[i]);
-    // }
     for (int i = 0; i < 5; i++){
-        for (int j = 0; j < column; j++){
+        for (int j = 0; j < keeper->column; j++){
             printf("%10s ", database->data[i][j]);  
         }
         printf("\n");
     }
 
-    // for (int i = 0; i < (column+1); i++){
+    // for (int i = 0; i < (keeper->column+1); i++){
     //     printf("%s ", "...");
     // }
 
     printf("\n\n");
 
-    for (int i = (row - 5); i < row; i++){
-        for (int j = 0; j < column; j++){
+    for (int i = (keeper->row - 5); i < keeper->row; i++){
+        for (int j = 0; j < keeper->column; j++){
             if(database->data[i][j] != NULL)
                 printf("%10s ", database->data[i][j]);
         }
         printf("\n");
     }
-    printf(" [%lu row x %lu column] \n\n", row, column);
+    printf(" [%lu row x %lu column] \n\n", keeper->row, keeper->column);
 }
 
 
 //PASSAR DATABASE_COPY NOS PARAMETROS
-void filtrar(csv *keeper, base *database_copy, unsigned long row, unsigned long column){
+void filtrar(csv *keeper, base *database_copy){
     
     // char filter[1025];
     // printf("Digite o valor a ser filtrado: ");
