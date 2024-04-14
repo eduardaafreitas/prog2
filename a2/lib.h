@@ -11,10 +11,10 @@ void options();
 
 
 int type_verify(char * tok);
-void type(csv *keeper, base *database, unsigned long column);
+void type(csv *keeper, base *database);
 char* put_spaces(size_t size, size_t diff, char *origin_string);
-void fill_string(csv *keeper, base *database, unsigned long row, unsigned long column);
-
+void fill_string(csv *keeper, base *database);
+size_t find_column(csv *keeper, base *database_copy, char *filter);
 
 
 #endif

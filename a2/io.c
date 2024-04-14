@@ -8,7 +8,7 @@
 
 
 unsigned long count_columns(FILE *archive){
-    printf("count_columns\n");
+
     char buffer_temp[1025];
     char *linha;
     unsigned long i = 0;
@@ -32,7 +32,7 @@ unsigned long count_columns(FILE *archive){
 }
 
 unsigned long count_rows(FILE *archive){
-    printf("count_rows\n");
+
     char buffer_temp[1025];
     char *linha;
     unsigned long contador = 0;
@@ -57,7 +57,7 @@ unsigned long count_rows(FILE *archive){
 }
 
 csv *alloc_csv(){
-    printf("alloc_csv\n");
+
     csv *keeper = (csv*) malloc(sizeof(csv));
 
     if (!keeper){
@@ -77,7 +77,7 @@ csv *alloc_csv(){
 }
 
 base *alloc_database(){
-    printf("alloc_database\n");
+
     base *database = (base*) malloc(sizeof(base));
 
     if (!database){
@@ -186,9 +186,9 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
     }
 
 
-    for(j = 0; j < column; j++){
-        printf("keeper->sizes[%lu]: %lu\n", j, keeper->sizes[j]);
-    }
+    // for(j = 0; j < column; j++){
+    //     printf("keeper->sizes[%lu]: %lu\n", j, keeper->sizes[j]);
+    // }
 
     for (i = 0; i < keeper->row; i++){
         char* linha = fgets(buffer_temp, 1025, archive);
@@ -250,7 +250,7 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
 
 void sumario(csv *keeper, base *database){
     //printf("sumario\n");
-    type(keeper, database, keeper->column);
+    type(keeper, database);
     for (int j = 1;j < keeper->column; j++){
         printf("%s  [%c] \n", database->data[0][j], keeper->type[j]);
     }
@@ -289,12 +289,12 @@ void mostrar(csv *keeper, base *database){
 //PASSAR DATABASE_COPY NOS PARAMETROS
 void filtrar(csv *keeper, base *database_copy){
     
-    // char filter[1025];
-    // printf("Digite o valor a ser filtrado: ");
-    // scanf("%s", filter);
+    char filter[1025];
+    printf("Digite o valor a ser filtrado: ");
+    scanf("%s", filter);
 
-    
-    
+    size_t finder = find_column(keeper, database_copy, filter);
+
     char filter_opt[3];
 
     scanf("%s", filter_opt); //selecionando opcao desejada
@@ -333,8 +333,8 @@ void filtrar(csv *keeper, base *database_copy){
         getchar();
         scanf("%s", filter_opt);
     }
-    //find_column
-        //retorna o indice da coluna que quer filtrar
+    //find_column ------OK!!!!!
+        //retorna o indice da coluna que quer filtrar---- FUNCIONA!!!!
     //verificar o tipo da coluna correspondente em keeper->type
         //se for N, chama a funcao filtrar_numerico
             //filtrar_numerico

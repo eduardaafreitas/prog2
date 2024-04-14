@@ -36,9 +36,7 @@ void type(csv *keeper, base *database){
         fprintf(stderr, "Erro ao alocar memoria. err: alloc_type\n");
         exit(9);
     }
-    // for (int i = 0; i < keeper->column; i++){
-    //     keeper->type[i] = NULL;
-    // }
+    
     for (int j = 1;j < keeper->column; j++){
         if (type_verify(database->data[1][j]) == 1){
             keeper->type[j] = 'N';
@@ -82,3 +80,17 @@ void fill_string(csv *keeper, base *database){
         }
     }
 }
+
+size_t find_column(csv *keeper, base *database_copy, char *filter){
+    size_t j, number_column;
+    int cmp;
+
+    for(j = 1; j < keeper->column; j++){
+        cmp = strcasecmp(database_copy->data[0][j], filter);
+        if (cmp == 0){
+            number_column = j;
+        }
+    }
+    return number_column;
+}
+

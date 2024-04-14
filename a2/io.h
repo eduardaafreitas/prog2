@@ -36,11 +36,11 @@ void count_stringsize(FILE *archive, csv *keeper, unsigned long row, unsigned lo
 
 void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, unsigned long column);
 
-void sumario(csv *keeper, base *database, unsigned long column);
+void sumario(csv *keeper, base *database);
 
-void mostrar(csv *keeper, base *database, unsigned long row, unsigned long column);
+void mostrar(csv *keeper, base *database);
 
-void filtrar(csv *keeper, base *database_copy, unsigned long row, unsigned long column);
+void filtrar(csv *keeper, base *database_copy);
 
 void free_csv(csv *keeper_csv);
 void free_database(base *database);
