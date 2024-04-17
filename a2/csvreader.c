@@ -59,7 +59,7 @@ int main( int argc, char *argv[]){
         }
         else if (opt == 4){
             descreve(database, keeper, database_copy);
-            printf("descricao em desenvolvimento!\n");
+            printf("descricao em desenvolvimento!\n\n");
         }
         else if (opt == 5){
             printf("ordenacao em desenvolvimento!\n");
