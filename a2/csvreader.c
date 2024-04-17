@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include "io.h"
 #include "lib.h"
+#include "lib_filter.h"
 
 
 int main( int argc, char *argv[]){
