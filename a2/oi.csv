@@ -1,17 +1,11 @@
-1,Ana,F,65,Diretor (CTO),11521.43,Solteiro 
-3,Diego,F,52,Diretor (CTO),3498.03,Divorciado 
-4,Fatima,M,64,Cientista de Dados,18607.88,Solteiro 
-8,Joao,F,56.0,Farmacêutico,3195.16,Solteiro 
-9,Felipe,M,57.0,Analista de Sistemas,17327.68,Solteiro 
-10,Patricia,F,58.0,Cientista de Dados,18381.22,Divorciado 
-13,Luciana,F,61.0,Engenheiro,16032.99,Viúvo 
-18,Rafael,F,55.0,Cientista de Dados,9422.8,Casado 
-27,Beatriz,F,52.0,Médico,5515.53,Solteiro 
-29,Gabriel,F,55.0,Consultor,16568.16,Divorciado 
-31,Leonardo,F,53.0,Gerente,10542.98,Divorciado 
-32,Amanda,M,65.0,Arquiteto,8046.89,Casado 
-33,Ricardo,F,61.0,Advogado,7211.75,Casado 
-36,Eduardo,F,64.0,Farmacêutico,14339.19,Solteiro 
-39,Luciana,F,53.0,Advogado,11331.61,Solteiro 
-45,Ana,F,59.0,Diretor (CTO),13440.98,Solteiro 
-47,José,F,60.0,Piloto,9776.59,Viúvo 
+0,Nome,Sexo,Idade,Profissao,Salario,EC 
+7,Gabriela,M,20.0,Médico,7805.97,Viúvo 
+16,Gabriela,M,21.0,Farmacêutico,22269.36,Casado 
+19,Vanessa,F,22.0,Advogado,3760.25,Solteiro 
+21,Bruna,M,21.0,Arquiteto,18746.41,Casado 
+28,Jose,F,21.0,Médico,21136.26,Divorciado 
+34,José,F,18.0,Programador,21026.18,Divorciado 
+37,Guilherme,F,19.0,Gerente de TI,7250.08,Solteiro 
+42,Maria,F,21.0,Dentista,12285.86,Divorciado 
+43,Gustavo,M,25.0,Engenheiro,15272.15,Solteiro 
+46,Felipe,F,25.0,Gerente,20005.96,Viúvo 

@@ -243,6 +243,17 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
             }
         }
     }
+
+    for (int i = 0; i < keeper->row; i++){
+        for (int j = 0; j < keeper->column; j++){
+            if (database->data[i][j] == NULL){
+                database->data[i][j] = malloc((keeper->sizes[j]+1) * sizeof(char));
+                database->data[i][j][0] = '0';
+            }
+                
+        }
+    }
+
 }
 
 void sumario(csv *keeper, base *database){
@@ -256,22 +267,23 @@ void sumario(csv *keeper, base *database){
 }
 
 void mostrar(csv *keeper, base *database){
-    printf("mostrar\n");
     fill_string(keeper, database);
 
     for (int i = 0; i < 5; i++){
         for (int j = 0; j < keeper->column; j++){
-            printf("%10s ", database->data[i][j]);  
+            if (database->data[i][j] != NULL)
+                printf("%10s ", database->data[i][j]);  
         }
         printf("\n");
     }
 
     printf("\n\n");
 
-    for (int i = (keeper->row - 5); i < keeper->row; i++){
+    for (int i = (keeper->row - 6); i < keeper->row-1; i++){
         for (int j = 0; j < keeper->column; j++){
-            if(database->data[i][j] != NULL)
-                printf("%10s ", database->data[i][j]);
+            if (database->data[i][j] != NULL)
+                printf("%10s ", database->data[i][j]);  
+            
         }
         printf("\n");
     }
@@ -286,12 +298,13 @@ void filtrar(base *database, csv *keeper, base *database_copy){
     scanf("%s", filter);
 
     size_t *index = (size_t*) malloc(keeper->row * sizeof(size_t));
-    if (index == NULL) {
+
+    if (!index) {
         printf("Erro\n");
         exit(EXIT_FAILURE);
     }
     for (size_t i = 0; i < keeper->row; i++) {
-        index[i] = -1; // Preenche o vetor com -1 para indicar que não há índice
+        index[i] = 0; // Preenche o vetor com 0 para inicializar
     }
 
     char filter_opt[3];

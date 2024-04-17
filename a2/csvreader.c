@@ -49,11 +49,9 @@ int main( int argc, char *argv[]){
             sumario(keeper, database);
         }
         else if (opt == 2){
-            printf("em desenvolvimento!\n");
             mostrar(keeper, database);
         }
         else if (opt == 3){
-            printf("filtro em desenvolvimento!\n");
             layin_csv(archive, keeper, database_copy, row, column);
             filtrar(database, keeper, database_copy);
         }
