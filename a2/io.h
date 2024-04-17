@@ -40,7 +40,7 @@ void sumario(csv *keeper, base *database);
 
 void mostrar(csv *keeper, base *database);
 
-void filtrar(csv *keeper, base *database_copy);
+void filtrar(base *database, csv *keeper, base *database_copy);
 
 void free_csv(csv *keeper_csv);
 void free_database(base *database);

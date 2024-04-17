@@ -151,7 +151,7 @@ void count_stringsize(FILE *archive,csv *keeper, unsigned long row, unsigned lon
 }
 
 void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, unsigned long column){
-    printf("layin_csv\n");
+
     char buffer_temp[1025];
 
     //atribui numero de linhas e colunas às structs
@@ -210,6 +210,7 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
                 database->data[i][0] = malloc((keeper->sizes[0] + 1) * sizeof(char));
                 snprintf(database->data[i][0], keeper->sizes[j] + 1, "%lu", i);
             } else {
+                database->data[i][j] = malloc((keeper->sizes[j]+1) * sizeof(char));
                 // Encontra a próxima vírgula ou o final da linha
                 char *comma_ptr = strchr(line_ptr, ',');
                 if (comma_ptr != NULL) {
@@ -217,12 +218,9 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
                     size_t token_length = comma_ptr - line_ptr;
                     if (token_length == 0) {
                         // Se o token for vazio, atribui NULL
-                        // database->data[i][j] = malloc((keeper->sizes[j]+1) * sizeof(char));
                         database->data[i][j] = NULL;
-                        // printf("encontrou vazio\n");
                     } else {
-                        // Caso contrário, aloca memória e copia o token
-                        database->data[i][j] = malloc((keeper->sizes[j]+1) * sizeof(char));
+                        // Caso contrário copia o token
                         strncpy(database->data[i][j], line_ptr, token_length);
                         database->data[i][j][token_length] = '\0'; // Adiciona o caractere nulo
                     }
@@ -237,10 +235,9 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
                     } else {
                         // Se não for, copia o token até o final da linha
                         //size_t token_length = strlen(line_ptr);
-                        database->data[i][j] = malloc((keeper->sizes[j]+1) * sizeof(char));
                         strcpy(database->data[i][j], line_ptr);
                     }
-                    // Não há mais tokens na linha, saia do loop
+                    // Não tem mais tokens na linha, sai do loop
                     break;
                 }
             }
@@ -249,7 +246,7 @@ void layin_csv(FILE *archive, csv *keeper, base *database, unsigned long row, un
 }
 
 void sumario(csv *keeper, base *database){
-    //printf("sumario\n");
+
     type(keeper, database);
     for (int j = 1;j < keeper->column; j++){
         printf("%s  [%c] \n", database->data[0][j], keeper->type[j]);
@@ -269,10 +266,6 @@ void mostrar(csv *keeper, base *database){
         printf("\n");
     }
 
-    // for (int i = 0; i < (keeper->column+1); i++){
-    //     printf("%s ", "...");
-    // }
-
     printf("\n\n");
 
     for (int i = (keeper->row - 5); i < keeper->row; i++){
@@ -285,66 +278,63 @@ void mostrar(csv *keeper, base *database){
     printf(" [%lu row x %lu column] \n\n", keeper->row, keeper->column);
 }
 
-
 //PASSAR DATABASE_COPY NOS PARAMETROS
-void filtrar(csv *keeper, base *database_copy){
-    
+void filtrar(base *database, csv *keeper, base *database_copy){
+    type(keeper, database_copy);
     char filter[1025];
-    printf("Digite o valor a ser filtrado: ");
+    printf("entre com a variavel: ");
     scanf("%s", filter);
 
-    size_t finder = find_column(keeper, database_copy, filter);
+    size_t *index = (size_t*) malloc(keeper->row * sizeof(size_t));
+    if (index == NULL) {
+        printf("Erro\n");
+        exit(EXIT_FAILURE);
+    }
+    for (size_t i = 0; i < keeper->row; i++) {
+        index[i] = -1; // Preenche o vetor com -1 para indicar que não há índice
+    }
 
     char filter_opt[3];
-
-    scanf("%s", filter_opt); //selecionando opcao desejada
     bool correto = false;
 
-    while (correto == false) {
+    while (!correto) {
         printf("Escolha um filtro ( == > >= < <= != ):  ");
-        if ((filter_opt[0] == '=') && (filter_opt[1] == '=')){
+        scanf("%2s", filter_opt); // Limitando a entrada a 2 caracteres
+
+        char value[1025];
+        printf("Digite um valor: ");
+        scanf("%s", value);
+
+
+        if (strcmp(filter_opt, "==") == 0) {
+            filter_equal(database, keeper, database_copy, filter, value, index);
             correto = true;
-            printf("== em desenvolvimento!\n");
-        }
-        else if ((filter_opt[0] == '>')){
+        } else if (strcmp(filter_opt, ">") == 0) {
+            filter_bigger(database, keeper, database_copy, filter, value, index);
+
             correto = true;
-            printf("> em desenvolvimento!\n");
-        }
-        else if ((filter_opt[0] == '>') && (filter_opt[1] == '=')){
+        } else if (strcmp(filter_opt, ">=") == 0) {
+            filter_biggerorequal(database, keeper, database_copy, filter, value, index);
             correto = true;
-            printf(">= em desenvolvimento!\n");
-        }
-        else if (filter_opt[0] == '<'){
+        } else if (strcmp(filter_opt, "<") == 0) {
+            filter_smaller(database, keeper, database_copy, filter, value, index);
             correto = true;
-            printf("< em desenvolvimento!\n");
-        }
-        else if ((filter_opt[0] == '<') && (filter_opt[1] == '=')){
+        } else if (strcmp(filter_opt, "<=") == 0) {
+            filter_lessorequal(database, keeper, database_copy, filter, value, index);
             correto = true;
-            printf("<= em desenvolvimento!\n");
-        }
-        else if ((filter_opt[0] == '!') && (filter_opt[1] == '=')){
+        } else if (strcmp(filter_opt, "!=") == 0) {
+            filter_different(database, keeper, database_copy, filter, value, index);
             correto = true;
-            printf("!= em desenvolvimento!\n");
-        }
-        else{
+        } else {
             fprintf(stderr, "Digite uma opcao valida!\n");
-            correto = false;
+            // Limpar o buffer de entrada antes de tentar novamente
+            while (getchar() != '\n');
         }
-        getchar();
-        scanf("%s", filter_opt);
     }
-    //find_column ------OK!!!!!
-        //retorna o indice da coluna que quer filtrar---- FUNCIONA!!!!
-    //verificar o tipo da coluna correspondente em keeper->type
-        //se for N, chama a funcao filtrar_numerico
-            //filtrar_numerico
-                //recebe o indice da coluna e o valor a ser filtrado
-                //retorna um vetor de inteiros com os indices das linhas que satisfazem a condicao
-        //se for S, chama a funcao filtrar_string
-            //filtrar_string
-                //recebe o indice da coluna e o valor a ser filtrado
-                //retorna um vetor de inteiros com os indices das linhas que satisfazem a condicao
-    //chama a funcao mostrar com o vetor de indices
+    
+    // for (size_t i = 0; i < keeper->row; i++) {
+    //     free(index[i]);
+    // }
 }
 
 

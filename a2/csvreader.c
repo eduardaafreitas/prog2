@@ -55,7 +55,7 @@ int main( int argc, char *argv[]){
         else if (opt == 3){
             printf("filtro em desenvolvimento!\n");
             layin_csv(archive, keeper, database_copy, row, column);
-            filtrar(keeper, database_copy);
+            filtrar(database, keeper, database_copy);
         }
         else if (opt == 4){
             printf("descricao em desenvolvimento!\n");
