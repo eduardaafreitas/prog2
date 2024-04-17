@@ -4,8 +4,11 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <math.h>
 #include "io.h"
 #include "lib.h"
+#include "lib_filter.h"
+#include "lib_description.h"
 
 //nesta biblioteca estao as funcoes que lidam com a leitura e manipulacao dos dados
 
@@ -272,7 +275,7 @@ void filtrar(base *database, csv *keeper, base *database_copy){
     //para iniciar a filtragem, preciso saber o tipo da variavel que o user deseja filtrar, entao:
     type(keeper, database_copy);    //(falta verificar se ja foi preenchido antes, se sim, nao precisa chamar novamente)
     char filter[1025];
-    printf("entre com a variavel: ");
+    printf("Entre com a variavel: ");
     scanf("%s", filter);
 
     size_t *index = (size_t*) malloc(keeper->row * sizeof(size_t)); //este vetor sera utilizado para armazenar os indices que satisfazem a condicao da filtragem
@@ -321,6 +324,25 @@ void filtrar(base *database, csv *keeper, base *database_copy){
     }
 
     free(index); //libera a memoria alocada para o vetor de indices
+}
+
+void descreve(base *database, csv *keeper, base *database_copy){
+    char describe[1025];
+    printf("Entre com a variavel: ");
+    scanf("%s", describe);
+
+    float media = 0;
+    float desvio = 0;
+
+    size_t column = find_column(keeper, database, describe);
+
+    printf("   Contador: %lu\n", keeper->row-1);
+
+    media = media_describe(database, keeper, database_copy, column);
+    printf("   Media: %.2f\n", media);
+    desvio = desvio_padrao(database, keeper, database_copy, column);
+    printf("   Desvio padrao: %.2f\n", desvio);
+
 }
 
 void free_csv(csv *keeper){

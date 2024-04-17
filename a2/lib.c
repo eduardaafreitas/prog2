@@ -4,8 +4,11 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <math.h>
 #include "io.h"
 #include "lib.h"
+#include "lib_filter.h"
+#include "lib_description.h"
 
 //nesta biblioteca estao presentes as funcoes usadas para manipulacao direta dos dados, funcoes que sao chamadas dentro das funcoes da biblioteca io.c
 
@@ -14,6 +17,7 @@ void options(){
     printf("1) Sumario do arquivo\n");
     printf("2) Mostrar\n");
     printf("3) Filtrar\n");
+    printf("4) Descricao dos dados\n");
     printf("9) Fim\n\n");
 
     printf("Digite a opcao desejada: ");
