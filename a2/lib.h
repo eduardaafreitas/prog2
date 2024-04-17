@@ -1,3 +1,4 @@
+//desenvolvido por Eduarda de Aguiar Freitas, GRR 20211799
 #ifndef __LIB__
 #define __LIB__
 
@@ -16,7 +17,7 @@ char* put_spaces(size_t size, size_t diff, char *origin_string);
 void fill_string(csv *keeper, base *database);
 
 size_t find_column(csv *keeper, base *database_copy, char *filter);
-size_t count_indexsize(csv *keeper, size_t *index);
+
 void database_filtered(csv *keeper, base *database, size_t *index, char *file_name);
 void show_filter(csv *keeper, base *database_copy, size_t *index);
 

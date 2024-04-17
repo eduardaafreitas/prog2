@@ -1,3 +1,4 @@
+//desenvolvido por Eduarda de Aguiar Freitas, GRR 20211799
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,6 +6,8 @@
 #include <stdbool.h>
 #include "io.h"
 #include "lib.h"
+
+//nesta biblioteca estao presentes as funcoes usadas para manipulacao direta dos dados, funcoes que sao chamadas dentro das funcoes da biblioteca io.c
 
 void options(){
 
@@ -16,8 +19,7 @@ void options(){
     printf("Digite a opcao desejada: ");
 }
 
-int type_verify(char * token){
-
+int type_verify(char * token){  //verifica se o token é numerico ou string
     if ((token[0] >= '0' && token[0] <= '9') || (token[0] == '-') || (token[0] == '+')){
         return 1;
     }
@@ -26,10 +28,9 @@ int type_verify(char * token){
     }
 }
 
-void type(csv *keeper, base *database){
+void type(csv *keeper, base *database){ //verifica o tipo de dado de cada coluna
     
     keeper->type = (char*) malloc(keeper->column * sizeof(char));
-
     if(!keeper->type){
         fprintf(stderr, "Erro ao alocar memoria. err: alloc_type\n");
         exit(9);
@@ -46,7 +47,7 @@ void type(csv *keeper, base *database){
 }
 
 
-char* put_spaces(size_t size, size_t diff, char *origin_string){
+char* put_spaces(size_t size, size_t diff, char *origin_string){    //função que coloca espaços em branco para preencher a string
     char *spaces = (char *)malloc((size + 1) * sizeof(char));
     memset(spaces, ' ', diff);
     strcat(spaces, origin_string);
@@ -55,43 +56,33 @@ char* put_spaces(size_t size, size_t diff, char *origin_string){
 
 }
 
-void fill_string(csv *keeper, base *database){
+void fill_string(csv *keeper, base *database){  //preenche as strings com espaços em branco para que todas tenham o mesmo tamanho
 
     for (int i = 0; i < keeper->row; i++){ //percorre linhas
         for (int j = 0; j < keeper->column; j++){ //percorre colunas  
-            if(((database->data[i][j] != NULL)) && (strlen (database->data[i][j]) < keeper->sizes[j])){
-                size_t diff = keeper->sizes[j] - strlen(database->data[i][j]);
-                char *spaces = put_spaces(keeper->sizes[j], diff, database->data[i][j]);
-                strcpy(database->data[i][j], spaces);
+            if(((database->data[i][j] != NULL)) && (strlen (database->data[i][j]) < keeper->sizes[j])){ //verifica se a string é menor que o tamanho da coluna
+                size_t diff = keeper->sizes[j] - strlen(database->data[i][j]);                          //calcula a diferença entre o tamanho da string e o tamanho da coluna
+                char *spaces = put_spaces(keeper->sizes[j], diff, database->data[i][j]);                //preenche a string com espaços em branco
+                strcpy(database->data[i][j], spaces);                                                   //copia a string preenchida para o database original
             }
         }
     }
 }
 
-size_t find_column(csv *keeper, base *database_copy, char *filter){
+size_t find_column(csv *keeper, base *database_copy, char *filter){ //encontra a coluna que contem o filtro
     size_t j, number_column;
     int cmp;
 
     for(j = 1; j < keeper->column; j++){
-        cmp = strcasecmp(database_copy->data[0][j], filter);
+        cmp = strcasecmp(database_copy->data[0][j], filter);    //compara a string da coluna com o filtro
         if (cmp == 0){
             number_column = j;
         }
     }
-    return number_column;
+    return number_column;   //retorna o numero da coluna em que o filtro desejado se encontra
 }
 
-size_t count_indexsize(csv *keeper, size_t *index){
-    size_t count = 0;
-    for (size_t i = 1; i < keeper->row; i++){
-        if (index[i] == i){
-            count++;
-        }
-    }
-    return count;
-}
-
-void database_filtered(csv *keeper, base *database, size_t *index, char *file_name){
+void database_filtered(csv *keeper, base *database, size_t *index, char *file_name){ //grava um arquivo com os dados filtrados
 
     FILE *archive = fopen(file_name, "w");
     if(!archive){
@@ -100,7 +91,7 @@ void database_filtered(csv *keeper, base *database, size_t *index, char *file_na
     }
 
     for(size_t i = 0; i < keeper->row; i++){
-        if(index[i] == i){
+        if(index[i] == i){                                  //se o index da linha for igual ao numero da linha, entao a linha é gravada
             for(size_t j = 0; j < keeper->column; j++){
                 fprintf(archive, "%s", database->data[i][j]);
                 if (j < (keeper->column - 1)) {
@@ -115,7 +106,7 @@ void database_filtered(csv *keeper, base *database, size_t *index, char *file_na
     }
 }
 
-void show_filter(csv *keeper, base *database_copy, size_t *index){
+void show_filter(csv *keeper, base *database_copy, size_t *index){  //mostra os dados filtrados
     
     fill_string(keeper, database_copy);
 
@@ -138,9 +129,9 @@ void show_filter(csv *keeper, base *database_copy, size_t *index){
 
     printf("---------\n");
 
-    size_t counter_aux = 0;
+    size_t counter_aux = 0; 
     size_t aux = 0;
-    for (size_t k = keeper->row - 2; k > 0; k--){
+    for (size_t k = keeper->row - 2; k > 0; k--){   //percorre o index de tras para frente para saber o 5 ultimo index que foi marcado
         
         if (index[k] == k){
             counter_aux++;
@@ -153,7 +144,7 @@ void show_filter(csv *keeper, base *database_copy, size_t *index){
     }
 
     counter = 0;
-    for(size_t i = aux; i < keeper->row-1; i++){
+    for(size_t i = aux; i < keeper->row-1; i++){        //mostra os 5 ultimos index marcados
         if((index[i] == i) && (counter < 5)){
             for(size_t j = 0; j < keeper->column; j++){
                 printf("%10s ", database_copy->data[i][j]);
@@ -168,10 +159,12 @@ void show_filter(csv *keeper, base *database_copy, size_t *index){
 
     printf(" [%lu row x %lu column] \n\n", keeper->row, keeper->column);
 }
+//----------------------------------------------------------------------------------------------------------------------
+//abaixo estao as funcoes usadas no filtro!
+//cada filtro ( == > >= < <= != ) possui suas correspondentes funcoes:
 
-
-//essa função converte o valor numerico do filtro para float e compara com os valores da coluna
-//caso atenda as condições, marca o index da linha
+//todas as funcoes *something*_number convertem o valor numerico do filtro para float e comparam com os valores da coluna
+//caso atenda as condições, marcam o index da linha
 void bigger_number(csv *keeper, base *database_copy, size_t column, char *value, size_t *index){
     float value_convert, database_value;
     value_convert = atof(value);
@@ -186,6 +179,11 @@ void bigger_number(csv *keeper, base *database_copy, size_t column, char *value,
         }
     }
 }
+
+//todas as funcoes filter_*something* recebem o database original, o csv, uma copia do database original, o filtro e o valor do filtro
+//e chama a correspondente funcao *something*_number para comparar os valores da coluna com o filtro
+//caso atenda as condições, chama a funcao show_filter para mostrar os dados filtrados
+//e pergunta se deseja gravar um arquivo com os dados filtrados
 void filter_bigger(base *database, csv *keeper, base *database_copy, char *filter, char *value, size_t *index){
 
     char save[1];
@@ -211,7 +209,7 @@ void filter_bigger(base *database, csv *keeper, base *database_copy, char *filte
     }
 
 }
-
+//----------------------------------------------------------------------------------------------------------------------
 void smaller_number(csv *keeper, base *database_copy, size_t column, char *value, size_t *index){
     float value_convert, database_value;
     value_convert = atof(value);
@@ -251,7 +249,7 @@ void filter_smaller(base *database, csv *keeper, base *database_copy, char *filt
     }
 
 }
-
+//----------------------------------------------------------------------------------------------------------------------
 void lessorequal_number(csv *keeper, base *database_copy, size_t column, char *value, size_t *index){
     float value_convert, database_value;
     value_convert = atof(value);
@@ -291,7 +289,7 @@ void filter_lessorequal(base *database, csv *keeper, base *database_copy, char *
     }
 
 }
-
+//----------------------------------------------------------------------------------------------------------------------
 void biggerorequal_number(csv *keeper, base *database_copy, size_t column, char *value, size_t *index){
     float value_convert, database_value;
     value_convert = atof(value);
@@ -331,7 +329,7 @@ void filter_biggerorequal(base *database, csv *keeper, base *database_copy, char
     }
 
 }
-
+//----------------------------------------------------------------------------------------------------------------------
 void equal_number(csv *keeper, base *database_copy, size_t column, char *value, size_t *index){
     float value_convert, database_value;
     value_convert = atof(value);
@@ -394,7 +392,7 @@ void filter_equal(base *database, csv *keeper, base *database_copy, char *filter
     }
 
 }
-
+//----------------------------------------------------------------------------------------------------------------------
 void different_number(csv *keeper, base *database_copy, size_t column, char *value, size_t *index){
     float value_convert, database_value;
     value_convert = atof(value);
