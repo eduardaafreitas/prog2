@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include "io.h"
 #include "lib.h"
+#include "lib_filter.h"
+#include "lib_description.h"
 
 
 int main( int argc, char *argv[]){
@@ -36,7 +38,8 @@ int main( int argc, char *argv[]){
     layin_csv(archive, keeper, database, row, column);
     fseek(archive, 0, SEEK_SET);
     // count_stringsize(archive, keeper, row, column);
-    
+    layin_csv(archive, keeper, database_copy, row, column);
+    fseek(archive, 0, SEEK_SET);
 //--------------------------------------------------------
 
     printf("==== LEITOR DE ARQUIVOS CSV ====\n");
@@ -52,11 +55,11 @@ int main( int argc, char *argv[]){
             mostrar(keeper, database);
         }
         else if (opt == 3){
-            layin_csv(archive, keeper, database_copy, row, column);
             filtrar(database, keeper, database_copy);
         }
         else if (opt == 4){
-            printf("descricao em desenvolvimento!\n");
+            descreve(database, keeper, database_copy);
+            printf("descricao em desenvolvimento!\n\n");
         }
         else if (opt == 5){
             printf("ordenacao em desenvolvimento!\n");
