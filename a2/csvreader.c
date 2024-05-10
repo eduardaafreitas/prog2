@@ -10,7 +10,6 @@
 
 int main( int argc, char *argv[]){
     int opt = 0;  
-
     if (argc < 1){
         fprintf(stderr, "Forma de uso: ./csvreader <arq_in> \n");
         exit(1);
@@ -25,7 +24,6 @@ int main( int argc, char *argv[]){
     unsigned long column, row;
     column = count_columns(archive);
     fseek(archive, 0, SEEK_SET);
-
     row = count_rows(archive);
     fseek(archive, 0, SEEK_SET);
 
@@ -71,6 +69,7 @@ int main( int argc, char *argv[]){
             printf("dados faltantes em desenvolvimento!\n");
         }
         else if (opt == 8){
+            salvar(database_copy, keeper);
             printf("salvamento de dados em desenvolvimento!\n");
         }
         else{

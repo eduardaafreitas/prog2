@@ -18,6 +18,10 @@ void options(){
     printf("2) Mostrar\n");
     printf("3) Filtrar\n");
     printf("4) Descricao dos dados\n");
+    printf("5) Ordenar\n");
+    printf("6) Selecionar\n");
+    printf("7) Dados Faltantes\n");
+    printf("8) Salvar\n");
     printf("9) Fim\n\n");
 
     printf("Digite a opcao desejada: ");

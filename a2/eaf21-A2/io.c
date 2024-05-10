@@ -345,6 +345,31 @@ void descreve(base *database, csv *keeper, base *database_copy){
 
 }
 
+void salvar(base *database, csv *keeper){
+    char file_name[1025];
+    printf("Entre com o nome do arquivo: \n");
+    scanf("%s", file_name);
+
+    FILE *archive = fopen(file_name, "w");
+    if (!archive){
+        fprintf(stderr, "Erro ao abrir arquivo. err: save\n");
+        exit(10);
+    }
+    for(size_t i = 0; i < keeper->row; i++){
+        for(size_t j = 0; j < keeper->column; j++){
+            fprintf(archive, "%s", database->data[i][j]);
+            if (j < (keeper->column - 1)) {
+                fprintf(archive, ",");
+            }
+        }
+        if (i < (keeper->row - 1)){
+            fprintf(archive, "\n");
+        }
+            
+    }    
+
+}
+
 void free_csv(csv *keeper){
 
     free(keeper->archive);

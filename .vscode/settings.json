@@ -2,6 +2,7 @@
     "files.associations": {
         "stdlib.h": "c",
         "unistd.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "lib_description.h": "c"
     }
 }

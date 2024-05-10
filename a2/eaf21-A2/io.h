@@ -45,6 +45,9 @@ void filtrar(base *database, csv *keeper, base *database_copy);
 
 void descreve(base *database, csv *keeper, base *database_copy);
 
+void salvar(base *database, csv *keeper);
+
+
 void free_csv(csv *keeper_csv);
 void free_database(base *database);
 

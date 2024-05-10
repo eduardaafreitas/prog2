@@ -129,7 +129,7 @@ void filter_bigger(base *database, csv *keeper, base *database_copy, char *filte
 
         }
         else if(strcmp(save, "N") == 0){
-            exit(9);
+            return;
         }
     } 
     else{
@@ -169,7 +169,7 @@ void filter_smaller(base *database, csv *keeper, base *database_copy, char *filt
 
         }
         else if(strcmp(save, "N") == 0){
-            exit(9);
+            return;
         }
     } 
     else{
@@ -209,7 +209,7 @@ void filter_lessorequal(base *database, csv *keeper, base *database_copy, char *
 
         }
         else if(strcmp(save, "N") == 0){
-            exit(9);
+            return;
         }
     } 
     else{
@@ -249,7 +249,7 @@ void filter_biggerorequal(base *database, csv *keeper, base *database_copy, char
 
         }
         else if(strcmp(save, "N") == 0){
-            exit(9);
+            return;
         }
     } 
     else{
@@ -300,7 +300,7 @@ void filter_equal(base *database, csv *keeper, base *database_copy, char *filter
 
         }
         else if((strcmp(save, "N") == 0) || (strcmp(save, "n") ) == 0){
-            exit(9);
+            return;
         }
     } 
     else{
@@ -315,7 +315,7 @@ void filter_equal(base *database, csv *keeper, base *database_copy, char *filter
 
         }
         else if(strcmp(save, "N") == 0){
-            exit(9);
+            return;
         }
     }
 
@@ -363,7 +363,7 @@ void filter_different(base *database, csv *keeper, base *database_copy, char *fi
 
         }
         else if(strcmp(save, "N") == 0){
-            exit(9);
+            return;
         }
     } 
     else{
@@ -378,7 +378,7 @@ void filter_different(base *database, csv *keeper, base *database_copy, char *fi
 
         }
         else if(strcmp(save, "N") == 0){
-            exit(9);
+            return;
         }
     }
 
