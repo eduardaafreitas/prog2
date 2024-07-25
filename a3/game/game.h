@@ -18,6 +18,6 @@
 #define D_PATH "resources/deejay.png"
 
 void inicia_allegro(bool teste, char *descricao);
-void state_init();
+void start();
 
 #endif

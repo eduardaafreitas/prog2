@@ -12,7 +12,7 @@
 
 int main (){
 
-	state_init();
+	start();
 
 	printf("Hello World\n");
 

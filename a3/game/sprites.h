@@ -11,6 +11,4 @@
 
 void sprites_player (ALLEGRO_BITMAP *sprite, character *player);
 
-
-
 #endif

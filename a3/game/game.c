@@ -29,7 +29,7 @@ void inicia_allegro(bool teste, char *descricao){
     exit(1);
 }
 
-void state_init(){
+void start(){
     inicia_allegro(al_init(), "allegro");
     inicia_allegro(al_install_keyboard(), "keyboard");
     inicia_allegro(al_init_image_addon(), "image");
