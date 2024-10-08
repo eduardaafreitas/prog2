@@ -40,6 +40,16 @@ void alloc_pixels(image *img){ //aloca matriz de pixels
 
 }
 
+image *fill_pixels_p5(FILE *arq, image *img){
+    unsigned char temp_aux;
+    for(int i = 0; i < img->height; i++){
+        for(int j = 0; j < img->width; j++){
+            fscanf(arq, "%c", &temp_aux);
+            img->pixel[i][j] = temp_aux;
+        }
+    }
+    return img;
+}
 
 image *read_image(FILE *arq, image *img, char *image_name){ 
 
@@ -54,14 +64,13 @@ image *read_image(FILE *arq, image *img, char *image_name){
     alloc_pixels(img);
     getc(arq); 
 
-    unsigned char temp_aux;
-    for(int i = 0; i < img->height; i++){
-        for(int j = 0; j < img->width; j++){
-            fscanf(arq, "%c", &temp_aux);
-            img->pixel[i][j] = temp_aux;
-        }
+
+    if ( ){
+        printf("%d\n", );
+        img = fill_pixels_p5(arq, img);
     }
-    printf("%d\n", img->pixel[2][3]);
+
+
 
     return img;
 }
