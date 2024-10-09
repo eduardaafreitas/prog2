@@ -21,6 +21,7 @@ image *alloc_image();
 void alloc_pixels(image *img);
 
 image *fill_pixels_p5(FILE *arq, image *img);
+image *fill_pixels_p2(FILE *arq, image *img);
 
 image *read_image(FILE *arq, image *img, char *image_name);
 

@@ -4,7 +4,7 @@
 #include <getopt.h>
 #include <string.h>
 #include "lbp.h"
-
+#include <stdint.h>
 
 image *alloc_image(){ //aloca estrutura IMAGE
     image *img = (image *)malloc(sizeof(image));
@@ -37,7 +37,6 @@ void alloc_pixels(image *img){ //aloca matriz de pixels
             exit(1);
         }
     }
-
 }
 
 image *fill_pixels_p5(FILE *arq, image *img){
@@ -45,6 +44,17 @@ image *fill_pixels_p5(FILE *arq, image *img){
     for(int i = 0; i < img->height; i++){
         for(int j = 0; j < img->width; j++){
             fscanf(arq, "%c", &temp_aux);
+            img->pixel[i][j] = temp_aux;
+        }
+    }
+    return img;
+}
+
+image *fill_pixels_p2(FILE *arq, image *img){
+    int temp_aux;
+    for(int i = 0; i < img->height; i++){
+        for(int j = 0; j < img->width; j++){
+            fscanf(arq, "%d", &temp_aux);
             img->pixel[i][j] = temp_aux;
         }
     }
@@ -64,13 +74,14 @@ image *read_image(FILE *arq, image *img, char *image_name){
     alloc_pixels(img);
     getc(arq); 
 
-
-    if ( ){
-        printf("%d\n", );
+    if(img->type[1] == '5'){
         img = fill_pixels_p5(arq, img);
+    } else if(img->type[1] == '2'){
+        printf("in process\n");
+        img = fill_pixels_p2(arq, img);
+    } else {
+        exit(1);
     }
-
-
 
     return img;
 }
