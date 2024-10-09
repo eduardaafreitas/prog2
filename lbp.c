@@ -70,6 +70,7 @@ image *read_image(FILE *arq, image *img, char *image_name){
     fscanf(arq, "%s", img->type);
     fscanf(arq, "%d %d", &img->width, &img->height);
     fscanf(arq, "%d", &img->max_value);
+    printf("max value img: %d\n", img->max_value);
 
     alloc_pixels(img);
     getc(arq); 
@@ -77,14 +78,88 @@ image *read_image(FILE *arq, image *img, char *image_name){
     if(img->type[1] == '5'){
         img = fill_pixels_p5(arq, img);
     } else if(img->type[1] == '2'){
-        printf("in process\n");
         img = fill_pixels_p2(arq, img);
     } else {
+        printf("Imagem sem tipo definido\n");
         exit(1);
     }
 
     return img;
 }
 
+void new_img_init(image *img, image *new){
+
+    strcpy((new->type), img->type);
+    new->width = img->width;
+    new->height = img->height;
+    new->max_value = img->max_value;
+
+    alloc_pixels(new);
+
+    if(!new){
+        fprintf(stderr, "Erro ao alocar nova struct image\n");
+        exit(1);
+    }
+
+}
+
+void math(image *img, image *aux, image *new, int i, int j){
 
 
+    for(int lin = (i-1);lin < (i+1);lin++){
+        for(int col = (j-1);col < (j+1);col++){
+            if(img->pixel[lin][col] >= img->pixel[i][j])
+                aux->pixel[lin][col] = 1;
+            else
+                aux->pixel[lin][col] = 0;
+            //printf("%d ", img->pixel[i][j]);
+        }
+        //printf("\n");
+    }
+    
+    //printf("\n\n");
+    int mult = 1;
+    
+    for(int lin = (i-1);lin < (i+1);lin++){
+        for(int col = (j-1);col < (j+1);col++){
+            new->pixel[i][j] *= mult;
+            //printf("%d ", img->pixel[i][j]);
+            if((lin != (i)) || (col != (j)))
+                mult *= 2;
+        }
+        //printf("\n");
+    }
+
+    
+}
+
+void lbp_generate(image *img, image *new){
+    printf("calculando LBP...\n");
+    image *aux = alloc_image();
+    new_img_init(img, aux);
+
+    for(int i = 1;i < ((img->height)-1);i++){
+        for(int j = 1;j < ((img->width)-1);j++){
+            math(img, aux, new, i, j);
+        }
+    }
+
+    free(aux);
+}
+
+void out_img_generate(image *new, FILE *arq_out){
+
+    fprintf(arq_out, "P%c\n", new->type[1]);
+    fprintf(arq_out, "%d %d\n", new->width, new->height);
+    fprintf(arq_out,"%d", new->max_value);
+
+    fwrite("\n", sizeof(char), 1, arq_out);
+    for(int i = 0; i < new->height; i++){
+        for(int j = 0; j < new->width; j++){
+            fprintf(arq_out, "%d ", new->pixel[i][j]);
+        }
+    }
+
+    fclose(arq_out);
+
+}
