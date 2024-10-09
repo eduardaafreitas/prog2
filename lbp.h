@@ -2,7 +2,7 @@
 #define __LBP__
 
 struct LBP {
-    int *histogram;
+    int histogram[256];
     int size;
 };
 typedef struct LBP LBP;
@@ -17,6 +17,7 @@ struct image {
 typedef struct image image;
 
 image *alloc_image();
+LBP *alloc_lbp();
 void alloc_pixels(image *img);
 
 image *fill_pixels_p5(FILE *arq, image *img);
@@ -31,6 +32,7 @@ void lbp_generate(image *img, image *new);
 
 void out_img_generate(image *new, FILE *arq_out);
 
-void free_memory(image *img);
+void define_histogram(char *file_in, image *img, LBP *lbp);
 
+void free_memory(image *img);
 #endif

@@ -3,8 +3,10 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <string.h>
-#include "lbp.h"
 #include <stdint.h>
+#include <math.h>
+#include <dirent.h>
+#include "lbp.h"
 
 image *alloc_image(){ //aloca estrutura IMAGE
     image *img = (image *)malloc(sizeof(image));
@@ -21,6 +23,22 @@ image *alloc_image(){ //aloca estrutura IMAGE
     img->type[0] = 'P';
     img->type[1] = '0';
     return img;
+}
+
+LBP *alloc_lbp(){
+    LBP *lbp = (LBP *)malloc(sizeof(LBP));
+
+    if(!lbp){
+        fprintf(stderr, "Erro ao alocar LBP\n");
+        exit(1);
+    }
+    lbp->size = 256;
+    for (int h = 0; h < lbp->size; h++){
+        lbp->histogram[h] = 0;
+    }
+
+    
+    return lbp;
 }
 
 void alloc_pixels(image *img){ //aloca matriz de pixels
@@ -62,18 +80,31 @@ image *fill_pixels_p2(FILE *arq, image *img){
 }
 
 image *read_image(FILE *arq, image *img, char *image_name){ 
-
     if (!arq) {
         fprintf(stderr, "Erro: arquivo de imagem não aberto\n");
         return NULL;
     }
-    fscanf(arq, "%s", img->type);
-    fscanf(arq, "%d %d", &img->width, &img->height);
-    fscanf(arq, "%d", &img->max_value);
+    //le o cabecalho ignorando os comentarios:
+    char comment[128];
+    do {
+        fgets(comment, 128, arq);
+    } while( comment[0] == '#' );  
+    sscanf(comment, "%s", img->type);
 
+    do {
+        fgets(comment, 128, arq);
+    } while( comment[0] == '#' );
+    sscanf(comment, "%d %d", &img->width, &img->height);
+
+    do {
+        fgets(comment, 128, arq);
+    } while( comment[0] == '#' );
+    sscanf(comment, "%d", &img->max_value);
+    //----------------------------
     alloc_pixels(img);
     getc(arq); 
 
+    //trata o tipo da imagem:
     if(img->type[1] == '5'){
         img = fill_pixels_p5(arq, img);
     } else if(img->type[1] == '2'){
@@ -82,8 +113,6 @@ image *read_image(FILE *arq, image *img, char *image_name){
         printf("Imagem sem tipo definido\n");
         exit(1);
     }
-    printf("img: \n");
-    print_matriz(img);
 
     return img;
 }
@@ -187,8 +216,6 @@ void out_img_generate(image *new, FILE *arq_out){
 
 }
 
-
-
 void free_memory(image *img){
     
     for(int i = 0; i < img->height; i++){
@@ -197,4 +224,33 @@ void free_memory(image *img){
     free(img->pixel);
 
     free(img);
+}
+
+void define_histogram(char *file_in, image *new, LBP *lbp){
+
+    for (int i = 0; i < new->height; i++){
+        for (int j = 0; j < new->width; j++){
+            lbp->histogram[new->pixel[i][j]]++;
+        }
+    }
+
+    char name[128];
+    strcpy(name, file_in);
+    strcat(name, ".lbp");
+
+    FILE *histogram;
+
+    histogram = fopen(name, "w");
+    if(histogram == NULL){
+        fprintf(stderr, "Erro ao abrir arquivo file_in\n");
+        exit(1);
+    }
+
+    //fwrite(lbp->histogram, sizeof(int), 256, histogram);
+    for (int h = 0; h < lbp->size; h++){
+        fprintf(histogram, "%d ", lbp->histogram[h]);
+    }
+    
+    fclose(histogram);
+
 }
