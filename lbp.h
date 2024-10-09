@@ -25,6 +25,7 @@ image *fill_pixels_p2(FILE *arq, image *img);
 image *read_image(FILE *arq, image *img, char *image_name);
 
 void new_img_init(image *img, image *new);
+void print_matriz(image *img);
 void math(image *img, image *aux, image *new, int i, int j);
 void lbp_generate(image *img, image *new);
 

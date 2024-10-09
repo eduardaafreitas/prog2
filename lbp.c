@@ -82,6 +82,8 @@ image *read_image(FILE *arq, image *img, char *image_name){
         printf("Imagem sem tipo definido\n");
         exit(1);
     }
+    printf("img: \n");
+    print_matriz(img);
 
     return img;
 }
@@ -102,6 +104,15 @@ void new_img_init(image *img, image *new){
 
 }
 
+void print_matriz(image *img){
+    for(int i = 0;i < 5;i++){
+        for(int j = 0;j < 5;j++){
+            printf("%d ", img->pixel[i][j]);
+        }
+        printf("\n");
+    }
+}
+
 void math(image *img, image *aux, image *new, int i, int j){
 
 
@@ -115,20 +126,25 @@ void math(image *img, image *aux, image *new, int i, int j){
         }
         //printf("\n");
     }
+
     
     //printf("\n\n");
     int mult = 1;
-    
+    int soma = 0;
+
     for(int lin = (i-1);lin < (i+1);lin++){
         for(int col = (j-1);col < (j+1);col++){
-            new->pixel[i][j] = aux->pixel[i][j] * mult;
+            aux->pixel[lin][col] *= mult;
             //printf("%d ", img->pixel[i][j]);
             if((lin != (i)) || (col != (j)))
                 mult *= 2;
+            
+            soma += aux->pixel[lin][col];
         }
         //printf("\n");
     }
 
+    new->pixel[i][j] = soma;
     
 }
 
@@ -142,7 +158,8 @@ void lbp_generate(image *img, image *new){
             math(img, aux, new, i, j);
         }
     }
-
+    printf("aux: \n");
+    print_matriz(aux);
     free_memory(aux);
 }
 
