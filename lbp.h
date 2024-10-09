@@ -26,7 +26,7 @@ image *read_image(FILE *arq, image *img, char *image_name);
 
 void new_img_init(image *img, image *new);
 void print_matriz(image *img);
-void math(image *img, image *aux, image *new, int i, int j);
+void math(image *img, image *new, int i, int j);
 void lbp_generate(image *img, image *new);
 
 void out_img_generate(image *new, FILE *arq_out);

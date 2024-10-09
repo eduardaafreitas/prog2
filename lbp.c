@@ -105,62 +105,69 @@ void new_img_init(image *img, image *new){
 }
 
 void print_matriz(image *img){
-    for(int i = 0;i < 5;i++){
-        for(int j = 0;j < 5;j++){
+    for(int i = 0;i < 3;i++){
+        for(int j = 0;j < 3;j++){
             printf("%d ", img->pixel[i][j]);
         }
         printf("\n");
     }
 }
 
-void math(image *img, image *aux, image *new, int i, int j){
+void math(image *img, image *new, int i, int j){
+
+    int aux[3][3];
 
 
-    for(int lin = (i-1);lin < (i+1);lin++){
-        for(int col = (j-1);col < (j+1);col++){
-            if(img->pixel[lin][col] >= img->pixel[i][j])
-                aux->pixel[lin][col] = 1;
+    for(int lin = 0;lin < 3;lin++){
+        for(int col = 0;col < 3;col++){
+            if(img->pixel[(lin+i)-1][(col+j)-1] >= img->pixel[i][j])
+                aux[lin][col] = 1;
             else
-                aux->pixel[lin][col] = 0;
-            //printf("%d ", img->pixel[i][j]);
+                aux[lin][col] = 0;
+            //printf("%d ", aux[lin][col]);
         }
         //printf("\n");
     }
 
-    
     //printf("\n\n");
     int mult = 1;
-    int soma = 0;
-
-    for(int lin = (i-1);lin < (i+1);lin++){
-        for(int col = (j-1);col < (j+1);col++){
-            aux->pixel[lin][col] *= mult;
-            //printf("%d ", img->pixel[i][j]);
-            if((lin != (i)) || (col != (j)))
+    for(int lin = 0;lin < 3;lin++){
+        for(int col = 0;col < 3;col++){
+            if ( lin == 1 && col == 1) {
+                aux[lin][col] = 0;
+            } else {
+                aux[lin][col] *= mult;
+                //printf("%d ", aux[lin][col]);
                 mult *= 2;
-            
-            soma += aux->pixel[lin][col];
+            }
+        }
+        //printf("\n");
+    }
+    //printf("\n\n");
+
+
+    int soma = 0;
+    for(int lin = 0;lin < 3;lin++){
+        for(int col = 0;col < 3;col++){
+            soma += aux[lin][col];
         }
         //printf("\n");
     }
 
+    //printf("%d\n", soma);      
     new->pixel[i][j] = soma;
     
 }
 
 void lbp_generate(image *img, image *new){
 
-    image *aux = alloc_image();
-    new_img_init(img, aux);
-
     for(int i = 1;i < ((img->height)-1);i++){
         for(int j = 1;j < ((img->width)-1);j++){
-            math(img, aux, new, i, j);
+            math(img, new, i, j);
+            //exit(0);
         }
     }
-    printf("aux: \n");
-    print_matriz(aux);
-    free_memory(aux);
+
 }
 
 void out_img_generate(image *new, FILE *arq_out){
