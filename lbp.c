@@ -70,7 +70,6 @@ image *read_image(FILE *arq, image *img, char *image_name){
     fscanf(arq, "%s", img->type);
     fscanf(arq, "%d %d", &img->width, &img->height);
     fscanf(arq, "%d", &img->max_value);
-    printf("max value img: %d\n", img->max_value);
 
     alloc_pixels(img);
     getc(arq); 
@@ -134,7 +133,7 @@ void math(image *img, image *aux, image *new, int i, int j){
 }
 
 void lbp_generate(image *img, image *new){
-    printf("calculando LBP...\n");
+
     image *aux = alloc_image();
     new_img_init(img, aux);
 
@@ -144,7 +143,7 @@ void lbp_generate(image *img, image *new){
         }
     }
 
-    free(aux);
+    free_memory(aux);
 }
 
 void out_img_generate(image *new, FILE *arq_out){
@@ -162,4 +161,16 @@ void out_img_generate(image *new, FILE *arq_out){
 
     fclose(arq_out);
 
+}
+
+
+
+void free_memory(image *img){
+    
+    for(int i = 0; i < img->height; i++){
+        free(img->pixel[i]);
+    }
+    free(img->pixel);
+
+    free(img);
 }

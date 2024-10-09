@@ -40,25 +40,19 @@ int main( int argc, char *argv[] ) {
     //aloca estrutura:
     image *img = alloc_image();
     img = read_image(arq, img, file_in);
-    printf("leu img\n");
 
     image *new = alloc_image();
     new_img_init(img, new);
-    printf("struct new img criada");
 
     lbp_generate(img, new);
-    
-    printf("passou lbp generate\n");
+
     FILE *arq_out;
     if(!( arq_out = fopen(file_out, "wb"))){
       fprintf(stderr, "Nao foi possivel abrir o arquivo!\n");
       exit(1);
     }
-    printf("arq out\n");
 
     out_img_generate(new, arq_out);
-
-    fprintf(stderr, "Writing output file\n");
     
     fclose(arq);
     free(file_in);

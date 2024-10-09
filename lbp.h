@@ -30,5 +30,6 @@ void lbp_generate(image *img, image *new);
 
 void out_img_generate(image *new, FILE *arq_out);
 
+void free_memory(image *img);
 
 #endif
