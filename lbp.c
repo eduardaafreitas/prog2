@@ -121,7 +121,7 @@ void math(image *img, image *aux, image *new, int i, int j){
     
     for(int lin = (i-1);lin < (i+1);lin++){
         for(int col = (j-1);col < (j+1);col++){
-            new->pixel[i][j] *= mult;
+            new->pixel[i][j] = aux->pixel[i][j] * mult;
             //printf("%d ", img->pixel[i][j]);
             if((lin != (i)) || (col != (j)))
                 mult *= 2;
