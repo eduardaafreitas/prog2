@@ -273,7 +273,6 @@ void directory_read(char *directory_name){
     DIR *database;
     struct dirent *dir;
     char dir_path[256];
-    char compare_dir[256];
 
     char *compare_pointer;
 
@@ -293,9 +292,9 @@ void directory_read(char *directory_name){
     }
 
     while(dir){
-        strcat(compare_dir, dir->d_name);
-        compare_pointer = strstr(dir->d_name, compare_dir);
+        compare_pointer = strstr(dir->d_name, ".lbp");
         if((dir->d_name[0] == '.') || compare_pointer ){
+            dir = readdir(database);
             continue;
         }
         printf("%s\n", dir->d_name);
