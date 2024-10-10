@@ -273,9 +273,14 @@ void directory_read(char *directory_name){
     DIR *database;
     struct dirent *dir;
     char dir_path[256];
+    char compare_dir[256];
+
+    char *compare_pointer;
 
     strcpy(dir_path, directory_name);
+
     database = opendir(directory_name);
+
     if(!database){
         perror("Não foi possível abrir o diretorio.\n");
   	    exit(1);
@@ -288,20 +293,21 @@ void directory_read(char *directory_name){
     }
 
     while(dir){
-        if(dir->d_name[0] == '.'){
+        strcat(compare_dir, dir->d_name);
+        compare_pointer = strstr(dir->d_name, compare_dir);
+        if((dir->d_name[0] == '.') || compare_pointer ){
             continue;
         }
+        printf("%s\n", dir->d_name);
         strcat(dir_path, dir->d_name);
         lbp_convert(dir_path);
+        
         memset(dir_path, 0, strlen(dir_path));
         strcpy(dir_path, directory_name);
         dir = readdir(database);
 
     }
-        
     closedir(database);
-
-    
 }
 
 void lbp_convert(char file_in[256]){

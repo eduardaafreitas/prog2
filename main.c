@@ -35,7 +35,7 @@ int main( int argc, char *argv[] ) {
 
     lbp_convert_origin(file_in);
     directory_read(directory);
-    exit(1);
+    //exit(1);
     //printf("diretorio: %d\n", dir_size);
   
     
