@@ -3,8 +3,7 @@
 
 struct LBP {
     int histogram[256];
-    char histogram_name[128];
-    double size;
+    float size;
 };
 typedef struct LBP LBP;
 
@@ -35,8 +34,8 @@ void out_img_generate(image *new, FILE *arq_out);
 
 void define_histogram(char *file_in, image *img, LBP *lbp);
 void euclidian_distance(LBP *aux, LBP *lbp_origin, LBP *lbp_compare);
-void directory_read(char *directory_name, LBP *lbp_arq_in);
-void lbp_convert(char file_in[256], LBP *lpb_arq_in);
+void directory_read(char *directory_name);
+void lbp_convert(char file_in[256]);
 void lbp_convert_origin(char *file_in);
 
 void free_memory(image *img);

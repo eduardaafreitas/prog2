@@ -37,11 +37,7 @@ LBP *alloc_lbp(){
         lbp->histogram[h] = 0;
     }
 
-    for (int h = 0; h < 128; h++){
-        lbp->histogram_name[h] = 0;
-    }
-
-    lbp->size = 0.0;
+    lbp->size = 0;
     
     return lbp;
 }
@@ -238,44 +234,50 @@ void define_histogram(char *file_in, image *new, LBP *lbp){
             lbp->histogram[new->pixel[i][j]]++;
         }
     }
-
+    
     char name[128];
     strcpy(name, file_in);
     strcat(name, ".lbp");
-    strcpy(lbp->histogram_name, name);
-    FILE *histogram;
 
-    histogram = fopen(name, "w");
-    if(histogram == NULL){
+    FILE *histogram_file;
+
+    histogram_file = fopen(name, "w");
+    if(histogram_file == NULL){
         fprintf(stderr, "Erro ao abrir arquivo file_in\n");
         exit(1);
     }
 
     for (int h = 0; h < 256; h++){
-        fprintf(histogram, "%d ", lbp->histogram[h]);
+        fprintf(histogram_file, "%d ", lbp->histogram[h]);
     }
     
-    fclose(histogram);
+    fclose(histogram_file);
 }
 
 void euclidian_distance(LBP *aux, LBP *lbp_origin, LBP *lbp_compare){
 
-    double sum, distance;
+    float sum, square, distance;
 
     for(int h = 0; h < 256; h++){
-        sum += pow(lbp_origin->histogram[h] - lbp_compare->histogram[h], 2);
+        aux->histogram[h] = lbp_origin->histogram[h] - lbp_compare->histogram[h];
+        square = (aux->histogram[h]) * 2;
+        sum = square + sum;
     }
 
     distance = sqrt(sum);
     aux->size = distance;
+
 }
 
-void directory_read(char *directory_name, LBP *lbp_arq_in){
+void directory_read(char *directory_name){
     DIR *database;
     struct dirent *dir;
     char dir_path[256];
+
     char *compare_pointer;
+
     strcpy(dir_path, directory_name);
+
     database = opendir(directory_name);
 
     if(!database){
@@ -289,32 +291,25 @@ void directory_read(char *directory_name, LBP *lbp_arq_in){
   	    exit(1);
     }
 
-    printf("diretorio aberto...\n");
-
     while(dir){
         compare_pointer = strstr(dir->d_name, ".lbp");
-        if((dir->d_name[0] == '.') || compare_pointer ){ //se o arquivo comecar com '.' ou terminar com '.lbp' le o proximo arquivo
+        if((dir->d_name[0] == '.') || compare_pointer ){
             dir = readdir(database);
-            printf("arquivo nao eh processavel....\n");
             continue;
         }
-        
-        strcat(dir_path, dir->d_name);
-        lbp_convert(dir_path, lbp_arq_in);
         printf("%s\n", dir->d_name);
-
-
+        strcat(dir_path, dir->d_name);
+        lbp_convert(dir_path);
         
         memset(dir_path, 0, strlen(dir_path));
         strcpy(dir_path, directory_name);
         dir = readdir(database);
-        printf("novo arquivo sendo processado.\n");
 
     }
     closedir(database);
 }
 
-void lbp_convert(char file_in[256], LBP *lbp_arq_in){
+void lbp_convert(char file_in[256]){
     FILE *arq = NULL;
     arq = fopen(file_in, "r");
     if(arq == NULL){
@@ -334,14 +329,14 @@ void lbp_convert(char file_in[256], LBP *lbp_arq_in){
     define_histogram(file_in, new_img, lbp);
 
     free_memory(img_in);
-    //free_memory(new_img);
+    free_memory(new_img);
     fclose(arq);
 
 
 }
 
 void lbp_convert_origin(char *file_in){
-    printf("converteu\n");
+    printf("converteu origin\n");
     FILE *arq = NULL;
     arq = fopen(file_in, "r");
     if(arq == NULL){
@@ -353,9 +348,11 @@ void lbp_convert_origin(char *file_in){
     //aloca estrutura:
     image *img_in = alloc_image();
     img_in = read_image(arq, img_in, file_in);
+    
 
     image *new_img = alloc_image();
     new_img_init(img_in, new_img);
+
     lbp_generate(img_in, new_img);
 
     LBP *lbp = alloc_lbp();
@@ -364,6 +361,3 @@ void lbp_convert_origin(char *file_in){
     fclose(arq);
 
 }
-
-
-

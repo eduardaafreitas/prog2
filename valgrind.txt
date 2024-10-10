@@ -1,0 +1,424 @@
+eduarda@eduarda-Inspiron-15-5510:~/prog2$ valgrind ./lbp -d ./bd/ -i lena.pgm
+==16554== Memcheck, a memory error detector
+==16554== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==16554== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==16554== Command: ./lbp -d ./bd/ -i lena.pgm
+==16554== 
+alocando estrutura inicial da img principal
+==16554== Use of uninitialised value of size 8
+==16554==    at 0x10A1FE: define_histogram (in /home/eduarda/prog2/lbp)
+==16554==    by 0x109668: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Use of uninitialised value of size 8
+==16554==    at 0x10A20D: define_histogram (in /home/eduarda/prog2/lbp)
+==16554==    by 0x109668: main (in /home/eduarda/prog2/lbp)
+==16554== 
+img alocada e definida
+diretorio aberto...
+==16554== Use of uninitialised value of size 8
+==16554==    at 0x10A1FE: define_histogram (in /home/eduarda/prog2/lbp)
+==16554==    by 0x10A728: lbp_convert (in /home/eduarda/prog2/lbp)
+==16554==    by 0x10A593: directory_read (in /home/eduarda/prog2/lbp)
+==16554==    by 0x109696: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Use of uninitialised value of size 8
+==16554==    at 0x10A20D: define_histogram (in /home/eduarda/prog2/lbp)
+==16554==    by 0x10A728: lbp_convert (in /home/eduarda/prog2/lbp)
+==16554==    by 0x10A593: directory_read (in /home/eduarda/prog2/lbp)
+==16554==    by 0x109696: main (in /home/eduarda/prog2/lbp)
+==16554== 
+Combretum1.pgm
+novo arquivo sendo processado.
+Cecropia1.pgm
+novo arquivo sendo processado.
+arquivo nao eh processavel....
+Apuleia2.pgm
+novo arquivo sendo processado.
+lena1.pgm
+novo arquivo sendo processado.
+Croton1.pgm
+novo arquivo sendo processado.
+arquivo nao eh processavel....
+==16554== Invalid read of size 4
+==16554==    at 0x49D8C7B: fclose@@GLIBC_2.2.5 (iofclose.c:48)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b850e0 is 0 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 1
+==16554==    at 0x49E72B4: _IO_un_link (genops.c:54)
+==16554==    by 0x49D8D34: fclose@@GLIBC_2.2.5 (iofclose.c:49)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b850e0 is 0 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 4
+==16554==    at 0x49D8D35: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b850e0 is 0 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 8
+==16554==    at 0x49D8D46: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b85168 is 136 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 8
+==16554==    at 0x49D8D4D: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b851c8 is 232 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 4
+==16554==    at 0x49D8D5A: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b851c0 is 224 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 8
+==16554==    at 0x49D8D64: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b85168 is 136 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 4
+==16554==    at 0x49D8D6B: fclose@@GLIBC_2.2.5 (iofclose.c:52)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b850e0 is 0 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid write of size 8
+==16554==    at 0x49D8D6E: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b851c8 is 232 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 4
+==16554==    at 0x49D8D72: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b851c4 is 228 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 4
+==16554==    at 0x49E5E98: _IO_file_close_it@@GLIBC_2.2.5 (fileops.c:130)
+==16554==    by 0x49D8D8E: fclose@@GLIBC_2.2.5 (iofclose.c:53)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b85150 is 112 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 4
+==16554==    at 0x49D8D8F: _IO_acquire_lock_fct (libioP.h:883)
+==16554==    by 0x49D8D8F: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b850e0 is 0 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 8
+==16554==    at 0x49D8CA1: _IO_acquire_lock_fct (libioP.h:884)
+==16554==    by 0x49D8CA1: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b85168 is 136 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 4
+==16554==    at 0x49D8CA8: _IO_acquire_lock_fct (libioP.h:884)
+==16554==    by 0x49D8CA8: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b851c4 is 228 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid write of size 8
+==16554==    at 0x49D8DA0: _IO_acquire_lock_fct (libioP.h:884)
+==16554==    by 0x49D8DA0: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b851c8 is 232 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 4
+==16554==    at 0x49D8DA8: _IO_acquire_lock_fct (libioP.h:884)
+==16554==    by 0x49D8DA8: fclose@@GLIBC_2.2.5 (iofclose.c:51)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b851c0 is 224 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 8
+==16554==    at 0x49D8CB2: fclose@@GLIBC_2.2.5 (iofclose.c:57)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b851b8 is 216 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 4
+==16554==    at 0x49E5FFD: _IO_file_finish@@GLIBC_2.2.5 (fileops.c:169)
+==16554==    by 0x49D8CE0: fclose@@GLIBC_2.2.5 (iofclose.c:57)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b85150 is 112 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 8
+==16554==    at 0x49E8738: _IO_default_finish (genops.c:603)
+==16554==    by 0x49D8CE0: fclose@@GLIBC_2.2.5 (iofclose.c:57)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b85118 is 56 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 8
+==16554==    at 0x49E8747: _IO_default_finish (genops.c:609)
+==16554==    by 0x49D8CE0: fclose@@GLIBC_2.2.5 (iofclose.c:57)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b85140 is 96 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 8
+==16554==    at 0x49E8760: _IO_default_finish (genops.c:612)
+==16554==    by 0x49D8CE0: fclose@@GLIBC_2.2.5 (iofclose.c:57)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b85128 is 72 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 1
+==16554==    at 0x49E8776: _IO_un_link (genops.c:54)
+==16554==    by 0x49E8776: _IO_default_finish (genops.c:618)
+==16554==    by 0x49D8CE0: fclose@@GLIBC_2.2.5 (iofclose.c:57)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b850e0 is 0 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 4
+==16554==    at 0x49D8CE1: fclose@@GLIBC_2.2.5 (iofclose.c:58)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b851a0 is 192 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid read of size 8
+==16554==    at 0x49D8CEF: fclose@@GLIBC_2.2.5 (iofclose.c:71)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b85128 is 72 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== Invalid free() / delete / delete[] / realloc()
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x1096A2: main (in /home/eduarda/prog2/lbp)
+==16554==  Address 0x4b850e0 is 0 bytes inside a block of size 472 free'd
+==16554==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D8D26: _IO_deallocate_file (libioP.h:862)
+==16554==    by 0x49D8D26: fclose@@GLIBC_2.2.5 (iofclose.c:74)
+==16554==    by 0x109674: main (in /home/eduarda/prog2/lbp)
+==16554==  Block was alloc'd at
+==16554==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16554==    by 0x49D964D: __fopen_internal (iofopen.c:65)
+==16554==    by 0x49D964D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==16554==    by 0x1095A1: main (in /home/eduarda/prog2/lbp)
+==16554== 
+==16554== 
+==16554== HEAP SUMMARY:
+==16554==     in use at exit: 11,788,383 bytes in 10,400 blocks
+==16554==   total heap usage: 10,426 allocs, 27 frees, 11,877,039 bytes allocated
+==16554== 
+==16554== LEAK SUMMARY:
+==16554==    definitely lost: 7,263 bytes in 20 blocks
+==16554==    indirectly lost: 11,781,120 bytes in 10,380 blocks
+==16554==      possibly lost: 0 bytes in 0 blocks
+==16554==    still reachable: 0 bytes in 0 blocks
+==16554==         suppressed: 0 bytes in 0 blocks
+==16554== Rerun with --leak-check=full to see details of leaked memory
+==16554== 
+==16554== Use --track-origins=yes to see where uninitialised values come from
+==16554== For lists of detected and suppressed errors, rerun with: -s
+==16554== ERROR SUMMARY: 45294 errors from 29 contexts (suppressed: 0 from 0)
+eduarda@eduarda-Inspiron-15-5510:~/prog2$ 
+
