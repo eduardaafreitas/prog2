@@ -17,9 +17,9 @@ int main( int argc, char *argv[] ) {
 
     while ((opt = getopt(argc, argv, "d:i:o:")) != -1) {
         switch (opt) {
-            // case 'd':
-            //     directory = strdup(optarg);
-            //     break;
+            case 'd':
+                directory = strdup(optarg);
+                break;
             case 'i':
                 file_in = strdup(optarg);
                 break;
@@ -31,29 +31,16 @@ int main( int argc, char *argv[] ) {
                 exit(1);
         }
     }   
-  
-    if (file_in == NULL){
-        fprintf(stderr, "Erro ao abrir arquivo file_in\n");
-        exit(1);
-    }
-
-    arq = fopen(file_in, "r");
-    if(arq == NULL){
-        fprintf(stderr, "Erro ao abrir arquivo\n");
-        free(file_in);
-        exit(1);
-    }
     
-    //aloca estrutura:
-    image *img = alloc_image();
-    img = read_image(arq, img, file_in);
 
-    image *new = alloc_image();
-    new_img_init(img, new);
-    lbp_generate(img, new);
+    lbp_convert_origin(file_in);
+    directory_read(directory);
+    exit(1);
+    //printf("diretorio: %d\n", dir_size);
+  
+    
 
-    LBP *lbp = alloc_lbp();
-    define_histogram(file_in, new, lbp);
+
 
     // FILE *arq_out;
     // if(!( arq_out = fopen(file_out, "wb"))){

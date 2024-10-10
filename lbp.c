@@ -32,11 +32,12 @@ LBP *alloc_lbp(){
         fprintf(stderr, "Erro ao alocar LBP\n");
         exit(1);
     }
-    lbp->size = 256;
-    for (int h = 0; h < lbp->size; h++){
+
+    for (int h = 0; h < 256; h++){
         lbp->histogram[h] = 0;
     }
 
+    lbp->size = 0;
     
     return lbp;
 }
@@ -175,16 +176,16 @@ void math(image *img, image *new, int i, int j){
     //printf("\n\n");
 
 
-    int soma = 0;
+    int sum = 0;
     for(int lin = 0;lin < 3;lin++){
         for(int col = 0;col < 3;col++){
-            soma += aux[lin][col];
+            sum += aux[lin][col];
         }
         //printf("\n");
     }
 
-    //printf("%d\n", soma);      
-    new->pixel[i][j] = soma;
+    //printf("%d\n", sum);      
+    new->pixel[i][j] = sum;
     
 }
 
@@ -246,11 +247,113 @@ void define_histogram(char *file_in, image *new, LBP *lbp){
         exit(1);
     }
 
-    //fwrite(lbp->histogram, sizeof(int), 256, histogram);
-    for (int h = 0; h < lbp->size; h++){
+    for (int h = 0; h < 256; h++){
         fprintf(histogram, "%d ", lbp->histogram[h]);
     }
     
     fclose(histogram);
+}
+
+void euclidian_distance(LBP *aux, LBP *lbp_origin, LBP *lbp_compare){
+
+    float sum, square, distance;
+
+    for(int h = 0; h < 256; h++){
+        aux->histogram[h] = lbp_origin->histogram[h] - lbp_compare->histogram[h];
+        square = (aux->histogram[h]) * 2;
+        sum = square + sum;
+    }
+
+    distance = sqrt(sum);
+    aux->size = distance;
 
 }
+
+void directory_read(char *directory_name){
+    DIR *database;
+    struct dirent *dir;
+    char dir_path[256];
+
+    strcpy(dir_path, directory_name);
+    database = opendir(directory_name);
+    if(!database){
+        perror("Não foi possível abrir o diretorio.\n");
+  	    exit(1);
+    }
+    
+    dir = readdir(database);
+    if(!dir){
+        perror("Não foi possível acessar o diretorio.\n");
+  	    exit(1);
+    }
+
+    while(dir){
+        if(dir->d_name[0] == '.'){
+            continue;
+        }
+        strcat(dir_path, dir->d_name);
+        lbp_convert(dir_path);
+        memset(dir_path, 0, strlen(dir_path));
+        strcpy(dir_path, directory_name);
+        dir = readdir(database);
+
+    }
+        
+    closedir(database);
+
+    
+}
+
+void lbp_convert(char file_in[256]){
+    FILE *arq = NULL;
+    arq = fopen(file_in, "r");
+    if(arq == NULL){
+        fprintf(stderr, "Erro ao abrir arquivo\n");
+        exit(1);
+    }
+    
+    //aloca estrutura:
+    image *img_in = alloc_image();
+    img_in = read_image(arq, img_in, file_in);
+
+    image *new_img = alloc_image();
+    new_img_init(img_in, new_img);
+    lbp_generate(img_in, new_img);
+
+    LBP *lbp = alloc_lbp();
+    define_histogram(file_in, new_img, lbp);
+
+    free_memory(img_in);
+    free_memory(new_img);
+    fclose(arq);
+
+
+}
+
+void lbp_convert_origin(char *file_in){
+    printf("converteu\n");
+    FILE *arq = NULL;
+    arq = fopen(file_in, "r");
+    if(arq == NULL){
+        fprintf(stderr, "Erro ao abrir arquivo\n");
+        free(file_in);
+        exit(1);
+    }
+    
+    //aloca estrutura:
+    image *img_in = alloc_image();
+    img_in = read_image(arq, img_in, file_in);
+
+    image *new_img = alloc_image();
+    new_img_init(img_in, new_img);
+    lbp_generate(img_in, new_img);
+
+    LBP *lbp = alloc_lbp();
+    define_histogram(file_in, new_img, lbp);
+
+    fclose(arq);
+
+}
+
+
+
