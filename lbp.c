@@ -236,6 +236,9 @@ void define_histogram(char *file_in, image *new, LBP *lbp){
     }
     
     char name[128];
+    for(int n = 0; n < 128; n++){
+        name[n] = '0';
+    }
     strcpy(name, file_in);
     strcat(name, ".lbp");
 
@@ -254,9 +257,11 @@ void define_histogram(char *file_in, image *new, LBP *lbp){
     fclose(histogram_file);
 }
 
-void euclidian_distance(LBP *aux, LBP *lbp_origin, LBP *lbp_compare){
+void euclidian_math(LBP *aux, LBP *lbp_origin, LBP *lbp_compare){
 
-    float sum, square, distance;
+    double sum = 0.0;
+    double square = 0.0;
+    double distance = 0.0;
 
     for(int h = 0; h < 256; h++){
         aux->histogram[h] = lbp_origin->histogram[h] - lbp_compare->histogram[h];
@@ -269,12 +274,91 @@ void euclidian_distance(LBP *aux, LBP *lbp_origin, LBP *lbp_compare){
 
 }
 
+LBP *read_lbp_struct(FILE *arquivo_lbp, LBP *aux){
+    int temp_aux = 0;
+    if(!arquivo_lbp){
+        fprintf(stderr, "Erro: arquivo lbp não aberto\n");
+        return NULL;
+    }
+    for(int h = 0; h < 256; h++){
+        fscanf(arquivo_lbp, "%d",&temp_aux);
+        aux->histogram[h] = temp_aux;
+    }
+
+    return aux;
+    
+}
+
+
+void euclidian_distance(char *directory_name, LBP *lbp_origin, double distance, char shorter_distance[256]){
+
+    DIR *database;
+    FILE* arquivo;
+    struct dirent *dir;
+    char dir_path[256];
+
+    char *compare_pointer;
+
+    strcpy(dir_path, directory_name);
+    database = opendir(directory_name);
+
+    LBP *compare = alloc_lbp();
+    LBP *aux = alloc_lbp();
+    if(!database){
+        perror("Não foi possível abrir o diretorio.\n");
+  	    exit(1);
+    }
+    
+    dir = readdir(database);
+    if(!dir){
+        perror("Não foi possível acessar o diretorio.\n");
+  	    exit(1);
+    }
+    
+    while(dir){
+        compare_pointer = strstr(dir->d_name, ".lbp");
+        if((dir->d_name[0] == '.') || (!compare_pointer) ){
+            dir = readdir(database);
+            continue;
+        }
+        strcat(dir_path, dir->d_name);
+
+        arquivo = fopen(dir_path, "r");
+        if(!arquivo){
+            perror("Não foi possível abrir o arquivo do BD.\n");
+            exit(1);
+        }
+
+        compare = read_lbp_struct(arquivo, compare);
+        euclidian_math(aux, lbp_origin, compare);
+
+        compare->size = aux->size;
+        distance = aux->size;
+
+        if(compare->size <= distance){
+            distance = compare->size; 
+            strcpy(shorter_distance, dir_path);
+        }
+
+        memset(dir_path, 0, strlen(dir_path));
+        strcpy(dir_path, directory_name);
+        dir = readdir(database);
+        fclose(arquivo);
+
+    }
+
+    closedir(database);
+    free(aux);
+    free(compare);
+
+}
+
 void directory_read(char *directory_name){
     DIR *database;
     struct dirent *dir;
     char dir_path[256];
 
-    char *compare_pointer;
+    char *compare_pointer = NULL;
 
     strcpy(dir_path, directory_name);
 
@@ -297,10 +381,10 @@ void directory_read(char *directory_name){
             dir = readdir(database);
             continue;
         }
-        printf("%s\n", dir->d_name);
         strcat(dir_path, dir->d_name);
         lbp_convert(dir_path);
         
+
         memset(dir_path, 0, strlen(dir_path));
         strcpy(dir_path, directory_name);
         dir = readdir(database);
@@ -330,13 +414,13 @@ void lbp_convert(char file_in[256]){
 
     free_memory(img_in);
     free_memory(new_img);
+    free(lbp);
     fclose(arq);
 
 
 }
 
 void lbp_convert_origin(char *file_in){
-    printf("converteu origin\n");
     FILE *arq = NULL;
     arq = fopen(file_in, "r");
     if(arq == NULL){

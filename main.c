@@ -15,7 +15,7 @@ int main( int argc, char *argv[] ) {
     //char *file_out = NULL;
     char *directory = NULL;
 
-    while ((opt = getopt(argc, argv, "d:i:o:")) != -1) {
+    while ((opt = getopt(argc, argv, "d:i:")) != -1) {
         switch (opt) {
             case 'd':
                 directory = strdup(optarg);
@@ -33,25 +33,46 @@ int main( int argc, char *argv[] ) {
     }   
     
 
-    lbp_convert_origin(file_in);
+    //lbp_convert_origin(file_in);
+    
+    
+    arq = fopen(file_in, "r");
+    if(arq == NULL){
+        fprintf(stderr, "Erro ao abrir arquivo\n");
+        free(file_in);
+        exit(1);
+    }
+    
+    //aloca estrutura:
+    image *img_in = alloc_image();
+    img_in = read_image(arq, img_in, file_in);
+    
+    image *new_img_in = alloc_image();
+    new_img_init(img_in, new_img_in);
+
+    lbp_generate(img_in, new_img_in);
+
+    LBP *lbp_origin = alloc_lbp();
+    double distance = 0.0;
+    char shorter_distance[256];
+    
+    define_histogram(file_in, new_img_in, lbp_origin);
+
+    fclose(arq);    
+
     directory_read(directory);
-    //exit(1);
-    //printf("diretorio: %d\n", dir_size);
-  
+
+    euclidian_distance(directory, lbp_origin, distance, shorter_distance);
+
+    printf("arquivo mais parecido: %s\n", shorter_distance);
+    printf("distancia: %.6f\n",distance);
     
 
-
-
-    // FILE *arq_out;
-    // if(!( arq_out = fopen(file_out, "wb"))){
-    //   fprintf(stderr, "Nao foi possivel abrir o arquivo!\n");
-    //   exit(1);
-    // }
-
-    // out_img_generate(new, arq_out);
-    
-    //fclose(arq);
     free(file_in);
+    free(directory);
+    free(lbp_origin);
+    free_memory(img_in);
+    free_memory(new_img_in);
 
     return 0;
 }
