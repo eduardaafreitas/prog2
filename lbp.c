@@ -55,6 +55,9 @@ void alloc_pixels(image *img){ //aloca matriz de pixels
             fprintf(stderr, "Erro ao alocar linha de pixels\n");
             exit(1);
         }
+        for (int j = 0; j < img->width; j++) {
+            img->pixel[i][j] = 0;  // Ou um valor padrão apropriado
+        }
     }
 }
 
@@ -229,6 +232,10 @@ void free_memory(image *img){
 
 void define_histogram(char *file_in, image *new, LBP *lbp){
 
+    for (int i = 0; i < 256; i++) {
+        lbp->histogram[i] = 0;
+    }
+
     for (int i = 0; i < new->height; i++){
         for (int j = 0; j < new->width; j++){
             lbp->histogram[new->pixel[i][j]]++;
@@ -315,6 +322,8 @@ void euclidian_distance(char *directory_name, LBP *lbp_origin, double distance, 
   	    exit(1);
     }
     
+    distance = 1e12; 
+
     while(dir){
         compare_pointer = strstr(dir->d_name, ".lbp");
         if((dir->d_name[0] == '.') || (!compare_pointer) ){
