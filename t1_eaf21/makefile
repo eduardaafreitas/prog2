@@ -1,7 +1,9 @@
+//Feito por Eduarda de Aguiar Freitas, GRR 20211799.
+
 CFLAG = -Wall
 LIBS = -lm
 CC = gcc
-EXEC = lbp
+EXEC = LBP
 MAIN = main.c
 INCLUDE = lbp.c
 OBJS = main.o lbp.o

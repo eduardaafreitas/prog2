@@ -1,3 +1,5 @@
+//Feito por Eduarda de Aguiar Freitas, GRR 20211799.
+
 #ifndef __LBP__
 #define __LBP__
 

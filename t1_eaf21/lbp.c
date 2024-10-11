@@ -1,3 +1,5 @@
+//Feito por Eduarda de Aguiar Freitas, GRR 20211799.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -346,7 +348,7 @@ void euclidian_distance(char *directory_name, LBP *lbp_origin, double distance, 
 
         if(compare->size <= distance){
             distance = compare->size; 
-            strcpy(shorter_distance, dir_path);
+            strcpy(shorter_distance, dir->d_name);
         }
 
         memset(dir_path, 0, strlen(dir_path));
