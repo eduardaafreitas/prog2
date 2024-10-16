@@ -1,7 +1,7 @@
 Feito por Eduarda de Aguiar Freitas, GRR 20211799.
 
-Trabalho apresentado à disciplina de Programação II (CI-1002 2024/2) como requisito para obtenção de nota.
-
+Primeiro trabalho pŕatico apresentado à disciplina de Programação II (CI-1002 2024/2) como requisito para obtenção de nota.
+Título do trabalho: Estratégias de Comparação de Imagens.
 Como objetivo do desenvolvimento, espera-se como resultado um programa executável em C chamado LBP com as seguintes funcionalidades:
 
 1) Comparar uma imagem de teste com todas as imagens presentes em uma base de referência.
@@ -27,4 +27,4 @@ Com todos os histogramas gerados, o diretório do banco de dados é novamente pe
 
 Depois de toda a execução, toda memória alocada é liberada.
 
-A lógica da funcionalidade 2 é implementada com base no nome do arquivo de saída solicitado pelo usuário e é realizada na função 'out_img_generate', onde o arquivo de saída é escrito com base na triz de pixels armazenada na estrutura 'new_img'.
+A lógica da funcionalidade 2 é implementada com base no nome do arquivo de saída solicitado pelo usuário e é realizada na função 'out_img_generate', onde o arquivo de saída é escrito com base na matriz de pixels armazenada na estrutura 'new_img'.
